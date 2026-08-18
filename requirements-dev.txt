@@ -1,0 +1,6 @@
+# 仅离线脚本（建索引/清洗/分类）需要，不进 Web 服务。
+# Render 上不安装这些 —— 免费层 512 MB 内存要留给向量。
+-r requirements.txt
+pymupdf==1.24.14      # PDF 抽取主力，对残缺 PDF 容错远好于 pypdf
+pypdf==5.1.0          # 兜底抽取器
+openpyxl==3.1.5       # 读 catalog xlsx

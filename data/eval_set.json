@@ -1,0 +1,1084 @@
+{
+ "version": 1,
+ "note": "gold 需人工校对：从 gold_candidates 里挑出真正能回答该问题的论文文件名，填进 gold 数组。zh2en 类的候选多半为空（中文关键词检索不到英文文献），需要你手工指定。",
+ "questions": [
+  {
+   "id": "q01",
+   "type": "numeric",
+   "category": "film_motor",
+   "question": "静电薄膜电机的推力密度典型值范围是多少？",
+   "note": "",
+   "gold": [],
+   "gold_candidates": [
+    {
+     "file": "2022_Zhang_A_High_Performance_Muscle-like_Actuato.pdf",
+     "title": "A High Performance Muscle-like Actuator using Multi-layer Electrostatic Film Motors",
+     "year": 2022,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2015_Wang_Peel_Force_of_Electrostatic_Adhesion_in_Crawl.pdf",
+     "title": "Peel Force of Electrostatic Adhesion in Crawler-type Electrostatic Climbing Robots",
+     "year": 2015,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2023_Chen_An_electrostatic_micromotor_based_on_e.pdf",
+     "title": "An electrostatic micromotor based on electrets",
+     "year": 2023,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2026_Huacen_A_two-layer_electrostatic_film_actuato.pdf",
+     "title": "A two-layer electrostatic film actuator with high force density and integrated brake",
+     "year": 2026,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2007_Yamashita_Voltage-induction_type_electrostatic_f.pdf",
+     "title": "Voltage-induction type electrostatic film motor driven by two- to four-phase ac voltage an",
+     "year": 2007,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2017_Wang_Squeeze-Film_Air_Damping_of_a_Five-Axi.pdf",
+     "title": "Squeeze-Film Air Damping of a Five-Axis Electrostatic Bearing for Rotary Micromotors",
+     "year": 2017,
+     "category": "film_motor",
+     "tier": "②静电电机/机械"
+    },
+    {
+     "file": "2008_Thaijiam_The_effect_of_myocardial_anisotropy_on.pdf",
+     "title": "The effect of myocardial anisotropy on volume measurement using conductance catheter techn",
+     "year": 2008,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2024_Li_Multilaminate_Energy_Storage_Films_fro.pdf",
+     "title": "Multilaminate Energy Storage Films from Entropy‐Driven Self‐Assembled Supramolecular Nanoc",
+     "year": 2024,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    }
+   ]
+  },
+  {
+   "id": "q02",
+   "type": "numeric",
+   "category": "film_motor",
+   "question": "静电薄膜驱动器的驱动电压通常是什么量级？",
+   "note": "",
+   "gold": [],
+   "gold_candidates": [
+    {
+     "file": "2012_Ghazaly_Characteristic_switching_of_a_multilay.pdf",
+     "title": "Characteristic switching of a multilayer thin electrostatic actuator by a driving signal f",
+     "year": 2012,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2023_Kojima_Slider_Sheet_Detection_in_Charge-Induc.pdf",
+     "title": "Slider Sheet Detection in Charge-Induction Electrostatic Film Actuators",
+     "year": 2023,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2007_Yamashita_Evaluation_of_an_Electrostatic_Film_Mo.pdf",
+     "title": "Evaluation of an Electrostatic Film Motor Driven by Two-Four-Phase AC Voltage and Electros",
+     "year": 2007,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2006_Yamamoto_Evaluation_of_MR-compatibility_of_Elec.pdf",
+     "title": "Evaluation of MR-compatibility of Electrostatic Linear Motor",
+     "year": 2006,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2022_Zhang_A_High_Performance_Muscle-like_Actuato.pdf",
+     "title": "A High Performance Muscle-like Actuator using Multi-layer Electrostatic Film Motors",
+     "year": 2022,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2024_Okuno_Interactive_driving_of_electrostatic_film_act.pdf",
+     "title": "Interactive driving of electrostatic film actuator by proximity motion of human body",
+     "year": 2024,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2023_Zhang_Position_Self-Sensing_for_Electrostati.pdf",
+     "title": "Position Self-Sensing for Electrostatic Motors Under Amplitude-Modulated AC Operation",
+     "year": 2023,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2023_Osada_2-DOF_Robot_Arm_with_Variable_Torque_L.pdf",
+     "title": "2-DOF Robot Arm with Variable Torque Limiters Realized by Electrostatic Film Motors",
+     "year": 2023,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    }
+   ]
+  },
+  {
+   "id": "q03",
+   "type": "numeric",
+   "category": "electroadhesion",
+   "question": "electroadhesive clutch 能达到的剪切强度是多少？",
+   "note": "",
+   "gold": [],
+   "gold_candidates": [
+    {
+     "file": "2026_Auletta_Soft-backing_enhanced_composite_electroadhesi.pdf",
+     "title": "Soft-backing enhanced composite electroadhesion",
+     "year": 2026,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2026_Campbell_Elastomeric_Strain_Limitation_for_Design_of_S.pdf",
+     "title": "Elastomeric Strain Limitation for Design of Soft Pneumatic Actuators",
+     "year": 2026,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2016_Chen_A_comparison_of_critical_shear_force_i.pdf",
+     "title": "A comparison of critical shear force in low-voltage, all-polymer electroadhesives to a bas",
+     "year": 2016,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2021_Borden_Reversible_electroadhesion_of_hydrogels_to_an.pdf",
+     "title": "Reversible electroadhesion of hydrogels to animal tissues for suture-less repair of cuts o",
+     "year": 2021,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2024_Rauf_Modeling_the_Dynamics_of_Sub-Millisecond_Elec.pdf",
+     "title": "Modeling the Dynamics of Sub-Millisecond Electroadhesive Engagement and Release Times",
+     "year": 2024,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2014_Chen_HIGH_STRENGTH_LOW_VOLTAGE_MICROFABRICATED_ELE.pdf",
+     "title": "HIGH STRENGTH, LOW VOLTAGE MICROFABRICATED ELECTROADHESIVES ON NON-CONDUCTIVE SURFACES",
+     "year": 2014,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2022_Feizi_Design_and_Modeling_of_a_Smart_Torque-Adjusta.pdf",
+     "title": "Design and Modeling of a Smart Torque-Adjustable Rotary Electroadhesive Clutch for Applica",
+     "year": 2022,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2025_Huang_Soft_electroadhesion_systems_for_soft_robotic.pdf",
+     "title": "Soft electroadhesion systems for soft robotics",
+     "year": 2025,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    }
+   ]
+  },
+  {
+   "id": "q04",
+   "type": "numeric",
+   "category": "electroadhesion",
+   "question": "电粘附夹持器的吸附力与电压的定量关系？",
+   "note": "",
+   "gold": [],
+   "gold_candidates": [
+    {
+     "file": "2025_Huang_Soft_electroadhesion_systems_for_soft_robotic.pdf",
+     "title": "Soft electroadhesion systems for soft robotics",
+     "year": 2025,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2014_Koh_Experimental_Investigation_of_the_Effe.pdf",
+     "title": "Experimental Investigation of the Effect of the Driving Voltage of an Electroadhesion Actu",
+     "year": 2014,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2024_Rauf_Modeling_the_Dynamics_of_Sub-Millisecond_Elec.pdf",
+     "title": "Modeling the Dynamics of Sub-Millisecond Electroadhesive Engagement and Release Times",
+     "year": 2024,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2023_Forsbach_A_two-scale_FEM-BAM_approach_for_fingerpad_fr.pdf",
+     "title": "A two-scale FEM-BAM approach for fingerpad friction under electroadhesion",
+     "year": 2023,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2021_Bigharaz_Development_and_Analysis_of_New_Ceramic_Mater.pdf",
+     "title": "Development and Analysis of New Ceramic Materials for Electroadhesion",
+     "year": 2021,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2016_Chen_A_comparison_of_critical_shear_force_i.pdf",
+     "title": "A comparison of critical shear force in low-voltage, all-polymer electroadhesives to a bas",
+     "year": 2016,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2018_Schaler_Bidirectional_Thin-Film_Repulsive-Attr.pdf",
+     "title": "Bidirectional, Thin-Film Repulsive-/Attractive-Force Electrostatic Actuators for a Crawlin",
+     "year": 2018,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2025_Bae_A_3-Phase_Electrostatic_Clutch_with_Variable.pdf",
+     "title": "A 3-Phase Electrostatic Clutch with Variable Mechanical Impedance Control for Soft Robotic",
+     "year": 2025,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    }
+   ]
+  },
+  {
+   "id": "q05",
+   "type": "mechanism",
+   "category": "film_motor",
+   "question": "电极节距和间距如何影响静电薄膜电机的输出推力？",
+   "note": "",
+   "gold": [],
+   "gold_candidates": [
+    {
+     "file": "2021_Qu_Analyses_and_Optimization_of_Electrost.pdf",
+     "title": "Analyses and Optimization of Electrostatic Film Actuators Considering Electrical Breakdown",
+     "year": 2021,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2004_Yamamoto_Development_of_electrostatic_levitatio.pdf",
+     "title": "Development of electrostatic levitation motor for vacuum condition",
+     "year": 2004,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2002_Niino_Dual_excitation_multiphase_electrostat.pdf",
+     "title": "Dual excitation multiphase electrostatic drive",
+     "year": 2002,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2026_Huacen_A_two-layer_electrostatic_film_actuato.pdf",
+     "title": "A two-layer electrostatic film actuator with high force density and integrated brake",
+     "year": 2026,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2025_Huacen_A_Two-Layer_Electrostatic_Film_Actuato.pdf",
+     "title": "A Two-Layer Electrostatic Film Actuator with High Actuation Stress and Integrated Brake",
+     "year": 2025,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2013_Wang_A_thin_electroadhesive_inchworm_climbi.pdf",
+     "title": "A thin electroadhesive inchworm climbing robot driven by an electrostatic film actuator fo",
+     "year": 2013,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2007_Yamamoto_Motion_Generation_in_MRI_Using_an_Elec.pdf",
+     "title": "Motion Generation in MRI Using an Electrostatic Linear Motor for Visualizing Internal Defo",
+     "year": 2007,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2008_Zhang_Electrostatically_Actuated_Robotic_Fis.pdf",
+     "title": "Electrostatically Actuated Robotic Fish: Design and Control for High-Mobility Open-Loop Sw",
+     "year": 2008,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    }
+   ]
+  },
+  {
+   "id": "q06",
+   "type": "mechanism",
+   "category": "film_motor",
+   "question": "绝缘液体对静电薄膜驱动器的推力有什么影响？",
+   "note": "",
+   "gold": [],
+   "gold_candidates": [
+    {
+     "file": "2021_Osada_Effect_of_insulating_liquid_on_thrust.pdf",
+     "title": "Effect of insulating liquid on thrust force of a synchronous electrostatic film actuator",
+     "year": 2021,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2022_Osada_Effect_of_insulating_liquid_viscosity.pdf",
+     "title": "Effect of insulating liquid viscosity on output force of a high-power synchronous electros",
+     "year": 2022,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2024_Okuno_Interactive_driving_of_electrostatic_film_act.pdf",
+     "title": "Interactive driving of electrostatic film actuator by proximity motion of human body",
+     "year": 2024,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2013_Wang_A_thin_electroadhesive_inchworm_climbi.pdf",
+     "title": "A thin electroadhesive inchworm climbing robot driven by an electrostatic film actuator fo",
+     "year": 2013,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2002_Niino_Dual_excitation_multiphase_electrostat.pdf",
+     "title": "Dual excitation multiphase electrostatic drive",
+     "year": 2002,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2005_Yamamoto_Deformable_electrostatic_linear_motor.pdf",
+     "title": "Deformable electrostatic linear motor",
+     "year": 2005,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2004_Yamamoto_Robotic_arm_using_flexible_electrostat.pdf",
+     "title": "Robotic arm using flexible electrostatic film actuators",
+     "year": 2004,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2025_Huang_Soft_electroadhesion_systems_for_soft_robotic.pdf",
+     "title": "Soft electroadhesion systems for soft robotics",
+     "year": 2025,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    }
+   ]
+  },
+  {
+   "id": "q07",
+   "type": "mechanism",
+   "category": "film_motor",
+   "question": "击穿电压与电极间距的关系，Paschen 定律在这里如何适用？",
+   "note": "",
+   "gold": [],
+   "gold_candidates": [
+    {
+     "file": "2021_Bigharaz_Development_and_Analysis_of_New_Ceramic_Mater.pdf",
+     "title": "Development and Analysis of New Ceramic Materials for Electroadhesion",
+     "year": 2021,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2017_Schaler_Thin-film_repulsive-force_electrostati.pdf",
+     "title": "Thin-film repulsive-force electrostatic actuators",
+     "year": 2017,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2021_Abbasalipour_High-Output_Micro-Machined_Electrostatic.pdf",
+     "title": "High-Output Micro-Machined Electrostatic",
+     "year": 2021,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2021_Abbasalipour_High-Output_Micro-Machined_Electrostat.pdf",
+     "title": "High-Output Micro-Machined Electrostatic Actuators",
+     "year": 2021,
+     "category": "film_motor",
+     "tier": "②静电电机/机械"
+    },
+    {
+     "file": "2004_Yamamoto_Electrostatic_linear_servo_motor_with.pdf",
+     "title": "Electrostatic linear servo motor with built-in position sensor for vacuum environment",
+     "year": 2004,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2021_Qu_Analyses_and_Optimization_of_Electrost.pdf",
+     "title": "Analyses and Optimization of Electrostatic Film Actuators Considering Electrical Breakdown",
+     "year": 2021,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2022_Rajagopalan_Advancement_of_Electroadhesion_Technol.pdf",
+     "title": "Advancement of Electroadhesion Technology for Intelligent and Self‐Reliant Robotic Applica",
+     "year": 2022,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2024_Li_Multilaminate_Energy_Storage_Films_fro.pdf",
+     "title": "Multilaminate Energy Storage Films from Entropy‐Driven Self‐Assembled Supramolecular Nanoc",
+     "year": 2024,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    }
+   ]
+  },
+  {
+   "id": "q08",
+   "type": "mechanism",
+   "category": "electroadhesion",
+   "question": "Johnsen-Rahbek 效应在静电吸附中起什么作用？",
+   "note": "",
+   "gold": [],
+   "gold_candidates": [
+    {
+     "file": "2025_Huang_Soft_electroadhesion_systems_for_soft_robotic.pdf",
+     "title": "Soft electroadhesion systems for soft robotics",
+     "year": 2025,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2024_Rauf_Modeling_the_Dynamics_of_Sub-Millisecond_Elec.pdf",
+     "title": "Modeling the Dynamics of Sub-Millisecond Electroadhesive Engagement and Release Times",
+     "year": 2024,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2016_Singh_Effects_of_Residual_Charge_on_the_Performance.pdf",
+     "title": "Effects of Residual Charge on the Performance of Electro-Adhesive Grippers",
+     "year": 2016,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2017_Nakamura_Modeling_and_control_of_electroadhesion_force.pdf",
+     "title": "Modeling and control of electroadhesion force in DC voltage",
+     "year": 2017,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2026_Auletta_Soft-backing_enhanced_composite_electroadhesi.pdf",
+     "title": "Soft-backing enhanced composite electroadhesion",
+     "year": 2026,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2017_Nakamura_Modeling_and_control_of_electroadhesio.pdf",
+     "title": "Modeling and control of electroadhesion force in DC voltage",
+     "year": 2017,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2019_Persson_Electroadhesion_for_soft_adhesive_pads_and_ro.pdf",
+     "title": "Electroadhesion for soft adhesive pads and robotics: theory and numerical results",
+     "year": 2019,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2021_Bigharaz_Development_and_Analysis_of_New_Ceramic_Mater.pdf",
+     "title": "Development and Analysis of New Ceramic Materials for Electroadhesion",
+     "year": 2021,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    }
+   ]
+  },
+  {
+   "id": "q09",
+   "type": "mechanism",
+   "category": "electroadhesion",
+   "question": "表面粗糙度如何影响电粘附力？",
+   "note": "",
+   "gold": [],
+   "gold_candidates": [
+    {
+     "file": "2026_Peng_Roughness-controlled_Tribocharging_Governs_Fr.pdf",
+     "title": "Roughness-controlled Tribocharging Governs Friction in Dry Glass Contacts",
+     "year": 2026,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2020_Ciavarella_A_Simplified_Theory_of_Electroadhesion_for_Ro.pdf",
+     "title": "A Simplified Theory of Electroadhesion for Rough Interfaces",
+     "year": 2020,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2019_Ciavarella_A_simplified_theory_of_stickiness_due_to_elec.pdf",
+     "title": "A simplified theory of \"stickiness\" due to electroadhesion between rough surfaces",
+     "year": 2019,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2025_Huang_Soft_electroadhesion_systems_for_soft_robotic.pdf",
+     "title": "Soft electroadhesion systems for soft robotics",
+     "year": 2025,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2024_Rauf_Modeling_the_Dynamics_of_Sub-Millisecond_Elec.pdf",
+     "title": "Modeling the Dynamics of Sub-Millisecond Electroadhesive Engagement and Release Times",
+     "year": 2024,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2019_Persson_Electroadhesion_for_soft_adhesive_pads_and_ro.pdf",
+     "title": "Electroadhesion for soft adhesive pads and robotics: theory and numerical results",
+     "year": 2019,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2023_Forsbach_A_two-scale_FEM-BAM_approach_for_fingerpad_fr.pdf",
+     "title": "A two-scale FEM-BAM approach for fingerpad friction under electroadhesion",
+     "year": 2023,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2023_Gao_A_supramolecular_gel-elastomer_system_for_sof.pdf",
+     "title": "A supramolecular gel-elastomer system for soft iontronic adhesives",
+     "year": 2023,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    }
+   ]
+  },
+  {
+   "id": "q10",
+   "type": "mechanism",
+   "category": "film_motor",
+   "question": "驻极体在静电电机中如何提供偏置电荷？",
+   "note": "",
+   "gold": [],
+   "gold_candidates": [
+    {
+     "file": "2020_Sano_An_Electret-Augmented_Low-Voltage_MEMS.pdf",
+     "title": "An Electret-Augmented Low-Voltage MEMS Electrostatic Out-of-Plane Actuator for Acoustic Tr",
+     "year": 2020,
+     "category": "film_motor",
+     "tier": "②静电电机/机械"
+    },
+    {
+     "file": "2004_Genda_Micro-patterned_electret_for_high_powe.pdf",
+     "title": "Micro-patterned electret for high power electrostatic motor",
+     "year": 2004,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2023_Chen_An_electrostatic_micromotor_based_on_e.pdf",
+     "title": "An electrostatic micromotor based on electrets",
+     "year": 2023,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2023_Qiu_Guest_Editorial_Polymer_electrets_and.pdf",
+     "title": "Guest Editorial: Polymer electrets and ferroelectrets",
+     "year": 2023,
+     "category": "film_motor",
+     "tier": "②静电电机/机械"
+    },
+    {
+     "file": "2005_Genda_High_power_electrostatic_motor_with_mi.pdf",
+     "title": "High power electrostatic motor with micropatterned electret on shrouded turbine",
+     "year": 2005,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2004_Genda_High_power_electrostatic_motor_and_gen.pdf",
+     "title": "High power electrostatic motor and generator using electrets",
+     "year": 2004,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2021_Park_High_Voltage_Generation_by_Fiber-Coupled_Puls.pdf",
+     "title": "High Voltage Generation by Fiber-Coupled Pulsed Laser for a Simple Receiver Circuit Struct",
+     "year": 2021,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2022_Chada_Spatio-temporal_measurement_of_one-dim.pdf",
+     "title": "Spatio-temporal measurement of one-dimensional surface potential distributions using a sur",
+     "year": 2022,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    }
+   ]
+  },
+  {
+   "id": "q11",
+   "type": "compare",
+   "category": "film_motor",
+   "question": "感应式静电电机和同步式静电电机在原理和效率上有何差异？",
+   "note": "",
+   "gold": [],
+   "gold_candidates": [
+    {
+     "file": "2013_Yamashita_Effects_of_Electrode_Configuration_for.pdf",
+     "title": "Effects of Electrode Configuration for Performances of Voltage-Induction-Type Electrostati",
+     "year": 2013,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2017_Dai_A_Phase-Shifted_Control_for_Wireless_P.pdf",
+     "title": "A Phase-Shifted Control for Wireless Power Transfer System by Using Dual Excitation Units",
+     "year": 2017,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2013_Yamashita_Effects_of_Electrode_Configuration_for_Perfor.pdf",
+     "title": "Effects of Electrode Configuration for Performances of Voltage-Induction-Type Electrostati",
+     "year": 2013,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2018_Ge_High_Torque_Density_Macro-scale_Electr.pdf",
+     "title": "High Torque Density Macro-scale Electrostatic Rotating Machines: Electrical Design, Genera",
+     "year": 2018,
+     "category": "film_motor",
+     "tier": "②静电电机/机械"
+    },
+    {
+     "file": "2007_Yamashita_Voltage-induction_type_electrostatic_f.pdf",
+     "title": "Voltage-induction type electrostatic film motor driven by two- to four-phase ac voltage an",
+     "year": 2007,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2021_Carneiro_An_Extended_Model_for_Ripple_Analysis.pdf",
+     "title": "An Extended Model for Ripple Analysis of 2–4 Phase Resonant Electrostatic Induction Motors",
+     "year": 2021,
+     "category": "film_motor",
+     "tier": "②静电电机/机械"
+    },
+    {
+     "file": "2022_Osada_Effect_of_insulating_liquid_viscosity.pdf",
+     "title": "Effect of insulating liquid viscosity on output force of a high-power synchronous electros",
+     "year": 2022,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2023_Kojima_Slider_Sheet_Detection_in_Charge-Induc.pdf",
+     "title": "Slider Sheet Detection in Charge-Induction Electrostatic Film Actuators",
+     "year": 2023,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    }
+   ]
+  },
+  {
+   "id": "q12",
+   "type": "compare",
+   "category": "film_motor",
+   "question": "双激励（dual excitation）方案相比单激励有什么优势？",
+   "note": "",
+   "gold": [],
+   "gold_candidates": [
+    {
+     "file": "1998_Niino_Operation_of_Dual_Excitation_Multiphas.pdf",
+     "title": "Operation of Dual Excitation Multiphase Electrostatic Drive by Amplitude Modulated AC Volt",
+     "year": 1998,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2002_Niino_Dual_excitation_multiphase_electrostat.pdf",
+     "title": "Dual excitation multiphase electrostatic drive",
+     "year": 2002,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "1997_Niino_AC_Dual_Excitation_Multiphase_Electros.pdf",
+     "title": "AC Dual Excitation Multiphase Electrostatic Drive.",
+     "year": 1997,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2002_Niino_X-Y_positioner_driven_by_electrostatic.pdf",
+     "title": "X-Y positioner driven by electrostatic motor",
+     "year": 2002,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2011_Kimura_FPGA_implementation_of_a_signal_synthe.pdf",
+     "title": "FPGA implementation of a signal synthesizer for driving a high-power electrostatic motor",
+     "year": 2011,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2004_Yamamoto_Development_of_electrostatic_levitatio.pdf",
+     "title": "Development of electrostatic levitation motor for vacuum condition",
+     "year": 2004,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2018_Ali_Preliminary_Design_Investigation_of_Du.pdf",
+     "title": "Preliminary Design Investigation of Dual Stator HE FSM using Segmental Rotor",
+     "year": 2018,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "1998_Yamamoto_High_Precision_Positioning_Control_usi.pdf",
+     "title": "High Precision Positioning Control using High-Power Electrostatic Linear Drive.",
+     "year": 1998,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    }
+   ]
+  },
+  {
+   "id": "q13",
+   "type": "compare",
+   "category": "film_motor",
+   "question": "多层薄膜驱动器与单层结构相比推力提升多少？",
+   "note": "",
+   "gold": [],
+   "gold_candidates": [
+    {
+     "file": "2022_Zhang_A_High_Performance_Muscle-like_Actuato.pdf",
+     "title": "A High Performance Muscle-like Actuator using Multi-layer Electrostatic Film Motors",
+     "year": 2022,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2021_Kedzierski_Multilayer_microhydraulic_actuators_wi.pdf",
+     "title": "Multilayer microhydraulic actuators with speed and force configurations",
+     "year": 2021,
+     "category": "film_motor",
+     "tier": "②静电电机/机械"
+    },
+    {
+     "file": "2004_Yamamoto_Robotic_arm_using_flexible_electrostat.pdf",
+     "title": "Robotic arm using flexible electrostatic film actuators",
+     "year": 2004,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2011_Ghazaly_Basic_characteristics_of_a_multilayer.pdf",
+     "title": "Basic characteristics of a multilayer thin electrostatic actuator supported by lubricating",
+     "year": 2011,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2007_Yamashita_Voltage-induction_type_electrostatic_f.pdf",
+     "title": "Voltage-induction type electrostatic film motor driven by two- to four-phase ac voltage an",
+     "year": 2007,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2007_Yamashita_Evaluation_of_an_Electrostatic_Film_Mo.pdf",
+     "title": "Evaluation of an Electrostatic Film Motor Driven by Two-Four-Phase AC Voltage and Electros",
+     "year": 2007,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2026_Huacen_A_thin_robot_made_of_flexible_electron.pdf",
+     "title": "A thin robot made of flexible electronics for in-situ machining and inspection of large st",
+     "year": 2026,
+     "category": "film_motor",
+     "tier": "②静电电机/机械"
+    },
+    {
+     "file": "2002_Egawa_Multi-layered_electrostatic_film_actua.pdf",
+     "title": "Multi-layered electrostatic film actuator",
+     "year": 2002,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    }
+   ]
+  },
+  {
+   "id": "q14",
+   "type": "compare",
+   "category": "electroadhesion",
+   "question": "电粘附夹持与气动夹持在软体机器人上各有什么优劣？",
+   "note": "",
+   "gold": [],
+   "gold_candidates": [
+    {
+     "file": "2018_Guo_Soft_pneumatic_grippers_embedded_with_stretch.pdf",
+     "title": "Soft pneumatic grippers embedded with stretchable electroadhesion",
+     "year": 2018,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2023_Xiang_Soft_electroadhesive_grippers_with_variable_s.pdf",
+     "title": "Soft electroadhesive grippers with variable stiffness and deflection motion capabilities",
+     "year": 2023,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2021_Zaidi_Actuation_Technologies_for_Soft_Robot_Gripper.pdf",
+     "title": "Actuation Technologies for Soft Robot Grippers and Manipulators: A Review",
+     "year": 2021,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2025_Huang_Soft_electroadhesion_systems_for_soft_robotic.pdf",
+     "title": "Soft electroadhesion systems for soft robotics",
+     "year": 2025,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2024_Kitamori_Origami_manipulation_by_robot_hand_utilizing.pdf",
+     "title": "Origami manipulation by robot hand utilizing electroadhesion",
+     "year": 2024,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2024_Park_Superior_electroadhesion_force_with_permittiv.pdf",
+     "title": "Superior electroadhesion force with permittivity-engineered bilayer films using electrosta",
+     "year": 2024,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    }
+   ]
+  },
+  {
+   "id": "q15",
+   "type": "zh2en",
+   "category": null,
+   "question": "静电吸附技术在爬壁机器人上是怎么应用的？",
+   "note": "",
+   "gold": [],
+   "gold_candidates": []
+  },
+  {
+   "id": "q16",
+   "type": "zh2en",
+   "category": null,
+   "question": "柔性静电驱动器的响应速度受什么限制？",
+   "note": "",
+   "gold": [],
+   "gold_candidates": []
+  },
+  {
+   "id": "q17",
+   "type": "zh2en",
+   "category": null,
+   "question": "静电离合器在可穿戴触觉设备里的作用是什么？",
+   "note": "",
+   "gold": [],
+   "gold_candidates": []
+  },
+  {
+   "id": "q18",
+   "type": "zh2en",
+   "category": null,
+   "question": "薄膜电机的滑块位置怎么做自感知？",
+   "note": "",
+   "gold": [],
+   "gold_candidates": []
+  },
+  {
+   "id": "q19",
+   "type": "history",
+   "category": "film_motor",
+   "question": "Higuchi 课题组的静电薄膜电机方案是怎么一步步演进的？",
+   "note": "",
+   "gold": [],
+   "gold_candidates": [
+    {
+     "file": "2007_Yamashita_Evaluation_of_an_Electrostatic_Film_Mo.pdf",
+     "title": "Evaluation of an Electrostatic Film Motor Driven by Two-Four-Phase AC Voltage and Electros",
+     "year": 2007,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2022_Osada_Effect_of_insulating_liquid_viscosity.pdf",
+     "title": "Effect of insulating liquid viscosity on output force of a high-power synchronous electros",
+     "year": 2022,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2021_Carneiro_An_Extended_Model_for_Ripple_Analysis.pdf",
+     "title": "An Extended Model for Ripple Analysis of 2–4 Phase Resonant Electrostatic Induction Motors",
+     "year": 2021,
+     "category": "film_motor",
+     "tier": "②静电电机/机械"
+    },
+    {
+     "file": "2011_Kimura_FPGA_implementation_of_a_signal_synthe.pdf",
+     "title": "FPGA implementation of a signal synthesizer for driving a high-power electrostatic motor",
+     "year": 2011,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2019_Zhang_Comparative_Analysis_for_Sensorless_Di.pdf",
+     "title": "Comparative Analysis for Sensorless Displacement Estimation of Electrostatic Film Motors i",
+     "year": 2019,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2025_Huacen_A_Two-Layer_Electrostatic_Film_Actuato.pdf",
+     "title": "A Two-Layer Electrostatic Film Actuator with High Actuation Stress and Integrated Brake",
+     "year": 2025,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2004_Yamamoto_Electrostatic_linear_servo_motor_with.pdf",
+     "title": "Electrostatic linear servo motor with built-in position sensor for vacuum environment",
+     "year": 2004,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    },
+    {
+     "file": "2013_Yamashita_Effects_of_Electrode_Configuration_for.pdf",
+     "title": "Effects of Electrode Configuration for Performances of Voltage-Induction-Type Electrostati",
+     "year": 2013,
+     "category": "film_motor",
+     "tier": "①核心·薄膜电机"
+    }
+   ]
+  },
+  {
+   "id": "q20",
+   "type": "history",
+   "category": "electroadhesion",
+   "question": "电粘附技术近十年在软体机器人领域的发展脉络？",
+   "note": "",
+   "gold": [],
+   "gold_candidates": [
+    {
+     "file": "2025_Huang_Soft_electroadhesion_systems_for_soft_robotic.pdf",
+     "title": "Soft electroadhesion systems for soft robotics",
+     "year": 2025,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2021_Zaidi_Actuation_Technologies_for_Soft_Robot_Gripper.pdf",
+     "title": "Actuation Technologies for Soft Robot Grippers and Manipulators: A Review",
+     "year": 2021,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2022_Rajagopalan_Advancement_of_Electroadhesion_Technol.pdf",
+     "title": "Advancement of Electroadhesion Technology for Intelligent and Self‐Reliant Robotic Applica",
+     "year": 2022,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2025_Sahoo_A_Comprehensive_Review_on_Climbing_Robots_Mec.pdf",
+     "title": "A Comprehensive Review on Climbing Robots: Mechanisms, Adhesion Techniques, and Applicatio",
+     "year": 2025,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2026_Huacen_A_thin_robot_made_of_flexible_electron.pdf",
+     "title": "A thin robot made of flexible electronics for in-situ machining and inspection of large st",
+     "year": 2026,
+     "category": "film_motor",
+     "tier": "②静电电机/机械"
+    },
+    {
+     "file": "2023_Kim_Additive_manufacturing_of_flexible_3D_surface.pdf",
+     "title": "Additive manufacturing of flexible 3D surface electrodes for electrostatic adhesion contro",
+     "year": 2023,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2023_Gao_A_supramolecular_gel-elastomer_system_for_sof.pdf",
+     "title": "A supramolecular gel-elastomer system for soft iontronic adhesives",
+     "year": 2023,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    },
+    {
+     "file": "2026_Peng_Roughness-controlled_Tribocharging_Governs_Fr.pdf",
+     "title": "Roughness-controlled Tribocharging Governs Friction in Dry Glass Contacts",
+     "year": 2026,
+     "category": "electroadhesion",
+     "tier": "③电粘附/夹持"
+    }
+   ]
+  }
+ ]
+}

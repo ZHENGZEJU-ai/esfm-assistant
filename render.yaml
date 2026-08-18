@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: esfm-assistant
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    # 必须用 $PORT。写死端口是 Render 部署失败最常见的原因（表现为 Port scan timeout）
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11"
+      - key: LLM_PROVIDER
+        value: deepseek
+      # sync: false = 不写进仓库，在 Render 面板 Environment 里手填
+      - key: DASHSCOPE_API_KEY
+        sync: false
+      - key: DEEPSEEK_API_KEY
+        sync: false

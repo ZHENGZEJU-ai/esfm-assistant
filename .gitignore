@@ -1,0 +1,37 @@
+# 注意：.gitignore 不支持行尾注释。
+# 写成 `.env  # API Key` 会被当作字面文件名，规则静默失效 —— 密钥就这么泄露了。
+# 所有注释必须独占一行。
+
+# ---- 绝不能提交：API Key ----
+.env
+
+# ---- 665 MB 原文，线上通过 DOI 跳出版商 ----
+PDFs/
+
+# ---- 各脚本产生的备份与临时件 ----
+*.bak
+data/*.bak
+
+# 向量化断点检查点，26 MB，重建可得
+data/.vectors_ckpt.npz
+data/*.tmp.npz
+
+# recategorize --dry-run 的预览产物
+data/categories_preview.json
+data/*.smoketest
+
+# ---- 环境 ----
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.DS_Store
+.vscode/
+.idea/
+*.log
+
+# ---- 说明 ----
+# data/library.db (19 MB) 和 data/vectors.npy (25 MB) 是要提交的 ——
+# Render 免费层磁盘是临时的，数据只能随仓库一起部署。
+# 代价：每次重建索引都会在 Git 历史里再压一份 44 MB。
+# 若发现自己在频繁重建，改用 GitHub Releases 挂附件、部署时下载。
