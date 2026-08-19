@@ -94,7 +94,7 @@ def ask(r: AskReq):
             yield ev("sources", {"expanded": q if q != r.query else None,
                                  "hits": [h.to_dict() for h in hits]})
             if not hits:
-                yield ev("token", {"t": "文献库中未检索到相关内容。可以试试换用英文术语，或放宽分级筛选。"})
+                yield ev("token", {"t": "文献库中未检索到相关内容。可以试试换用英文术语，或放宽分类与年份筛选。"})
                 yield ev("done", {})
                 return
             for tok in llm.stream_chat(build_messages(r.query, hits), provider=r.provider):

@@ -47,11 +47,19 @@
   .err{color:#a33;font-size:13px;margin-top:12px}
   .stat{font-size:12px;color:var(--mute);margin-top:26px;border-top:1px solid var(--line);padding-top:12px}
   .n{display:inline-block;width:20px;color:var(--accent);font-weight:600}
+  .top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+  .top h1{margin:0}
+  a.nav{font-size:12.5px;color:var(--mute);text-decoration:none;white-space:nowrap}
+  a.nav:hover{color:var(--accent)}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>静电薄膜电机 · 文献知识助手</h1>
+  <div class="top">
+    <h1>静电薄膜电机 · 文献知识助手</h1>
+    <a class="nav" href="/">← 返回首页</a>
+    <a class="nav" href="/learn">入门与学习路径 →</a>
+  </div>
   <div class="sub" id="sub">加载中…</div>
 
   <div class="cat" id="cat"></div>
@@ -60,13 +68,6 @@
     <textarea id="q" placeholder="例如：静电薄膜电机的推力密度典型值范围是多少？受哪些因素影响？&#10;（Ctrl/⌘ + Enter 提交）"></textarea>
     <div class="opts">
       <select id="mode"><option value="ask">问答</option><option value="search">仅检索</option></select>
-      <select id="tier">
-        <option value="">全部分级</option>
-        <option value="1">① 核心·薄膜电机</option>
-        <option value="2">② 静电电机/机械</option>
-        <option value="3">③ 电粘附/夹持</option>
-        <option value="4">④ 外围</option>
-      </select>
       <label>年份 <input type="number" id="y0" placeholder="起"> – <input type="number" id="y1" placeholder="止"></label>
       <label><input type="checkbox" id="exp" checked> 中译英扩写</label>
       <div class="spacer"></div>
@@ -111,8 +112,10 @@ fetch('/api/stats').then(r=>r.json()).then(s=>{
   } else {
     $('#cat').style.display = 'none';
   }
-  $('#stat').innerHTML = s.tiers.map(t=>`${esc(t.tier)}: ${t.n} 篇`).join(' &nbsp;·&nbsp; ')
-    + `<br>对话模型：${s.provider}`;
+  // 底部改为显示两大类构成 —— 分级筛选已从界面移除，再列分级数字没有对应操作
+  $('#stat').innerHTML = (s.categories||[]).map(c=>
+      `${esc(c.label)}: ${c.papers} 篇 / ${c.chunks} 段`).join(' &nbsp;·&nbsp; ')
+    + `<br>对话模型：${esc(s.provider)}`;
 }).catch(e=>$('#sub').textContent='后端未就绪：'+e);
 
 function card(h, i){
@@ -147,7 +150,9 @@ async function run(){
   const query = $('#q').value.trim(); if(!query) return;
   $('#err').textContent=''; $('#cards').innerHTML=''; $('#ans').style.display='none'; $('#ans').innerHTML='';
   const body = {
-    query, category: CAT || null, tier: $('#tier').value || null, expand: $('#exp').checked,
+    // tier（①②③④ 分级）暂时从界面移除，后端仍然支持 ——
+    // 以后要加别的分类维度时，在这里补一个字段即可，retrieval 那层不用动
+    query, category: CAT || null, tier: null, expand: $('#exp').checked,
     year_min: +$('#y0').value || null, year_max: +$('#y1').value || null,
   };
   $('#go').disabled = true;
