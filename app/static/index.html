@@ -93,7 +93,7 @@
 
   <section>
     <h2>地域分布</h2>
-    <div class="h2sub">按通讯作者机构所在国家统计，颜色越深发文越多（对数刻度）。</div>
+    <div class="h2sub">按通讯作者机构所在国家统计，圆点面积对应论文数。</div>
     <div class="grid2">
       <div class="card" id="mapbox"></div>
       <div class="card" style="padding:4px 10px"><table id="ctable"></table></div>
@@ -116,9 +116,9 @@ const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'
 const CAT = {film_motor:['fm','薄膜电机'], electroadhesion:['ea','电粘附']};
 const catTag = c => CAT[c] ? `<span class="tag ${CAT[c][0]}">${CAT[c][1]}</span>` : '';
 
-// 真实国界数据来自 app/static/worldmap.js（由 scripts/build_worldmap.py 烘出，
-// 已简化到 108 KB）。不走任何 CDN —— 国内网络和 Render 上都不会加载失败。
-// 填色深浅 = 论文数，这就是「哪里有发表哪里颜色深」。
+// 气泡图 + 真实陆地底图。国界数据来自 app/static/worldmap.js
+// （由 scripts/build_worldmap.py 从 pygal_maps_world 烘出，简化到 108 KB），
+// 不走任何 CDN —— 国内网络和 Render 上都不会加载失败。
 function worldMap(countries){
   const W = window.WORLD;
   if(!W) return `<div class="empty">地图数据未加载<br>跑 <code>python scripts/build_worldmap.py</code> 生成 static/worldmap.js</div>`;
@@ -126,7 +126,7 @@ function worldMap(countries){
     return `<div class="empty">尚无地域数据<br>跑 <code>python scripts/extract_meta.py --what geo</code> 生成</div>`;
 
   // 地区归并：台港澳并入中国，与 analytics.py 的 REGION_MERGE 保持一致。
-  // 地图数据里它们是独立多边形，不一并上色的话会在深色的中国旁边留下灰块。
+  // 底图是统一浅灰，所以这里只影响统计口径，不影响陆地着色。
   const MERGE_INTO = {tw:'cn', hk:'cn', mo:'cn'};
 
   const by = {};                       // iso2 → 统计
@@ -139,52 +139,49 @@ function worldMap(countries){
     if(by[main] && !by[part]) by[part] = by[main];
   });
   const max = Math.max(...countries.map(c=>c.papers));
-  // 对数刻度：日本 100+ 篇、多数国家个位数，线性填色会让除日本外全是白的
-  const shade = n => n<=0 ? 0 : Math.min(1, Math.log(1+n)/Math.log(1+max));
-  // 主色随该国以哪个方向为主而变
   const hueOf = c => {
     const s = c.electroadhesion/(c.papers||1);
     return s>0.6 ? [122,61,138] : (s<0.35 ? [43,93,138] : [107,90,138]);
   };
-  const fillOf = c => {
-    const [r,g,b] = hueOf(c);
-    return `rgba(${r},${g},${b},${(0.14+0.76*shade(c.papers)).toFixed(3)})`;
-  };
+  // 面积正比于论文数（半径开方），视觉上才不会夸大差距
+  const rOf = n => 22 + 88*Math.sqrt(n/max);
 
-  const land = Object.entries(W.paths).map(([a2,d])=>{
-    const c = by[a2];
-    return `<path d="${d}" fill="${c?fillOf(c):'#eceae5'}" stroke="#fff" stroke-width="1.1"${
-      c?`><title>${esc(c.country)}：${c.papers} 篇 · 被引 ${c.cited}（薄膜电机 ${c.film_motor} / 电粘附 ${c.electroadhesion}）</title></path>`:'/>'}`;
+  // 背景：真实陆地，统一浅灰。它只是底图，深浅由上面的圆点承担，
+  // 陆地本身再填色会和圆点抢注意力
+  const land = Object.values(W.paths).map(d =>
+    `<path d="${d}" fill="#e4e1da" stroke="#f2f0ec" stroke-width="1.2"/>`).join('');
+
+  // 圆点位置直接用地图数据自带的质心（从国界路径本身算出来的），
+  // 所以圆心必然落在对应国家的陆地上 —— 不会出现手填经纬度那种偏移
+  const bubbles = countries.filter(c=>W.centroids[W.iso3to2[c.iso3]])
+    .sort((a,b)=>b.papers-a.papers)     // 大的先画，小的压在上面不被遮住
+    .map(c=>{
+      const [x,y]=W.centroids[W.iso3to2[c.iso3]], [r,g,b]=hueOf(c);
+      return `<g><title>${esc(c.country)}：${c.papers} 篇 · 被引 ${c.cited}（薄膜电机 ${c.film_motor} / 电粘附 ${c.electroadhesion}）</title>
+        <circle cx="${x}" cy="${y}" r="${rOf(c.papers).toFixed(0)}"
+                fill="rgb(${r},${g},${b})" fill-opacity=".45"
+                stroke="rgb(${r},${g},${b})" stroke-width="3"/></g>`;
+    }).join('');
+
+  // 只给前 4 名标国家码，且避开彼此
+  const placed=[];
+  const labels = countries.filter(c=>W.centroids[W.iso3to2[c.iso3]]).slice(0,6).map(c=>{
+    const [x,y]=W.centroids[W.iso3to2[c.iso3]];
+    if(placed.some(p=>Math.abs(p[0]-x)<200 && Math.abs(p[1]-y)<120)) return '';
+    placed.push([x,y]);
+    return `<text x="${x}" y="${(y-rOf(c.papers)-14).toFixed(0)}" text-anchor="middle"
+            font-size="46" font-weight="600" fill="#5f5c56" style="pointer-events:none"
+            >${esc(c.iso3)}</text>`;
   }).join('');
-
-  // 新加坡这类城市国家小到画不出轮廓，退化成一个点，否则会彻底消失。
-  // 但已归并的地区（港澳）不画点 —— 数据已计入中国、大陆也已上色，
-  // 再单独标一个点会让它看起来像个独立统计项。
-  const dots = Object.keys(by).filter(a2=>!W.paths[a2] && W.centroids[a2] && !MERGE_INTO[a2]).map(a2=>{
-    const c=by[a2], [x,y]=W.centroids[a2], [r,g,b]=hueOf(c);
-    return `<g><title>${esc(c.country)}：${c.papers} 篇 · 被引 ${c.cited}</title>
-      <circle cx="${x}" cy="${y}" r="13" fill="rgba(${r},${g},${b},.8)" stroke="#fff" stroke-width="2"/></g>`;
-  }).join('');
-
-  // 不在图上标数字。发文量最高的日本恰恰是个狭长小国，34px 的数字放不进去，
-  // 韩国、新加坡同理，挤在一起反而糊掉。右侧排行表已经列了篇数，悬停也有明细，
-  // 图上再标一遍是冗余 —— 用引线标注又会让这张小图更乱。
-  const labels = '';
-
-  // 图例
-  const steps=[1,2,4,8,16,32,64].filter(v=>v<=max).concat(max);
-  const leg = steps.map((v,i)=>`<span style="display:inline-block;width:15px;height:9px;
-      background:rgba(43,93,138,${(0.14+0.76*shade(v)).toFixed(3)});
-      ${i?'':'border-radius:2px 0 0 2px'}"></span>`).join('');
 
   return `<svg viewBox="20 0 2460 1110" style="width:100%;height:auto;display:block;background:var(--sea);border-radius:6px">
-      <g>${land}</g>${dots}${labels}
+      <g>${land}</g>${bubbles}${labels}
     </svg>
     <div style="font-size:11px;color:var(--faint);margin-top:10px;line-height:1.9">
-      <span style="vertical-align:middle">发文量　少 </span>${leg}<span style="vertical-align:middle"> 多（对数刻度）</span><br>
-      颜色按该国主攻方向区分：<span style="color:var(--fm)">■</span> 薄膜电机为主
-      <span style="color:var(--ea);margin-left:6px">■</span> 电粘附为主
-      <span style="color:#6b5a8a;margin-left:6px">■</span> 两者均衡　·　悬停查看明细
+      圆点位置为国家几何中心，面积正比于论文数。
+      <span style="color:var(--fm)">●</span> 以薄膜电机为主
+      <span style="color:var(--ea);margin-left:8px">●</span> 以电粘附为主
+      <span style="color:#6b5a8a;margin-left:8px">●</span> 两者均衡　·　悬停查看明细
       ${unmapped.length?`<br>另有 ${unmapped.length} 条国别无法对应到地图：${unmapped.map(esc).join(' ')}`:''}
     </div>`;
 }
