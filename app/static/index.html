@@ -157,13 +157,10 @@ function worldMap(countries){
       <circle cx="${x}" cy="${y}" r="13" fill="rgba(${r},${g},${b},.8)" stroke="#fff" stroke-width="2"/></g>`;
   }).join('');
 
-  const top = countries.slice(0,6).filter(c=>W.centroids[W.iso3to2[c.iso3]]);
-  const labels = top.map(c=>{
-    const [x,y]=W.centroids[W.iso3to2[c.iso3]];
-    return `<text x="${x}" y="${y+4}" text-anchor="middle" font-size="30" font-weight="600"
-            fill="#fff" stroke="rgba(0,0,0,.28)" stroke-width="4" paint-order="stroke"
-            style="pointer-events:none">${c.papers}</text>`;
-  }).join('');
+  // 不在图上标数字。发文量最高的日本恰恰是个狭长小国，34px 的数字放不进去，
+  // 韩国、新加坡同理，挤在一起反而糊掉。右侧排行表已经列了篇数，悬停也有明细，
+  // 图上再标一遍是冗余 —— 用引线标注又会让这张小图更乱。
+  const labels = '';
 
   // 图例
   const steps=[1,2,4,8,16,32,64].filter(v=>v<=max).concat(max);
@@ -171,7 +168,7 @@ function worldMap(countries){
       background:rgba(43,93,138,${(0.14+0.76*shade(v)).toFixed(3)});
       ${i?'':'border-radius:2px 0 0 2px'}"></span>`).join('');
 
-  return `<svg viewBox="0 130 2475 1080" style="width:100%;height:auto;display:block;background:var(--sea);border-radius:6px">
+  return `<svg viewBox="20 0 2460 1110" style="width:100%;height:auto;display:block;background:var(--sea);border-radius:6px">
       <g>${land}</g>${dots}${labels}
     </svg>
     <div style="font-size:11px;color:var(--faint);margin-top:10px;line-height:1.9">
