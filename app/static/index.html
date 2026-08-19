@@ -252,7 +252,7 @@ fetch('/api/benchmarks').then(r=>r.json()).then(b=>{
   }).join('') + `<div style="font-size:11px;color:var(--faint);border-top:1px solid var(--line);padding-top:10px">
       悬停查看出处与实验条件。<span style="color:var(--fm)">●</span> 薄膜电机
       <span style="color:var(--ea);margin-left:6px">●</span> 电粘附
-      ${b.dropped_unknown_unit?`　· 另有 ${b.dropped_unknown_unit} 条因单位无法识别被剔除（不做猜测换算）`:''}
+      ${b.dropped_unknown_unit?`　· 剔除 ${b.dropped_unknown_unit} 条（单位无法识别或数值不合物理，不做猜测换算）`:''}${b.deduped?`　· 合并重复 ${b.deduped} 条`:''}
     </div></div>`;
 }).catch(e=>$('#bench').innerHTML=`<div class="empty">${esc(e)}</div>`);
 </script>

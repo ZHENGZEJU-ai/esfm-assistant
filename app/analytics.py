@@ -192,10 +192,11 @@ def overview(db=None, top_n: int = 20) -> dict:
 # 单位统一到同一量纲才能横向比较：
 #   推力密度 → N/cm²   （1 kN/m² = 0.1 N/cm²）
 #   剪切/法向应力 → kPa（1 N/cm² = 10 kPa）
-_TO_NCM2 = {"n/cm2": 1.0, "n/cm^2": 1.0, "n/cm²": 1.0,
-            "kn/m2": 0.1, "kn/m^2": 0.1, "kn/m²": 0.1,
-            "kpa": 0.1, "mn/cm2": 0.001, "n/m2": 1e-4, "pa": 1e-7}
-_TO_KPA = {"kpa": 1.0, "pa": 0.001, "mpa": 1000.0, "n/cm2": 10.0, "kn/m2": 1.0, "n/m2": 0.001}
+# 1 N/cm² = 10 kPa = 10 kN/m²；1 Pa = 1 N/m² = 1e-4 N/cm²
+_TO_NCM2 = {"n/cm2": 1.0, "kn/m2": 0.1, "kpa": 0.1, "mpa": 100.0,
+            "mn/cm2": 1e-3, "n/m2": 1e-4, "pa": 1e-4}
+_TO_KPA = {"kpa": 1.0, "pa": 1e-3, "mpa": 1e3, "n/cm2": 10.0,
+           "kn/m2": 1.0, "n/m2": 1e-3, "mn/cm2": 1e-2}
 
 METRIC_LABEL = {
     "thrust_density": ("推力密度", "N/cm²"),
@@ -208,13 +209,30 @@ METRIC_LABEL = {
 }
 
 
+# 力和速度也必须换算 —— 之前这两类是原样透传的，导致 828 mN 被当成 828 N，
+# 差了 1000 倍，直接毁掉整张图的量纲。
+_TO_N = {"n": 1.0, "mn": 1e-3, "kn": 1e3, "μn": 1e-6, "un": 1e-6, "gf": 9.80665e-3,
+         "kgf": 9.80665, "g": 9.80665e-3, "kg": 9.80665}
+_TO_MMS = {"mm/s": 1.0, "m/s": 1e3, "cm/s": 10.0, "μm/s": 1e-3, "um/s": 1e-3,
+           "mm/sec": 1.0, "m/min": 1e3 / 60}
+
+
 def _convert(metric: str, value: float, unit: Optional[str]) -> Optional[float]:
-    u = (unit or "").strip().lower().replace(" ", "")
+    u = (unit or "").strip().lower().replace(" ", "").replace("^", "").replace("²", "2")
     if metric == "thrust_density":
         return value * _TO_NCM2[u] if u in _TO_NCM2 else None
     if metric in ("shear_stress", "normal_pressure"):
         return value * _TO_KPA[u] if u in _TO_KPA else None
-    return value  # 其余指标单位本就统一，原样返回
+    if metric in ("thrust", "holding_force"):
+        return value * _TO_N[u] if u in _TO_N else None
+    if metric == "speed":
+        return value * _TO_MMS[u] if u in _TO_MMS else None
+    if metric == "efficiency":
+        if u not in ("%", "percent", ""):
+            return None
+        # 效率 >100% 物理上不可能，多半是把「提升 230%」当成了效率。宁可丢掉。
+        return value if 0 < value <= 100 else None
+    return None
 
 
 def benchmarks(db=None) -> dict:
@@ -229,7 +247,8 @@ def benchmarks(db=None) -> dict:
     c.close()
 
     out: dict[str, dict] = {}
-    dropped = 0
+    dropped = dedup = 0
+    seen: set = set()
     for r in rows:
         m = r["metric"]
         if m not in METRIC_LABEL:
@@ -238,6 +257,13 @@ def benchmarks(db=None) -> dict:
         if v is None or v <= 0:
             dropped += 1        # 单位不认识就丢掉，不做猜测 —— 混进错单位的点会毁掉整张图
             continue
+        # 同一篇的同一个数值会被抽到多次（每篇取了 3 段，同一个数常跨段重复出现），
+        # 不去重的话散点图上会出现一串完全重叠的点，中位数也会被带偏
+        key = (r["file"], m, round(v, 6), r["voltage_kv"], r["gap_um"])
+        if key in seen:
+            dedup += 1
+            continue
+        seen.add(key)
         d = out.setdefault(m, {"label": METRIC_LABEL[m][0], "unit": METRIC_LABEL[m][1], "points": []})
         d["points"].append({
             "value": round(v, 4), "raw": r["value"], "raw_unit": r["unit"],
@@ -255,4 +281,4 @@ def benchmarks(db=None) -> dict:
         # 表已建但没数据（跑过 --dry-run 就会这样），要和「表不存在」给一样的提示
         return {"available": False, "metrics": {},
                 "note": "尚未抽取性能数据，跑 scripts/extract_meta.py --what bench 生成"}
-    return {"available": True, "metrics": out, "dropped_unknown_unit": dropped}
+    return {"available": True, "metrics": out, "dropped_unknown_unit": dropped, "deduped": dedup}
