@@ -51,6 +51,19 @@ def norm_inst(raw: Optional[str]) -> Optional[str]:
     return s
 
 
+# 地区归并：把下列代码统计进目标国家。
+# 台湾、香港、澳门并入中国 —— 这是本库采用的统计口径，改这里即可调整。
+# 地图渲染时这些地区也会跟着主体一起上色（见 index.html 的 MERGE_INTO）。
+REGION_MERGE = {"TWN": "CHN", "HKG": "CHN", "MAC": "CHN"}
+
+
+def canon_iso3(code: Optional[str]) -> Optional[str]:
+    c = (code or "").strip().upper()
+    if not c or len(c) != 3 or not c.isalpha() or c in ("NUL", "N/A", "NON", "UNK"):
+        return None
+    return REGION_MERGE.get(c, c)
+
+
 def _conn(db=None) -> sqlite3.Connection:
     c = sqlite3.connect(str(db or config.DB_PATH), check_same_thread=False)
     c.row_factory = sqlite3.Row
@@ -132,11 +145,14 @@ def overview(db=None, top_n: int = 20) -> dict:
                                                "cited": 0, "country": g.get("country")})
             i["papers"] += 1
             i["cited"] += int(p["cited"] or 0)
-        # 模型有时把 "认不出来" 写成字符串 "null"/"N/A" 而不是 JSON null，
-        # 截成三位就变成了 NUL / N/A 这种假国家码，会在地图和排行里冒出一个幽灵国家
-        if g.get("iso3") and g["iso3"] not in ("NUL", "N/A", "NON", "UNK", "???"):
-            k = g["iso3"]
-            d = ctry.setdefault(k, {"iso3": k, "country": g.get("country") or k,
+        # canon_iso3 会滤掉模型返回的假国家码（"null" 被截成 "NUL" 那种），
+        # 并按 REGION_MERGE 做地区归并
+        k = canon_iso3(g.get("iso3"))
+        if k:
+            label = g.get("country") or k
+            if canon_iso3(g.get("iso3")) != (g.get("iso3") or "").upper():
+                label = "China"          # 归并进来的地区，显示为归并后的国名
+            d = ctry.setdefault(k, {"iso3": k, "country": label,
                                     "papers": 0, "cited": 0,
                                     "film_motor": 0, "electroadhesion": 0})
             d["papers"] += 1

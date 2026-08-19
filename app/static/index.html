@@ -125,11 +125,18 @@ function worldMap(countries){
   if(!countries || !countries.length)
     return `<div class="empty">尚无地域数据<br>跑 <code>python scripts/extract_meta.py --what geo</code> 生成</div>`;
 
+  // 地区归并：台港澳并入中国，与 analytics.py 的 REGION_MERGE 保持一致。
+  // 地图数据里它们是独立多边形，不一并上色的话会在深色的中国旁边留下灰块。
+  const MERGE_INTO = {tw:'cn', hk:'cn', mo:'cn'};
+
   const by = {};                       // iso2 → 统计
   let unmapped = [];
   countries.forEach(c=>{
     const a2 = W.iso3to2[c.iso3];
     if(a2) by[a2] = c; else unmapped.push(c.iso3);
+  });
+  Object.entries(MERGE_INTO).forEach(([part, main])=>{
+    if(by[main] && !by[part]) by[part] = by[main];
   });
   const max = Math.max(...countries.map(c=>c.papers));
   // 对数刻度：日本 100+ 篇、多数国家个位数，线性填色会让除日本外全是白的
@@ -150,8 +157,10 @@ function worldMap(countries){
       c?`><title>${esc(c.country)}：${c.papers} 篇 · 被引 ${c.cited}（薄膜电机 ${c.film_motor} / 电粘附 ${c.electroadhesion}）</title></path>`:'/>'}`;
   }).join('');
 
-  // 城市国家（新加坡、香港）小到画不出轮廓，退化成一个点，否则它们会彻底消失
-  const dots = Object.keys(by).filter(a2=>!W.paths[a2] && W.centroids[a2]).map(a2=>{
+  // 新加坡这类城市国家小到画不出轮廓，退化成一个点，否则会彻底消失。
+  // 但已归并的地区（港澳）不画点 —— 数据已计入中国、大陆也已上色，
+  // 再单独标一个点会让它看起来像个独立统计项。
+  const dots = Object.keys(by).filter(a2=>!W.paths[a2] && W.centroids[a2] && !MERGE_INTO[a2]).map(a2=>{
     const c=by[a2], [x,y]=W.centroids[a2], [r,g,b]=hueOf(c);
     return `<g><title>${esc(c.country)}：${c.papers} 篇 · 被引 ${c.cited}</title>
       <circle cx="${x}" cy="${y}" r="13" fill="rgba(${r},${g},${b},.8)" stroke="#fff" stroke-width="2"/></g>`;

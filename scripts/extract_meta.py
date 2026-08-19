@@ -39,7 +39,8 @@ GEO_SYS = """你从论文首页文字里提取**第一作者或通讯作者所�
 - 日文/中文机构名转成通用英文名（例：東京大学 → University of Tokyo）。
 - 国家用常见英文名：Japan / China / United States / South Korea / Germany / Switzerland ...
 - iso3 例：JPN, CHN, USA, KOR, DEU, CHE, GBR, FRA, ITA, NLD, CAN, SGP, IND, TUR, IRN。
-- 台湾地区填 country="China", iso3="TWN"；香港填 country="China", iso3="HKG"。"""
+- 台湾、香港、澳门的机构一律填 country="China"，iso3 分别填 "TWN"/"HKG"/"MAC"
+  （统计时会按 analytics.py 的 REGION_MERGE 并入中国）。"""
 
 BENCH_SYS = """你从静电驱动/静电吸附论文的正文片段里提取**实测性能指标**。
 
