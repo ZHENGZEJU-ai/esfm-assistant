@@ -114,10 +114,18 @@ def run_geo(con, workers, dry):
         js = ask_json(GEO_SYS, f"标题：{title}\n\n首页文字：\n{(txt or '')[:1500]}")
         if not isinstance(js, dict):
             return
+        # 模型偶尔把「认不出来」写成字符串 "null"/"N/A" 而不是 JSON null。
+        # 不清理的话 "null" 会被截成 "NUL"，在地图上变成一个不存在的国家。
+        def clean(v):
+            s = str(v or "").strip()
+            return None if s.lower() in ("", "null", "none", "n/a", "na", "unknown", "-") else s
+
+        iso3 = clean(js.get("iso3"))
+        iso3 = iso3.upper()[:3] if iso3 and len(iso3) == 3 and iso3.isalpha() else None
         with lock:
             con.execute("INSERT OR REPLACE INTO paper_geo VALUES(?,?,?,?,?)",
-                        (f, js.get("institution"), js.get("country"),
-                         (js.get("iso3") or "").upper()[:3] or None, js.get("city")))
+                        (f, clean(js.get("institution")), clean(js.get("country")),
+                         iso3, clean(js.get("city"))))
             if js.get("iso3"):
                 cnt["ok"] += 1
             else:

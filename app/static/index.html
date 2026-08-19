@@ -93,7 +93,7 @@
 
   <section>
     <h2>地域分布</h2>
-    <div class="h2sub">按通讯作者机构所在国家统计，圆点面积对应论文数。</div>
+    <div class="h2sub">按通讯作者机构所在国家统计，颜色越深发文越多（对数刻度）。</div>
     <div class="grid2">
       <div class="card" id="mapbox"></div>
       <div class="card" style="padding:4px 10px"><table id="ctable"></table></div>
@@ -109,63 +109,77 @@
   <div class="foot" id="foot"></div>
 </div>
 
+<script src="/worldmap.js"></script>
 <script>
 const $ = s => document.querySelector(s);
 const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const CAT = {film_motor:['fm','薄膜电机'], electroadhesion:['ea','电粘附']};
 const catTag = c => CAT[c] ? `<span class="tag ${CAT[c][0]}">${CAT[c][1]}</span>` : '';
 
-// 主要科研国家的经纬度。等距圆柱投影下直接线性映射即可 ——
-// 不引入任何地图库或 CDN，国内网络和 Render 上都不会加载失败。
-const LL = {
-  JPN:[36,138], CHN:[35,105], USA:[39,-98], KOR:[36,128], DEU:[51,10], CHE:[47,8],
-  GBR:[54,-2], FRA:[46,2], ITA:[42,12], NLD:[52,5], CAN:[58,-105], SGP:[1,104],
-  IND:[22,79], TUR:[39,35], IRN:[32,53], ESP:[40,-4], SWE:[62,15], BEL:[51,4],
-  AUT:[47,14], DNK:[56,10], FIN:[64,26], NOR:[62,10], POL:[52,19], CZE:[50,15],
-  PRT:[39,-8], GRC:[39,22], RUS:[61,100], AUS:[-25,133], NZL:[-41,174], BRA:[-10,-55],
-  MEX:[23,-102], ISR:[31,35], SAU:[24,45], ARE:[24,54], EGY:[27,30], ZAF:[-29,24],
-  THA:[15,101], MYS:[4,102], VNM:[16,108], IDN:[-2,118], TWN:[24,121], HKG:[22,114],
-  UKR:[49,32], ROU:[46,25], HUN:[47,20], IRL:[53,-8], LTU:[55,24], EST:[59,26],
-  CHL:[-30,-71], ARG:[-34,-64], COL:[4,-73], PAK:[30,70], BGD:[24,90], LKA:[7,81],
-};
-const W=300,H=170;                       // 经度 -180..180 → 0..W；纬度 85..-60 → 0..H
-const px = lon => (lon+180)/360*W;
-const py = lat => (85-lat)/145*H;
-
+// 真实国界数据来自 app/static/worldmap.js（由 scripts/build_worldmap.py 烘出，
+// 已简化到 108 KB）。不走任何 CDN —— 国内网络和 Render 上都不会加载失败。
+// 填色深浅 = 论文数，这就是「哪里有发表哪里颜色深」。
 function worldMap(countries){
-  const known = countries.filter(c=>LL[c.iso3]);
-  const unknown = countries.filter(c=>!LL[c.iso3]);
-  if(!known.length) return `<div class="empty">尚无地域数据<br>跑 <code>python scripts/extract_meta.py --what geo</code> 生成</div>`;
-  const max = Math.max(...known.map(c=>c.papers));
-  // 面积正比于论文数（半径开方），视觉上才不会夸大差距
-  const r = n => 2.6 + 13*Math.sqrt(n/max);
-  const grat = [];
-  for(let lo=-180; lo<=180; lo+=30) grat.push(`<line x1="${px(lo)}" y1="0" x2="${px(lo)}" y2="${H}"/>`);
-  for(let la=-60; la<=80; la+=30) grat.push(`<line x1="0" y1="${py(la)}" x2="${W}" y2="${py(la)}"/>`);
-  const dots = known.sort((a,b)=>b.papers-a.papers).map(c=>{
-    const [la,lo]=LL[c.iso3];
-    const share = c.electroadhesion/(c.papers||1);
-    // 颜色在两大类之间过渡：偏蓝=薄膜电机为主，偏紫=电粘附为主
-    const col = share>0.6 ? 'var(--ea)' : (share<0.35 ? 'var(--fm)' : '#6b5a8a');
-    return `<g><title>${esc(c.country)}：${c.papers} 篇 · 被引 ${c.cited}（薄膜电机 ${c.film_motor} / 电粘附 ${c.electroadhesion}）</title>
-      <circle cx="${px(lo).toFixed(1)}" cy="${py(la).toFixed(1)}" r="${r(c.papers).toFixed(1)}"
-              fill="${col}" fill-opacity=".42" stroke="${col}" stroke-width="1"/></g>`;
+  const W = window.WORLD;
+  if(!W) return `<div class="empty">地图数据未加载<br>跑 <code>python scripts/build_worldmap.py</code> 生成 static/worldmap.js</div>`;
+  if(!countries || !countries.length)
+    return `<div class="empty">尚无地域数据<br>跑 <code>python scripts/extract_meta.py --what geo</code> 生成</div>`;
+
+  const by = {};                       // iso2 → 统计
+  let unmapped = [];
+  countries.forEach(c=>{
+    const a2 = W.iso3to2[c.iso3];
+    if(a2) by[a2] = c; else unmapped.push(c.iso3);
+  });
+  const max = Math.max(...countries.map(c=>c.papers));
+  // 对数刻度：日本 100+ 篇、多数国家个位数，线性填色会让除日本外全是白的
+  const shade = n => n<=0 ? 0 : Math.min(1, Math.log(1+n)/Math.log(1+max));
+  // 主色随该国以哪个方向为主而变
+  const hueOf = c => {
+    const s = c.electroadhesion/(c.papers||1);
+    return s>0.6 ? [122,61,138] : (s<0.35 ? [43,93,138] : [107,90,138]);
+  };
+  const fillOf = c => {
+    const [r,g,b] = hueOf(c);
+    return `rgba(${r},${g},${b},${(0.14+0.76*shade(c.papers)).toFixed(3)})`;
+  };
+
+  const land = Object.entries(W.paths).map(([a2,d])=>{
+    const c = by[a2];
+    return `<path d="${d}" fill="${c?fillOf(c):'#eceae5'}" stroke="#fff" stroke-width="1.1"${
+      c?`><title>${esc(c.country)}：${c.papers} 篇 · 被引 ${c.cited}（薄膜电机 ${c.film_motor} / 电粘附 ${c.electroadhesion}）</title></path>`:'/>'}`;
   }).join('');
-  const labels = known.slice(0,5).map(c=>{
-    const [la,lo]=LL[c.iso3];
-    return `<text x="${px(lo).toFixed(1)}" y="${(py(la)-r(c.papers)-3).toFixed(1)}"
-            text-anchor="middle" font-size="7.5" fill="var(--mute)">${esc(c.iso3)}</text>`;
+
+  // 城市国家（新加坡、香港）小到画不出轮廓，退化成一个点，否则它们会彻底消失
+  const dots = Object.keys(by).filter(a2=>!W.paths[a2] && W.centroids[a2]).map(a2=>{
+    const c=by[a2], [x,y]=W.centroids[a2], [r,g,b]=hueOf(c);
+    return `<g><title>${esc(c.country)}：${c.papers} 篇 · 被引 ${c.cited}</title>
+      <circle cx="${x}" cy="${y}" r="13" fill="rgba(${r},${g},${b},.8)" stroke="#fff" stroke-width="2"/></g>`;
   }).join('');
-  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block">
-      <rect width="${W}" height="${H}" fill="var(--sea)" rx="6"/>
-      <g stroke="#e0ddd6" stroke-width=".5">${grat.join('')}</g>
-      ${dots}${labels}
+
+  const top = countries.slice(0,6).filter(c=>W.centroids[W.iso3to2[c.iso3]]);
+  const labels = top.map(c=>{
+    const [x,y]=W.centroids[W.iso3to2[c.iso3]];
+    return `<text x="${x}" y="${y+4}" text-anchor="middle" font-size="30" font-weight="600"
+            fill="#fff" stroke="rgba(0,0,0,.28)" stroke-width="4" paint-order="stroke"
+            style="pointer-events:none">${c.papers}</text>`;
+  }).join('');
+
+  // 图例
+  const steps=[1,2,4,8,16,32,64].filter(v=>v<=max).concat(max);
+  const leg = steps.map((v,i)=>`<span style="display:inline-block;width:15px;height:9px;
+      background:rgba(43,93,138,${(0.14+0.76*shade(v)).toFixed(3)});
+      ${i?'':'border-radius:2px 0 0 2px'}"></span>`).join('');
+
+  return `<svg viewBox="0 130 2475 1080" style="width:100%;height:auto;display:block;background:var(--sea);border-radius:6px">
+      <g>${land}</g>${dots}${labels}
     </svg>
-    <div style="font-size:11px;color:var(--faint);margin-top:9px">
-      圆点位置为国家几何中心，面积正比于论文数。
-      <span style="color:var(--fm)">●</span> 以薄膜电机为主
-      <span style="color:var(--ea);margin-left:8px">●</span> 以电粘附为主
-      ${unknown.length?`<br>另有 ${unknown.length} 个国家/地区暂无坐标：${unknown.map(c=>esc(c.iso3)).join(' ')}`:''}
+    <div style="font-size:11px;color:var(--faint);margin-top:10px;line-height:1.9">
+      <span style="vertical-align:middle">发文量　少 </span>${leg}<span style="vertical-align:middle"> 多（对数刻度）</span><br>
+      颜色按该国主攻方向区分：<span style="color:var(--fm)">■</span> 薄膜电机为主
+      <span style="color:var(--ea);margin-left:6px">■</span> 电粘附为主
+      <span style="color:#6b5a8a;margin-left:6px">■</span> 两者均衡　·　悬停查看明细
+      ${unmapped.length?`<br>另有 ${unmapped.length} 条国别无法对应到地图：${unmapped.map(esc).join(' ')}`:''}
     </div>`;
 }
 

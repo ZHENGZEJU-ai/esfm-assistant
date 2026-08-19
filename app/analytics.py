@@ -34,6 +34,23 @@ def norm_author(raw: str) -> Optional[tuple[str, str]]:
     return key, f"{first} {last}".strip()
 
 
+# 大模型抽出来的机构名写法不统一，不归并的话同一所会被拆成好几家 ——
+# 实测「The University of Tokyo」26 篇和「University of Tokyo」20 篇被算成两所，
+# 而东大合计 46 篇是这个领域的绝对重镇，拆开就完全看不出来了。
+_INST_DROP = {"", "null", "none", "n/a", "na", "unknown", "-"}
+_INST_PREFIX = re.compile(r"^(the|dept\.?|department of)\s+", re.I)
+_INST_SUFFIX = re.compile(r"\s*[,，(（].*$")
+
+
+def norm_inst(raw: Optional[str]) -> Optional[str]:
+    s = re.sub(r"\s+", " ", (raw or "").strip())
+    s = _INST_SUFFIX.sub("", s)          # 去掉逗号/括号后的院系、地址
+    s = _INST_PREFIX.sub("", s).strip(" .,")
+    if s.lower() in _INST_DROP or len(s) < 4:
+        return None
+    return s
+
+
 def _conn(db=None) -> sqlite3.Connection:
     c = sqlite3.connect(str(db or config.DB_PATH), check_same_thread=False)
     c.row_factory = sqlite3.Row
@@ -109,12 +126,15 @@ def overview(db=None, top_n: int = 20) -> dict:
         g = geo.get(p["file"])
         if not g:
             continue
-        if g.get("institution"):
-            i = inst.setdefault(g["institution"], {"name": g["institution"], "papers": 0,
-                                                   "cited": 0, "country": g.get("country")})
+        name = norm_inst(g.get("institution"))
+        if name:
+            i = inst.setdefault(name.lower(), {"name": name, "papers": 0,
+                                               "cited": 0, "country": g.get("country")})
             i["papers"] += 1
             i["cited"] += int(p["cited"] or 0)
-        if g.get("iso3"):
+        # 模型有时把 "认不出来" 写成字符串 "null"/"N/A" 而不是 JSON null，
+        # 截成三位就变成了 NUL / N/A 这种假国家码，会在地图和排行里冒出一个幽灵国家
+        if g.get("iso3") and g["iso3"] not in ("NUL", "N/A", "NON", "UNK", "???"):
             k = g["iso3"]
             d = ctry.setdefault(k, {"iso3": k, "country": g.get("country") or k,
                                     "papers": 0, "cited": 0,
