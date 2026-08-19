@@ -138,6 +138,31 @@ if s["vectors"] and s["vectors"] != s["chunks"]:
     print(f"    ⚠ 向量 {s['vectors']} 段 < 全文 {s['chunks']} 段 —— 新入库内容尚无向量，"
           f"跑 build_vectors.py --incremental 补上")
 
+print("\n[9] v2：知识树与统计层")
+from app import knowledge_tree as kt          # noqa: E402
+from app import analytics as an               # noqa: E402
+nodes = list(kt.walk())
+check("知识树可遍历", len(nodes) > 20, f"{len(nodes)} 节点 / {len(kt.leaves())} 叶")
+check("每个叶节点都有检索查询词", all(n.get("q") for n in kt.leaves()))
+check("节点 id 唯一", len({n['id'] for n in nodes}) == len(nodes))
+check("skeleton 已剥离查询词", all("q" not in n for n in [kt.skeleton()] + kt.skeleton()["children"]))
+check("outline 非空（供模型定位用）", len(kt.outline()) > 200)
+o = an.overview()
+check("统计层能出总览", o["totals"]["papers"] > 0, f"{o['totals']['papers']} 篇 / 被引 {o['totals']['cited']}")
+check("作者归并生效", o["totals"]["authors"] < o["totals"]["papers"] * 4,
+      f"{o['totals']['authors']} 位")
+check("年度曲线连续", len(o["timeline"]) > 10, f"{len(o['timeline'])} 个年份")
+check("作者名归一：T. Higuchi 与 Toshiro Higuchi 同键",
+      an.norm_author("T. Higuchi")[0] == an.norm_author("Toshiro Higuchi")[0])
+check("作者名归一：姓在前的写法同键",
+      an.norm_author("Higuchi, Toshiro")[0] == an.norm_author("Toshiro Higuchi")[0])
+b = an.benchmarks()
+if b["available"]:
+    check("benchmark 单位已归一", all("unit" in m for m in b["metrics"].values()))
+    print(f"    指标类别: {list(b['metrics'])}")
+else:
+    print(f"    （{b['note']}）")
+
 print(f"\n{'=' * 52}")
 print("全部通过 ✓" if fails == 0 else f"{fails} 项失败 ✗")
 sys.exit(1 if fails else 0)

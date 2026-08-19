@@ -11,7 +11,8 @@
 | 检索 | FTS5 关键词 + 1024 维向量，RRF 融合 |
 | Embedding | 阿里云百炼 `text-embedding-v4` |
 | 对话模型 | DeepSeek / 通义千问，环境变量切换 |
-| 部署 | FastAPI + 单页 HTML → Render |
+| 部署 | FastAPI + 静态 HTML → Render |
+| 页面 | `/` 总览 · `/search` 检索问答 · `/learn` 学习路径 |
 
 ---
 
@@ -43,13 +44,18 @@ app/
   llm.py          provider 抽象（DeepSeek / 通义），流式输出
   prompts.py      系统提示词（强制引用溯源）
   main.py         FastAPI + SSE
-  static/index.html
+  analytics.py    起始页统计聚合（人员/机构/国别/benchmark，作者署名已归并）
+  knowledge_tree.py  学习路径知识树骨架（5 大类 21 个叶节点）
+  static/index.html   起始页：benchmark + 人员 + 世界分布 + 两个入口
+  static/search.html  检索问答页（第一版，内容完整保留）
+  static/learn.html   学习路径页：问答 → 树状图 → 分支挂论文
 scripts/
   build_vectors.py  ★ 断点续传向量化（--incremental 只算新增）
   ingest_pdfs.py    PDF → 分段 → 入库（PyMuPDF 抽取，自动剥离出版商水印）
   recategorize.py   两大类判定 + 目录重组（元数据初分 + 模型复核存疑件）
   clean_boilerplate.py  清除已入库的 IEEE 下载水印
   check_keys.py     两个 API Key 体检
+  extract_meta.py   抽取机构国别 + 性能指标（起始页数据来源）
   make_eval.py      生成评测集骨架 + 自动提名候选 gold
   eval.py           ★ 检索质量评测：Recall@k / MRR / nDCG，支持配置对比
   selftest.py       自检：转义 / 召回 / RRF / 分类 / 降级
@@ -130,6 +136,10 @@ score(d) = Σ_路  weight / (60 + rank_路(d))
 | `POST /api/ask` | RAG 问答，SSE 流式；先推 `sources` 事件再推 `token` |
 | `GET /api/paper/{file}` | 单篇元数据 + 全部段落 |
 | `GET /api/pdf/{file}` | 仅本地（需设 `LOCAL_PDF_ROOT`） |
+| `GET /api/overview` | 起始页统计：总量、年度曲线、人员/机构/国别排行、高被引 |
+| `GET /api/benchmarks` | 性能指标，单位已归一，每点带实验条件与出处 |
+| `GET /api/tree` | 学习路径知识树结构 |
+| `POST /api/learn` | 问题 → 定位知识树分支 → 挂论文，SSE 流式 |
 
 检索类接口都支持 `category`（`film_motor` / `electroadhesion`）、`tier`、`year_min` / `year_max` 叠加筛选。
 
@@ -156,5 +166,29 @@ python scripts/eval.py --no-expand      # 看中译英扩写到底值不值
 
 **标注是唯一需要你亲手做的部分。** 判据：这篇论文里确实有能回答该问题的内容，
 而不是沾点边。宁可每题只留 2–3 篇最硬的，也别为凑数放宽 —— 评测集的价值全在标注质量。
+
+---
+
+## v2 起始页数据
+
+起始页的 benchmark 和世界分布依赖两张额外的表，**需要先抽取**（库里原本没有这些字段）：
+
+```bash
+python scripts/extract_meta.py --dry-run          # 看成本，约 ¥1.4
+python scripts/extract_meta.py --what geo         # 机构国别，约 ¥0.4
+python scripts/extract_meta.py --what bench       # 性能指标，约 ¥1.0
+```
+
+没抽之前起始页照常打开，对应区块显示提示而不是报错。
+
+**benchmark 的取数原则**：只收论文自己实测的值，不收它引用别人的、也不收理论预测值；
+每条都连同电压、间距、介质一起存 —— 静电驱动的性能数字脱离实验条件没有意义。
+单位无法识别的条目直接丢弃，不做猜测换算（页面上会显示丢了多少条）。
+
+**知识树是固定骨架，不由模型生成。** 模型生成的树每次都不一样，还会编造语料里
+不存在的分支，对「学习路径」这种要求稳定可信的场景不能接受。模型只负责
+把问题定位到已有节点，返回的节点 id 会逐个校验，编造的一律丢弃。
+
+---
 
 详细路线图见 [`docs/实施路线图.md`](docs/实施路线图.md)。

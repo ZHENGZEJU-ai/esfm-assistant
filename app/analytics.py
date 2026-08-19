@@ -1,0 +1,222 @@
+"""起始页的统计聚合。全部现算 —— 268 篇的量级，SQLite 几毫秒就出结果，
+没必要做缓存表，也就不存在缓存过期的问题。"""
+from __future__ import annotations
+
+import re
+import sqlite3
+from collections import defaultdict
+from typing import Optional
+
+from . import config
+
+# 作者名在不同期刊里写法不一：Toshiro Higuchi / T. Higuchi / Higuchi, T.
+# 归一到「姓 + 名首字母」，否则同一个人会被拆成好几个统计项。
+_NOISE_AUTHOR = re.compile(r"^\s*(et al\.?|and others|anonymous)\s*$", re.I)
+
+
+def norm_author(raw: str) -> Optional[tuple[str, str]]:
+    """返回 (归一键, 展示名)。认不出就返回 None。"""
+    s = re.sub(r"\s+", " ", (raw or "").strip().strip(".,;"))
+    if len(s) < 3 or _NOISE_AUTHOR.match(s):
+        return None
+    if "," in s:  # "Higuchi, Toshiro" 形式
+        last, _, first = s.partition(",")
+        last, first = last.strip(), first.strip()
+    else:
+        parts = s.split(" ")
+        if len(parts) < 2:
+            return None
+        last, first = parts[-1], " ".join(parts[:-1])
+    last = last.strip()
+    if not last or len(last) < 2:
+        return None
+    key = f"{last.lower()}|{(first[:1] or '').lower()}"
+    return key, f"{first} {last}".strip()
+
+
+def _conn(db=None) -> sqlite3.Connection:
+    c = sqlite3.connect(str(db or config.DB_PATH), check_same_thread=False)
+    c.row_factory = sqlite3.Row
+    return c
+
+
+def _has(c, table: str) -> bool:
+    return bool(c.execute(
+        "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (table,)).fetchone())
+
+
+def overview(db=None, top_n: int = 20) -> dict:
+    c = _conn(db)
+    has_cat = "category" in {r[1] for r in c.execute("PRAGMA table_info(papers)")}
+    cat_sel = "category" if has_cat else "'' AS category"
+
+    papers = c.execute(
+        f"SELECT file,title,authors,year,venue,doi,cited,tier,{cat_sel} FROM papers").fetchall()
+    geo = {}
+    if _has(c, "paper_geo"):
+        geo = {r["file"]: dict(r) for r in c.execute("SELECT * FROM paper_geo")}
+
+    # ---------- 总览 ----------
+    total_cited = sum(int(p["cited"] or 0) for p in papers)
+    years = [p["year"] for p in papers if p["year"] and 1900 < p["year"] < 2100]
+
+    # ---------- 年度发文（按大类）----------
+    by_year: dict[int, dict] = defaultdict(lambda: {"film_motor": 0, "electroadhesion": 0, "total": 0})
+    for p in papers:
+        y = p["year"]
+        if not y or not (1900 < y < 2100):
+            continue
+        by_year[y]["total"] += 1
+        if p["category"] in by_year[y]:
+            by_year[y][p["category"]] += 1
+    timeline = [{"year": y, **v} for y, v in sorted(by_year.items())]
+
+    # ---------- 作者 ----------
+    au: dict[str, dict] = {}
+    for p in papers:
+        names = [x for x in re.split(r"[,;]| and ", p["authors"] or "") if x.strip()]
+        for i, raw in enumerate(names):
+            n = norm_author(raw)
+            if not n:
+                continue
+            key, disp = n
+            a = au.setdefault(key, {"name": disp, "papers": 0, "cited": 0, "first": 0,
+                                    "years": [], "cats": defaultdict(int)})
+            a["papers"] += 1
+            a["cited"] += int(p["cited"] or 0)
+            if i == 0:
+                a["first"] += 1
+            if p["year"]:
+                a["years"].append(p["year"])
+            if p["category"]:
+                a["cats"][p["category"]] += 1
+            # 名字更长的那个写法更完整，用它做展示名
+            if len(disp) > len(a["name"]):
+                a["name"] = disp
+    authors = []
+    for a in au.values():
+        ys = sorted(a["years"])
+        authors.append({"name": a["name"], "papers": a["papers"], "cited": a["cited"],
+                        "first_author": a["first"],
+                        "span": f"{ys[0]}–{ys[-1]}" if ys else "",
+                        "main_cat": max(a["cats"], key=a["cats"].get) if a["cats"] else ""})
+    authors.sort(key=lambda x: (-x["papers"], -x["cited"]))
+
+    # ---------- 机构 / 国别 ----------
+    inst: dict[str, dict] = {}
+    ctry: dict[str, dict] = {}
+    for p in papers:
+        g = geo.get(p["file"])
+        if not g:
+            continue
+        if g.get("institution"):
+            i = inst.setdefault(g["institution"], {"name": g["institution"], "papers": 0,
+                                                   "cited": 0, "country": g.get("country")})
+            i["papers"] += 1
+            i["cited"] += int(p["cited"] or 0)
+        if g.get("iso3"):
+            k = g["iso3"]
+            d = ctry.setdefault(k, {"iso3": k, "country": g.get("country") or k,
+                                    "papers": 0, "cited": 0,
+                                    "film_motor": 0, "electroadhesion": 0})
+            d["papers"] += 1
+            d["cited"] += int(p["cited"] or 0)
+            if p["category"] in d:
+                d[p["category"]] += 1
+    countries = sorted(ctry.values(), key=lambda x: -x["papers"])
+    institutions = sorted(inst.values(), key=lambda x: (-x["papers"], -x["cited"]))[:top_n]
+
+    # ---------- 高被引 ----------
+    top_papers = sorted(
+        [dict(p) for p in papers if p["cited"]],
+        key=lambda p: -int(p["cited"] or 0))[:15]
+
+    c.close()
+    return {
+        "totals": {
+            "papers": len(papers),
+            "cited": total_cited,
+            "authors": len(authors),
+            "institutions": len(inst),
+            "countries": len(countries),
+            "year_min": min(years) if years else None,
+            "year_max": max(years) if years else None,
+            "geo_coverage": sum(1 for g in geo.values() if g.get("iso3")),
+        },
+        "timeline": timeline,
+        "authors": authors[:top_n],
+        "institutions": institutions,
+        "countries": countries,
+        "top_papers": [{"title": p["title"], "year": p["year"], "cited": p["cited"],
+                        "venue": p["venue"], "doi": p["doi"], "file": p["file"],
+                        "category": p["category"]} for p in top_papers],
+    }
+
+
+# 单位统一到同一量纲才能横向比较：
+#   推力密度 → N/cm²   （1 kN/m² = 0.1 N/cm²）
+#   剪切/法向应力 → kPa（1 N/cm² = 10 kPa）
+_TO_NCM2 = {"n/cm2": 1.0, "n/cm^2": 1.0, "n/cm²": 1.0,
+            "kn/m2": 0.1, "kn/m^2": 0.1, "kn/m²": 0.1,
+            "kpa": 0.1, "mn/cm2": 0.001, "n/m2": 1e-4, "pa": 1e-7}
+_TO_KPA = {"kpa": 1.0, "pa": 0.001, "mpa": 1000.0, "n/cm2": 10.0, "kn/m2": 1.0, "n/m2": 0.001}
+
+METRIC_LABEL = {
+    "thrust_density": ("推力密度", "N/cm²"),
+    "shear_stress": ("剪切强度", "kPa"),
+    "normal_pressure": ("法向吸附压强", "kPa"),
+    "thrust": ("推力", "N"),
+    "holding_force": ("保持力", "N"),
+    "speed": ("最大速度", "mm/s"),
+    "efficiency": ("效率", "%"),
+}
+
+
+def _convert(metric: str, value: float, unit: Optional[str]) -> Optional[float]:
+    u = (unit or "").strip().lower().replace(" ", "")
+    if metric == "thrust_density":
+        return value * _TO_NCM2[u] if u in _TO_NCM2 else None
+    if metric in ("shear_stress", "normal_pressure"):
+        return value * _TO_KPA[u] if u in _TO_KPA else None
+    return value  # 其余指标单位本就统一，原样返回
+
+
+def benchmarks(db=None) -> dict:
+    """返回归一化后的性能数据点，每个点都带出处和实验条件。"""
+    c = _conn(db)
+    if not _has(c, "benchmark"):
+        c.close()
+        return {"available": False, "metrics": {}, "note": "尚未抽取，跑 scripts/extract_meta.py --what bench"}
+    rows = c.execute(
+        "SELECT b.*, p.title, p.year, p.category, p.doi FROM benchmark b "
+        "JOIN papers p ON p.file = b.file").fetchall()
+    c.close()
+
+    out: dict[str, dict] = {}
+    dropped = 0
+    for r in rows:
+        m = r["metric"]
+        if m not in METRIC_LABEL:
+            continue
+        v = _convert(m, r["value"], r["unit"])
+        if v is None or v <= 0:
+            dropped += 1        # 单位不认识就丢掉，不做猜测 —— 混进错单位的点会毁掉整张图
+            continue
+        d = out.setdefault(m, {"label": METRIC_LABEL[m][0], "unit": METRIC_LABEL[m][1], "points": []})
+        d["points"].append({
+            "value": round(v, 4), "raw": r["value"], "raw_unit": r["unit"],
+            "voltage_kv": r["voltage_kv"], "gap_um": r["gap_um"], "medium": r["medium"],
+            "note": r["note"], "title": r["title"], "year": r["year"],
+            "category": r["category"], "file": r["file"], "page": r["page"], "doi": r["doi"],
+        })
+    for d in out.values():
+        d["points"].sort(key=lambda p: -p["value"])
+        vals = [p["value"] for p in d["points"]]
+        n = len(vals)
+        d["stats"] = {"n": n, "min": min(vals), "max": max(vals),
+                      "median": sorted(vals)[n // 2]}
+    if not out:
+        # 表已建但没数据（跑过 --dry-run 就会这样），要和「表不存在」给一样的提示
+        return {"available": False, "metrics": {},
+                "note": "尚未抽取性能数据，跑 scripts/extract_meta.py --what bench 生成"}
+    return {"available": True, "metrics": out, "dropped_unknown_unit": dropped}

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>入门与学习路径 · 静电驱动</title>
+<style>
+  :root{--bg:#faf9f7;--card:#fff;--ink:#1c1b19;--mute:#6b6862;--faint:#9a958d;
+        --line:#e5e2dc;--accent:#8a5a2b;--hl:#fdf0d5;
+        --fm:#2b5d8a;--fmbg:#eef4fb;--ea:#7a3d8a;--eabg:#f6eef8;--on:#8a5a2b}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+  .wrap{max-width:1020px;margin:0 auto;padding:26px 22px 80px}
+  .top{display:flex;align-items:baseline;gap:12px;margin-bottom:4px}
+  h1{font-size:20px;margin:0}
+  a.back{font-size:12.5px;color:var(--mute);text-decoration:none}
+  a.back:hover{color:var(--accent)}
+  .lead{color:var(--mute);font-size:13px;margin-bottom:20px}
+
+  .bar{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+  textarea{width:100%;border:0;outline:0;resize:vertical;min-height:52px;font:inherit;background:transparent}
+  .opts{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:9px;
+        padding-top:9px;border-top:1px solid var(--line)}
+  button{font:inherit;font-size:14px;padding:7px 18px;border:0;border-radius:8px;
+         background:var(--accent);color:#fff;cursor:pointer}
+  button:disabled{opacity:.45;cursor:default}
+  .sp{flex:1}
+  .chips{display:flex;gap:7px;flex-wrap:wrap;margin:13px 0 0}
+  .chip{font-size:12.5px;padding:5px 11px;border:1px solid var(--line);border-radius:20px;
+        background:var(--card);color:var(--mute);cursor:pointer}
+  .chip:hover{border-color:var(--accent);color:var(--accent)}
+
+  .path{background:var(--hl);border:1px solid #f0dcb4;border-radius:10px;padding:13px 16px;
+        margin-top:20px;font-size:13.5px;line-height:1.75;display:none}
+  .path b{color:var(--accent)}
+
+  /* 树状图：CSS 画连接线，不引第三方库 */
+  .tree{margin-top:22px}
+  .lvl{margin:0;padding:0;list-style:none}
+  .node{position:relative;padding-left:22px;margin-top:10px}
+  .node:before{content:"";position:absolute;left:6px;top:0;bottom:0;width:1px;background:var(--line)}
+  .node:last-child:before{bottom:calc(100% - 20px)}
+  .node:after{content:"";position:absolute;left:6px;top:19px;width:13px;height:1px;background:var(--line)}
+  .top-node{padding-left:0}
+  .top-node:before,.top-node:after{display:none}
+
+  .nbox{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 14px}
+  .nbox.hit{border-color:var(--accent);box-shadow:0 2px 12px rgba(138,90,43,.08)}
+  .nbox.dim{opacity:.5}
+  .nhead{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .nhead b{font-size:14px}
+  .nhead .en{font-size:11.5px;color:var(--faint)}
+  .ndesc{font-size:12.5px;color:var(--mute);margin-top:3px}
+  .lv{font-size:10px;padding:1px 7px;border-radius:20px;border:1px solid var(--line);color:var(--mute)}
+  .lv1{background:#eef7ee;color:#3d6b3d;border-color:#d5e8d5}
+  .lv2{background:var(--fmbg);color:var(--fm);border-color:#d3e2f2}
+  .lv3{background:var(--eabg);color:var(--ea);border-color:#e8d6ee}
+  .seq{display:inline-block;min-width:19px;height:19px;line-height:19px;text-align:center;
+       border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:600}
+
+  .papers{margin-top:10px;padding-top:9px;border-top:1px dashed var(--line)}
+  .p{font-size:12.5px;padding:6px 0;border-bottom:1px solid #f4f1eb}
+  .p:last-child{border-bottom:0}
+  .p .t{font-weight:600}
+  .p .m{color:var(--faint);font-size:11.5px;margin-top:1px}
+  .p .pv{color:var(--mute);font-size:11.5px;margin-top:4px;background:var(--bg);
+         padding:5px 8px;border-radius:6px;line-height:1.55}
+  .p .pv b{background:var(--hl);font-weight:600;padding:0 1px}
+  a{color:var(--accent)}
+  .tag{display:inline-block;font-size:10px;padding:1px 6px;border-radius:20px;border:1px solid var(--line);margin-right:5px}
+  .tag.fm{background:var(--fmbg);color:var(--fm);border-color:#d3e2f2}
+  .tag.ea{background:var(--eabg);color:var(--ea);border-color:#e8d6ee}
+  .err{color:#a33;font-size:13px;margin-top:12px}
+  .hint{font-size:11.5px;color:var(--faint);margin-top:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>入门与学习路径</h1>
+    <a class="back" href="/">← 返回首页</a>
+    <a class="back" href="/search">文献检索 →</a>
+  </div>
+  <div class="lead">提出问题，得到一条学习顺序，以及每个阶段该读的论文。知识树的结构是固定的，只有挂在分支上的论文随问题变化。</div>
+
+  <div class="bar">
+    <textarea id="q" placeholder="例如：什么是静电薄膜电机？我完全没接触过，该从哪读起？&#10;（Ctrl/⌘ + Enter 提交）"></textarea>
+    <div class="opts">
+      <span style="font-size:12.5px;color:var(--mute)">每个分支挂
+        <select id="per" style="font:inherit;font-size:12.5px;padding:3px 6px;border:1px solid var(--line);border-radius:6px;background:var(--bg)">
+          <option>2</option><option selected>3</option><option>4</option><option>5</option>
+        </select> 篇</span>
+      <div class="sp"></div>
+      <button id="go">生成学习路径</button>
+    </div>
+  </div>
+
+  <div class="chips" id="chips"></div>
+  <div id="err" class="err"></div>
+  <div class="path" id="path"></div>
+  <div class="tree" id="tree"></div>
+  <div class="hint" id="hint"></div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const mark = s => esc(s).replace(/【(.+?)】/g,'<b>$1</b>');
+const CAT = {film_motor:['fm','薄膜电机'], electroadhesion:['ea','电粘附']};
+const catTag = c => CAT[c] ? `<span class="tag ${CAT[c][0]}">${CAT[c][1]}</span>` : '';
+const LVN = {1:'入门',2:'进阶',3:'专题'};
+
+const EXAMPLES = [
+  '什么是静电薄膜电机？完全没接触过该从哪读起',
+  '静电吸附的力是怎么产生的？',
+  '我想做一个电粘附夹持器，需要先掌握什么',
+  '静电驱动为什么做不大？瓶颈在哪',
+  '想理解双激励驱动，前置知识是什么',
+];
+$('#chips').innerHTML = EXAMPLES.map(e=>`<span class="chip">${esc(e)}</span>`).join('');
+$('#chips').onclick = e => {
+  if(!e.target.classList.contains('chip')) return;
+  $('#q').value = e.target.textContent; run();
+};
+
+let TREE = null, FOCUS = {}, ORDER = [];
+
+fetch('/api/tree').then(r=>r.json()).then(t=>{ TREE=t; render(); })
+  .catch(e=>$('#err').textContent='加载知识树失败：'+e);
+
+function paperHtml(p){
+  const doi = p.doi ? `<a href="https://doi.org/${esc(p.doi)}" target="_blank">DOI</a>` : '';
+  return `<div class="p">
+    <div class="t">${esc(p.title)}</div>
+    <div class="m">${catTag(p.category)}${esc(p.authors||'')} et al. · ${p.year||'?'} · ${esc(p.venue||'')}
+      ${p.cited?` · 被引 ${p.cited}`:''} · 第 ${esc(p.page)} 页 ${doi}</div>
+    ${p.preview?`<div class="pv">${mark(p.preview)}</div>`:''}
+  </div>`;
+}
+
+function nodeHtml(n, isTop){
+  const f = FOCUS[n.id];
+  const seq = ORDER.indexOf(n.id);
+  const cls = f ? 'nbox hit' : (ORDER.length ? 'nbox dim' : 'nbox');
+  const lv = n.level ? `<span class="lv lv${n.level}">${LVN[n.level]||''}</span>` : '';
+  const inner = `<div class="${cls}">
+      <div class="nhead">
+        ${seq>=0?`<span class="seq">${seq+1}</span>`:''}
+        <b>${esc(n.label)}</b><span class="en">${esc(n.en||'')}</span>${lv}
+      </div>
+      ${n.desc?`<div class="ndesc">${esc(n.desc)}</div>`:''}
+      ${f&&f.papers&&f.papers.length?`<div class="papers">${f.papers.map(paperHtml).join('')}</div>`:''}
+      ${f&&(!f.papers||!f.papers.length)?`<div class="papers" style="color:var(--faint);font-size:12px">该分支在库中未检索到匹配论文</div>`:''}
+    </div>`;
+  const kids = (n.children||[]).map(c=>nodeHtml(c,false)).join('');
+  return `<li class="node${isTop?' top-node':''}">${inner}${kids?`<ul class="lvl">${kids}</ul>`:''}</li>`;
+}
+
+function render(){
+  if(!TREE) return;
+  $('#tree').innerHTML = `<ul class="lvl">` +
+    (TREE.children||[]).map(n=>nodeHtml(n,true)).join('') + `</ul>`;
+  $('#hint').textContent = ORDER.length
+    ? '编号即建议学习顺序。灰掉的分支与本次问题关联较弱，但仍是完整知识结构的一部分。'
+    : '这是完整的知识树。提个问题，我会标出该先看哪几支、并把对应论文挂上去。';
+}
+
+async function run(){
+  const question = $('#q').value.trim(); if(!question) return;
+  $('#err').textContent=''; $('#path').style.display='none';
+  FOCUS={}; ORDER=[]; render();
+  $('#go').disabled = true; $('#go').textContent = '生成中…';
+  try{
+    const r = await fetch('/api/learn',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({question, per_node:+$('#per').value})});
+    const rd = r.body.getReader(), dec = new TextDecoder();
+    let buf='';
+    while(true){
+      const {done,value} = await rd.read(); if(done) break;
+      buf += dec.decode(value,{stream:true});
+      const blocks = buf.split('\n\n'); buf = blocks.pop();
+      for(const b of blocks){
+        const ev = (b.match(/^event: (.+)$/m)||[])[1];
+        const dm = (b.match(/^data: ([\s\S]+)$/m)||[])[1];
+        if(!ev||!dm) continue;
+        const d = JSON.parse(dm);
+        if(ev==='focus'){
+          ORDER = d.nodes||[];
+          ORDER.forEach(id=>FOCUS[id]={papers:null});
+          if(d.path){ $('#path').innerHTML = `<b>建议学习顺序</b><br>${esc(d.path)}`; $('#path').style.display='block'; }
+          render();
+        } else if(ev==='node'){
+          FOCUS[d.id] = d; render();
+        } else if(ev==='error'){ $('#err').textContent = d.msg; }
+      }
+    }
+  }catch(e){ $('#err').textContent = e; }
+  $('#go').disabled=false; $('#go').textContent='生成学习路径';
+}
+$('#go').onclick = run;
+$('#q').addEventListener('keydown', e=>{ if((e.metaKey||e.ctrlKey)&&e.key==='Enter') run(); });
+</script>
+</body>
+</html>
