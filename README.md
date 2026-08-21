@@ -12,7 +12,7 @@
 | Embedding | 阿里云百炼 `text-embedding-v4` |
 | 对话模型 | DeepSeek / 通义千问，环境变量切换 |
 | 部署 | FastAPI + 静态 HTML → Render |
-| 页面 | `/` 总览 · `/search` 检索问答 · `/learn` 学习路径 |
+| 页面 | `/` 选方向 → `/fm` `/ea` 领域首页 → 各自的 `/search` 知识库、`/learn` 学习路径 |
 
 ---
 
@@ -45,10 +45,11 @@ app/
   prompts.py      系统提示词（强制引用溯源）
   main.py         FastAPI + SSE
   analytics.py    起始页统计聚合（人员/机构/国别/benchmark，作者署名已归并）
-  knowledge_tree.py  学习路径知识树骨架（5 大类 21 个叶节点）
-  static/index.html   起始页：benchmark + 人员 + 世界分布 + 两个入口
-  static/search.html  检索问答页（第一版，内容完整保留）
-  static/learn.html   学习路径页：问答 → 树状图 → 分支挂论文
+  knowledge_tree.py  两棵独立知识树：薄膜电机 17 叶 / 电粘附 18 叶
+  static/index.html   选方向：左右两个入口，静电薄膜电机 / 静电吸附
+  static/domain.html  领域首页：benchmark + 人员 + 世界分布 + 知识库/学习两个入口
+  static/search.html  知识库：混合检索 + RAG 问答（三个领域共用，按 URL 取域）
+  static/learn.html   学习路径：问答 → 树状图 → 分支挂论文（同上）
 scripts/
   build_vectors.py  ★ 断点续传向量化（--incremental 只算新增）
   ingest_pdfs.py    PDF → 分段 → 入库（PyMuPDF 抽取，自动剥离出版商水印）
@@ -138,10 +139,10 @@ score(d) = Σ_路  weight / (60 + rank_路(d))
 | `GET /api/pdf/{file}` | 仅本地（需设 `LOCAL_PDF_ROOT`） |
 | `GET /api/overview` | 起始页统计：总量、年度曲线、人员/机构/国别排行、高被引 |
 | `GET /api/benchmarks` | 性能指标，单位已归一，每点带实验条件与出处 |
-| `GET /api/tree` | 学习路径知识树结构 |
+| `GET /api/tree` | 学习路径知识树结构，`?domain=fm\|ea\|all` |
 | `POST /api/learn` | 问题 → 定位知识树分支 → 挂论文，SSE 流式 |
 
-检索类接口都支持 `category`（`film_motor` / `electroadhesion`）、`tier`、`year_min` / `year_max` 叠加筛选。
+统计与树接口都支持 `?domain=fm|ea|all`；检索类接口支持 `category`（`film_motor` / `electroadhesion`）、`tier`、`year_min` / `year_max` 叠加筛选。
 
 调参入口全在 `app/config.py`：`K_KEYWORD` / `K_VECTOR` / `K_FINAL` / `RRF_K` / `W_KEYWORD` / `W_VECTOR`。
 
@@ -188,6 +189,12 @@ python scripts/extract_meta.py --what bench       # 性能指标，约 ¥1.0
 **地区归并口径**：台湾、香港、澳门统计并入中国，地图上一并上色。
 规则写在 `app/analytics.py` 的 `REGION_MERGE` 和 `index.html` 的 `MERGE_INTO`，两处需保持一致。
 （各文献计量数据库对此的处理惯例不一，Web of Science、Scopus 是分列的；此处采用合并口径。）
+
+**两个方向完全分开。** `/fm` 和 `/ea` 各有独立的首页、知识库、学习树 ——
+进入某个方向后分类就锁定，检索、统计、学习路径都不会串到另一边。
+两棵树各自写全而不是共用基础层：电机关心的是切向推力、行波同步、滑差，
+吸附关心的是法向吸引、真实接触面积、Johnsen-Rahbek，共用一层会让两边
+都读到大量无关内容。跨方向查找走 `/all`。旧地址 `/search` `/learn` 308 重定向到 `/all/*`。
 
 **知识树是固定骨架，不由模型生成。** 模型生成的树每次都不一样，还会编造语料里
 不存在的分支，对「学习路径」这种要求稳定可信的场景不能接受。模型只负责

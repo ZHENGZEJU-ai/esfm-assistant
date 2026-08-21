@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>静电薄膜电机 · 文献知识助手</title>
+<title>知识库 · 静电科研知识库</title>
 <style>
   :root{--bg:#faf9f7;--card:#fff;--ink:#1c1b19;--mute:#6b6862;--line:#e5e2dc;--accent:#8a5a2b;--hl:#fdf0d5}
   *{box-sizing:border-box}
@@ -56,9 +56,10 @@
 <body>
 <div class="wrap">
   <div class="top">
-    <h1>静电薄膜电机 · 文献知识助手</h1>
-    <a class="nav" href="/">← 返回首页</a>
-    <a class="nav" href="/learn">入门与学习路径 →</a>
+    <h1 id="h1">知识库</h1>
+    <a class="nav" id="nav-home" href="#">← 领域首页</a>
+    <a class="nav" id="nav-learn" href="#">学习路径 →</a>
+    <a class="nav" href="/">切换方向</a>
   </div>
   <div class="sub" id="sub">加载中…</div>
 
@@ -90,31 +91,52 @@ const esc = s => (s||'').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&g
 // 后端 preview 用 【】 标出命中词，这里转成高亮
 const mark = s => esc(s).replace(/【(.+?)】/g, '<b>$1</b>');
 
-let CAT = '';   // '' = 全部，否则 film_motor / electroadhesion
+// 领域从 URL 第一段读出：/fm/search /ea/search /all/search
+const SLUG = (location.pathname.split('/')[1] || 'all');
+const DOM  = {fm:'film_motor', ea:'electroadhesion'}[SLUG] || null;
+const META = {
+  fm : {name:'静电薄膜电机',     color:'#2b5d8a'},
+  ea : {name:'静电吸附 / 电粘附', color:'#7a3d8a'},
+  all: {name:'全库',             color:'#8a5a2b'},
+}[SLUG] || {name:'全库', color:'#8a5a2b'};
+
+document.documentElement.style.setProperty('--accent', META.color);
+document.title = `知识库 · ${META.name}`;
+$('#h1').textContent = `${META.name} · 知识库`;
+$('#nav-home').href  = `/${SLUG}`;
+$('#nav-learn').href = `/${SLUG}/learn`;
+
+// 进入某个方向后分类就锁定了，不再提供切换 —— 这是「两边完全分开」的前提。
+// 只有全库视图 /all/search 才显示两大类切换。
+let CAT = DOM;
 
 fetch('/api/stats').then(r=>r.json()).then(s=>{
   const m = s.mode === 'hybrid' ? `混合检索 · ${s.embed_model||''}` : '⚠ 纯关键词（尚未生成向量，跑 scripts/build_vectors.py）';
-  $('#sub').textContent = `${s.papers} 篇论文 · ${s.chunks} 段全文 · ${s.year_min}–${s.year_max} · ${m}`;
+  const mine = (s.categories||[]).find(c=>c.key===DOM);
+  $('#sub').textContent = mine
+    ? `${mine.papers} 篇论文 · ${mine.chunks} 段全文 · ${m}`
+    : `${s.papers} 篇论文 · ${s.chunks} 段全文 · ${s.year_min}–${s.year_max} · ${m}`;
   window.__localPdf = s.local_pdf;
 
-  // 两大类切换：一级筛选。未跑 recategorize.py 时整条不显示，功能自动退化为原来的样子
-  if(s.has_category && s.categories && s.categories.length){
+  if(DOM){
+    $('#cat').style.display = 'none';
+  } else if(s.has_category && s.categories && s.categories.length){
     const btns = [{key:'', label:'全部', papers:s.papers, chunks:s.chunks}].concat(s.categories);
     $('#cat').innerHTML = btns.map(c=>
-      `<button data-k="${c.key}" class="${c.key===CAT?'on':''}">
+      `<button data-k="${c.key}" class="${(c.key||null)===CAT?'on':''}">
          <b>${esc(c.label)}</b><span>${c.papers} 篇 · ${c.chunks} 段${c.cross?` · 交叉 ${c.cross}`:''}</span>
        </button>`).join('');
     $('#cat').onclick = e => {
       const b = e.target.closest('button'); if(!b) return;
-      CAT = b.dataset.k;
-      [...$('#cat').children].forEach(x=>x.classList.toggle('on', x.dataset.k===CAT));
+      CAT = b.dataset.k || null;
+      [...$('#cat').children].forEach(x=>x.classList.toggle('on', (x.dataset.k||null)===CAT));
     };
   } else {
     $('#cat').style.display = 'none';
   }
-  // 底部改为显示两大类构成 —— 分级筛选已从界面移除，再列分级数字没有对应操作
-  $('#stat').innerHTML = (s.categories||[]).map(c=>
-      `${esc(c.label)}: ${c.papers} 篇 / ${c.chunks} 段`).join(' &nbsp;·&nbsp; ')
+  $('#stat').innerHTML = (DOM
+      ? `本方向：${esc(mine?mine.label:META.name)} ${mine?mine.papers+' 篇 / '+mine.chunks+' 段':''}`
+      : (s.categories||[]).map(c=>`${esc(c.label)}: ${c.papers} 篇 / ${c.chunks} 段`).join(' &nbsp;·&nbsp; '))
     + `<br>对话模型：${esc(s.provider)}`;
 }).catch(e=>$('#sub').textContent='后端未就绪：'+e);
 
@@ -152,7 +174,7 @@ async function run(){
   const body = {
     // tier（①②③④ 分级）暂时从界面移除，后端仍然支持 ——
     // 以后要加别的分类维度时，在这里补一个字段即可，retrieval 那层不用动
-    query, category: CAT || null, tier: null, expand: $('#exp').checked,
+    query, category: CAT, tier: null, expand: $('#exp').checked,
     year_min: +$('#y0').value || null, year_max: +$('#y1').value || null,
   };
   $('#go').disabled = true;

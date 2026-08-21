@@ -75,13 +75,24 @@ def _has(c, table: str) -> bool:
         "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (table,)).fetchone())
 
 
-def overview(db=None, top_n: int = 20) -> dict:
-    c = _conn(db)
-    has_cat = "category" in {r[1] for r in c.execute("PRAGMA table_info(papers)")}
-    cat_sel = "category" if has_cat else "'' AS category"
+def overview(db=None, top_n: int = 20, category: Optional[str] = None) -> dict:
+    """category 传 film_motor / electroadhesion 时，所有统计只算该领域。
 
-    papers = c.execute(
-        f"SELECT file,title,authors,year,venue,doi,cited,tier,{cat_sel} FROM papers").fetchall()
+    交叉论文（cross_topic=1）在两个领域里都计入 —— 它们实质属于两边，
+    只归一边会让另一边少掉本该有的内容。
+    """
+    c = _conn(db)
+    cols = {r[1] for r in c.execute("PRAGMA table_info(papers)")}
+    has_cat = "category" in cols
+    cat_sel = "category" if has_cat else "'' AS category"
+    cross_sel = "COALESCE(cross_topic,0) AS cross_topic" if "cross_topic" in cols else "0 AS cross_topic"
+
+    sql = f"SELECT file,title,authors,year,venue,doi,cited,tier,{cat_sel},{cross_sel} FROM papers"
+    args: list = []
+    if category and has_cat:
+        sql += " WHERE (category = ? OR COALESCE(cross_topic,0) = 1)"
+        args.append(category)
+    papers = c.execute(sql, args).fetchall()
     geo = {}
     if _has(c, "paper_geo"):
         geo = {r["file"]: dict(r) for r in c.execute("SELECT * FROM paper_geo")}
@@ -169,6 +180,7 @@ def overview(db=None, top_n: int = 20) -> dict:
 
     c.close()
     return {
+        "domain": category,
         "totals": {
             "papers": len(papers),
             "cited": total_cited,
@@ -235,15 +247,19 @@ def _convert(metric: str, value: float, unit: Optional[str]) -> Optional[float]:
     return None
 
 
-def benchmarks(db=None) -> dict:
+def benchmarks(db=None, category: Optional[str] = None) -> dict:
     """返回归一化后的性能数据点，每个点都带出处和实验条件。"""
     c = _conn(db)
     if not _has(c, "benchmark"):
         c.close()
         return {"available": False, "metrics": {}, "note": "尚未抽取，跑 scripts/extract_meta.py --what bench"}
-    rows = c.execute(
-        "SELECT b.*, p.title, p.year, p.category, p.doi FROM benchmark b "
-        "JOIN papers p ON p.file = b.file").fetchall()
+    sql = ("SELECT b.*, p.title, p.year, p.category, p.doi FROM benchmark b "
+           "JOIN papers p ON p.file = b.file")
+    args: list = []
+    if category:
+        sql += " WHERE (p.category = ? OR COALESCE(p.cross_topic,0) = 1)"
+        args.append(category)
+    rows = c.execute(sql, args).fetchall()
     c.close()
 
     out: dict[str, dict] = {}

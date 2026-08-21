@@ -6,252 +6,133 @@
 <title>静电驱动与静电吸附 · 科研知识库</title>
 <style>
   :root{--bg:#faf9f7;--card:#fff;--ink:#1c1b19;--mute:#6b6862;--faint:#9a958d;
-        --line:#e5e2dc;--accent:#8a5a2b;--hl:#fdf0d5;
-        --fm:#2b5d8a;--fmbg:#eef4fb;--ea:#7a3d8a;--eabg:#f6eef8;--sea:#f2f0ec}
+        --line:#e5e2dc;--accent:#8a5a2b;
+        --fm:#2b5d8a;--fmbg:#eef4fb;--fmline:#cfe0f2;
+        --ea:#7a3d8a;--eabg:#f7eff9;--ealine:#e7d3ee}
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);
+  body{margin:0;background:var(--bg);color:var(--ink);min-height:100vh;
        font:15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
-  .wrap{max-width:1000px;margin:0 auto;padding:52px 24px 80px}
-  h1{font-size:27px;margin:0 0 6px;letter-spacing:-.2px}
-  .lead{color:var(--mute);font-size:14px;margin-bottom:34px}
-  h2{font-size:15px;margin:0 0 3px;letter-spacing:.3px}
-  .h2sub{font-size:12px;color:var(--faint);margin-bottom:14px}
-  section{margin-top:46px}
+  .wrap{max-width:1060px;margin:0 auto;padding:64px 24px 60px}
+  .head{text-align:center;margin-bottom:44px}
+  h1{font-size:28px;margin:0 0 8px;letter-spacing:-.3px;font-weight:600}
+  .sub{color:var(--mute);font-size:14px}
 
-  .nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;
-        background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-  .nums div{background:var(--card);padding:16px 14px}
-  .nums b{display:block;font-size:25px;font-weight:600;letter-spacing:-.5px}
-  .nums span{font-size:11.5px;color:var(--mute)}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  @media(max-width:760px){.split{grid-template-columns:1fr}}
 
-  /* 两个入口：页面视觉重心，居中 */
-  .gates{display:flex;gap:18px;justify-content:center;margin:44px 0 8px;flex-wrap:wrap}
-  .gate{flex:0 1 340px;background:var(--card);border:1px solid var(--line);border-radius:14px;
-        padding:24px 24px 20px;text-decoration:none;color:inherit;display:block;
-        transition:border-color .16s, transform .16s, box-shadow .16s}
-  .gate:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 20px rgba(138,90,43,.09)}
-  .gate .ic{font-size:19px;margin-bottom:9px;color:var(--accent)}
-  .gate b{display:block;font-size:16.5px;margin-bottom:5px}
-  .gate p{margin:0;font-size:13px;color:var(--mute);line-height:1.6}
-  .gate .go{margin-top:13px;font-size:12.5px;color:var(--accent)}
+  .side{position:relative;display:block;text-decoration:none;color:inherit;
+        background:var(--card);border:1px solid var(--line);border-radius:16px;
+        padding:34px 30px 28px;overflow:hidden;
+        transition:transform .18s, box-shadow .18s, border-color .18s}
+  .side:hover{transform:translateY(-3px)}
+  .side .stripe{position:absolute;left:0;top:0;bottom:0;width:4px}
+  .side.fm{border-color:var(--fmline)}
+  .side.fm .stripe{background:var(--fm)}
+  .side.fm:hover{box-shadow:0 10px 30px rgba(43,93,138,.13);border-color:var(--fm)}
+  .side.ea{border-color:var(--ealine)}
+  .side.ea .stripe{background:var(--ea)}
+  .side.ea:hover{box-shadow:0 10px 30px rgba(122,61,138,.13);border-color:var(--ea)}
 
-  table{width:100%;border-collapse:collapse;font-size:13px}
-  th{text-align:left;font-weight:600;color:var(--mute);font-size:11.5px;
-     border-bottom:1px solid var(--line);padding:7px 8px;white-space:nowrap}
-  td{padding:7px 8px;border-bottom:1px solid #f2efe9}
-  tr:last-child td{border-bottom:0}
-  td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
-  .tag{display:inline-block;font-size:10px;padding:1px 6px;border-radius:20px;border:1px solid var(--line)}
-  .tag.fm{background:var(--fmbg);color:var(--fm);border-color:#d3e2f2}
-  .tag.ea{background:var(--eabg);color:var(--ea);border-color:#e8d6ee}
-  .empty{color:var(--faint);font-size:12.5px;padding:16px;text-align:center;
-         background:var(--card);border:1px dashed var(--line);border-radius:12px}
-  .bar{height:5px;background:var(--fmbg);border-radius:3px;display:inline-block;vertical-align:middle}
-  .grid2{display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start}
-  @media(max-width:800px){.grid2{grid-template-columns:1fr}}
-  .foot{margin-top:52px;padding-top:16px;border-top:1px solid var(--line);
-        font-size:11.5px;color:var(--faint)}
-  .metric{margin-bottom:20px}
-  .metric h3{font-size:13px;margin:0 0 2px;font-weight:600}
-  .metric .rng{font-size:11.5px;color:var(--faint);margin-bottom:7px}
+  .glyph{width:52px;height:52px;margin-bottom:16px}
+  .side h2{font-size:21px;margin:0 0 4px;font-weight:600}
+  .side .en{font-size:12px;color:var(--faint);letter-spacing:.4px;margin-bottom:12px}
+  .side p{margin:0 0 18px;font-size:13.5px;color:var(--mute);line-height:1.75;min-height:66px}
+
+  .facts{display:flex;gap:0;border-top:1px solid var(--line);padding-top:14px;margin-bottom:16px}
+  .facts div{flex:1}
+  .facts b{display:block;font-size:20px;font-weight:600;letter-spacing:-.3px}
+  .facts span{font-size:11px;color:var(--faint)}
+  .side.fm .facts b{color:var(--fm)}
+  .side.ea .facts b{color:var(--ea)}
+
+  .subs{display:flex;gap:8px}
+  .pill{flex:1;text-align:center;font-size:12.5px;padding:8px 6px;border-radius:8px;
+        border:1px solid var(--line);color:var(--mute)}
+  .side.fm .pill{background:var(--fmbg);border-color:var(--fmline);color:var(--fm)}
+  .side.ea .pill{background:var(--eabg);border-color:var(--ealine);color:var(--ea)}
+  .enter{margin-top:16px;font-size:13px;font-weight:500}
+  .side.fm .enter{color:var(--fm)}
+  .side.ea .enter{color:var(--ea)}
+
+  .foot{text-align:center;margin-top:40px;font-size:12px;color:var(--faint);line-height:2}
+  .foot a{color:var(--mute);text-decoration:none;border-bottom:1px solid var(--line)}
+  .foot a:hover{color:var(--accent)}
+  .err{text-align:center;color:#a33;font-size:13px;margin-top:20px}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>静电驱动与静电吸附 · 科研知识库</h1>
-  <div class="lead" id="lead">加载中…</div>
+  <div class="head">
+    <h1>静电驱动与静电吸附 · 科研知识库</h1>
+    <div class="sub" id="sub">加载中…</div>
+  </div>
 
-  <div class="nums" id="nums"></div>
-
-  <div class="gates">
-    <a class="gate" href="/search">
-      <div class="ic">◈</div>
-      <b>文献检索与问答</b>
-      <p>在全部论文的全文里做混合检索，提问后给出带页码引用的回答。适合已经知道自己要查什么的时候。</p>
-      <div class="go">进入 →</div>
+  <div class="split">
+    <a class="side fm" href="/fm">
+      <div class="stripe"></div>
+      <svg class="glyph" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <rect x="4" y="13" width="40" height="7" rx="1.5" fill="#eef4fb" stroke="#2b5d8a" stroke-width="1.6"/>
+        <path d="M8 20v4M16 20v4M24 20v4M32 20v4M40 20v4" stroke="#2b5d8a" stroke-width="1.6"/>
+        <rect x="10" y="27" width="24" height="7" rx="1.5" fill="#cfe0f2" stroke="#2b5d8a" stroke-width="1.6"/>
+        <path d="M36 30.5h9M41 26.5l4.5 4-4.5 4" stroke="#2b5d8a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h2>静电薄膜电机</h2>
+      <div class="en">ELECTROSTATIC FILM MOTOR</div>
+      <p>行波或步进电场驱动滑块产生相对运动。关注推力密度、驱动电压、多相激励与位置控制。</p>
+      <div class="facts" id="fm-facts"></div>
+      <div class="subs"><span class="pill">知识库</span><span class="pill">学习路径</span></div>
+      <div class="enter">进入 →</div>
     </a>
-    <a class="gate" href="/learn">
-      <div class="ic">◇</div>
-      <b>入门与学习路径</b>
-      <p>提出问题，得到一张学习路径树状图，每个分支上挂着该阶段该读的论文。适合刚接触这个方向的时候。</p>
-      <div class="go">进入 →</div>
+
+    <a class="side ea" href="/ea">
+      <div class="stripe"></div>
+      <svg class="glyph" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <rect x="7" y="9" width="34" height="8" rx="1.5" fill="#f7eff9" stroke="#7a3d8a" stroke-width="1.6"/>
+        <path d="M13 17v5M21 17v5M27 17v5M35 17v5" stroke="#7a3d8a" stroke-width="1.6"/>
+        <path d="M13 22c0 3 3 3 3 0M21 22c0 3 3 3 3 0M27 22c0 3 3 3 3 0" stroke="#7a3d8a" stroke-width="1.4" opacity=".55"/>
+        <rect x="5" y="29" width="38" height="9" rx="2" fill="#e7d3ee" stroke="#7a3d8a" stroke-width="1.6"/>
+        <path d="M24 26v-4M21.5 24l2.5-2.5 2.5 2.5" stroke="#7a3d8a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h2>静电吸附 / 电粘附</h2>
+      <div class="en">ELECTROADHESION</div>
+      <p>静电力产生法向吸附与剪切握持。关注吸附力、接触界面、夹持器、爬壁与可穿戴触觉。</p>
+      <div class="facts" id="ea-facts"></div>
+      <div class="subs"><span class="pill">知识库</span><span class="pill">学习路径</span></div>
+      <div class="enter">进入 →</div>
     </a>
   </div>
 
-  <section>
-    <h2>静电力性能 benchmark</h2>
-    <div class="h2sub">从论文正文抽取的实测值，已做单位归一。每个数值都连同实验条件一起记录 —— 脱离电压、间距、介质的性能数字没有意义。</div>
-    <div id="bench"></div>
-  </section>
-
-  <section>
-    <h2>研究人员</h2>
-    <div class="h2sub">按发文量排序。同一作者的不同署名写法（Toshiro Higuchi / T. Higuchi）已归并。</div>
-    <div class="card" style="padding:4px 10px"><table id="authors"></table></div>
-  </section>
-
-  <section>
-    <h2>地域分布</h2>
-    <div class="h2sub">按通讯作者机构所在国家统计，圆点面积对应论文数。</div>
-    <div class="grid2">
-      <div class="card" id="mapbox"></div>
-      <div class="card" style="padding:4px 10px"><table id="ctable"></table></div>
-    </div>
-  </section>
-
-  <section>
-    <h2>高被引论文</h2>
-    <div class="h2sub">被引数据来自 OpenAlex。</div>
-    <div class="card" style="padding:4px 10px"><table id="toppapers"></table></div>
-  </section>
-
-  <div class="foot" id="foot"></div>
+  <div class="foot">
+    两个方向的文献、统计与学习路径完全分开。<br>
+    需要跨方向查找时，可进入 <a href="/all">全库视图</a>。
+  </div>
+  <div class="err" id="err"></div>
 </div>
 
-<script src="/worldmap.js"></script>
 <script>
 const $ = s => document.querySelector(s);
 const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const CAT = {film_motor:['fm','薄膜电机'], electroadhesion:['ea','电粘附']};
-const catTag = c => CAT[c] ? `<span class="tag ${CAT[c][0]}">${CAT[c][1]}</span>` : '';
 
-// 气泡图 + 真实陆地底图。国界数据来自 app/static/worldmap.js
-// （由 scripts/build_worldmap.py 从 pygal_maps_world 烘出，简化到 108 KB），
-// 不走任何 CDN —— 国内网络和 Render 上都不会加载失败。
-function worldMap(countries){
-  const W = window.WORLD;
-  if(!W) return `<div class="empty">地图数据未加载<br>跑 <code>python scripts/build_worldmap.py</code> 生成 static/worldmap.js</div>`;
-  if(!countries || !countries.length)
-    return `<div class="empty">尚无地域数据<br>跑 <code>python scripts/extract_meta.py --what geo</code> 生成</div>`;
-
-  // 地区归并：台港澳并入中国，与 analytics.py 的 REGION_MERGE 保持一致。
-  // 底图是统一浅灰，所以这里只影响统计口径，不影响陆地着色。
-  const MERGE_INTO = {tw:'cn', hk:'cn', mo:'cn'};
-
-  const by = {};                       // iso2 → 统计
-  let unmapped = [];
-  countries.forEach(c=>{
-    const a2 = W.iso3to2[c.iso3];
-    if(a2) by[a2] = c; else unmapped.push(c.iso3);
-  });
-  Object.entries(MERGE_INTO).forEach(([part, main])=>{
-    if(by[main] && !by[part]) by[part] = by[main];
-  });
-  const max = Math.max(...countries.map(c=>c.papers));
-  const hueOf = c => {
-    const s = c.electroadhesion/(c.papers||1);
-    return s>0.6 ? [122,61,138] : (s<0.35 ? [43,93,138] : [107,90,138]);
-  };
-  // 面积正比于论文数（半径开方），视觉上才不会夸大差距
-  const rOf = n => 22 + 88*Math.sqrt(n/max);
-
-  // 背景：真实陆地，统一浅灰。它只是底图，深浅由上面的圆点承担，
-  // 陆地本身再填色会和圆点抢注意力
-  const land = Object.values(W.paths).map(d =>
-    `<path d="${d}" fill="#e4e1da" stroke="#f2f0ec" stroke-width="1.2"/>`).join('');
-
-  // 圆点位置直接用地图数据自带的质心（从国界路径本身算出来的），
-  // 所以圆心必然落在对应国家的陆地上 —— 不会出现手填经纬度那种偏移
-  const bubbles = countries.filter(c=>W.centroids[W.iso3to2[c.iso3]])
-    .sort((a,b)=>b.papers-a.papers)     // 大的先画，小的压在上面不被遮住
-    .map(c=>{
-      const [x,y]=W.centroids[W.iso3to2[c.iso3]], [r,g,b]=hueOf(c);
-      return `<g><title>${esc(c.country)}：${c.papers} 篇 · 被引 ${c.cited}（薄膜电机 ${c.film_motor} / 电粘附 ${c.electroadhesion}）</title>
-        <circle cx="${x}" cy="${y}" r="${rOf(c.papers).toFixed(0)}"
-                fill="rgb(${r},${g},${b})" fill-opacity=".45"
-                stroke="rgb(${r},${g},${b})" stroke-width="3"/></g>`;
-    }).join('');
-
-  // 只给前 4 名标国家码，且避开彼此
-  const placed=[];
-  const labels = countries.filter(c=>W.centroids[W.iso3to2[c.iso3]]).slice(0,6).map(c=>{
-    const [x,y]=W.centroids[W.iso3to2[c.iso3]];
-    if(placed.some(p=>Math.abs(p[0]-x)<200 && Math.abs(p[1]-y)<120)) return '';
-    placed.push([x,y]);
-    return `<text x="${x}" y="${(y-rOf(c.papers)-14).toFixed(0)}" text-anchor="middle"
-            font-size="46" font-weight="600" fill="#5f5c56" style="pointer-events:none"
-            >${esc(c.iso3)}</text>`;
-  }).join('');
-
-  return `<svg viewBox="20 0 2460 1110" style="width:100%;height:auto;display:block;background:var(--sea);border-radius:6px">
-      <g>${land}</g>${bubbles}${labels}
-    </svg>
-    <div style="font-size:11px;color:var(--faint);margin-top:10px;line-height:1.9">
-      圆点位置为国家几何中心，面积正比于论文数。
-      <span style="color:var(--fm)">●</span> 以薄膜电机为主
-      <span style="color:var(--ea);margin-left:8px">●</span> 以电粘附为主
-      <span style="color:#6b5a8a;margin-left:8px">●</span> 两者均衡　·　悬停查看明细
-      ${unmapped.length?`<br>另有 ${unmapped.length} 条国别无法对应到地图：${unmapped.map(esc).join(' ')}`:''}
-    </div>`;
-}
-
-fetch('/api/overview').then(r=>r.json()).then(o=>{
-  const t=o.totals;
-  $('#lead').textContent = `${t.papers} 篇论文 · ${t.year_min}–${t.year_max} · 覆盖静电薄膜电机与静电吸附两大方向`;
-  $('#nums').innerHTML = [
-    ['论文', t.papers], ['总被引', t.cited.toLocaleString()],
-    ['研究人员', t.authors], ['机构', t.institutions || '—'],
-    ['国家/地区', t.countries || '—'], ['跨度', (t.year_max-t.year_min)+' 年'],
+// 两侧的数字各自单独取，保证与进入后看到的完全一致 —— 不在这里做减法拼凑
+Promise.all([
+  fetch('/api/stats').then(r=>r.json()),
+  fetch('/api/overview?domain=fm').then(r=>r.json()),
+  fetch('/api/overview?domain=ea').then(r=>r.json()),
+]).then(([s, fm, ea])=>{
+  $('#sub').textContent = `${s.papers} 篇论文 · ${s.chunks} 段全文 · ${s.year_min}–${s.year_max}`;
+  const facts = o => [
+    ['论文', o.totals.papers],
+    ['段落', o.totals.chunks ?? '—'],
+    ['被引', o.totals.cited.toLocaleString()],
+    ['研究者', o.totals.authors],
   ].map(([k,v])=>`<div><b>${v}</b><span>${k}</span></div>`).join('');
-
-  const maxP = Math.max(...o.authors.map(a=>a.papers), 1);
-  $('#authors').innerHTML = `<tr><th>研究者</th><th class="n">论文</th><th class="n">一作</th>
-      <th class="n">被引</th><th>活跃年代</th><th>方向</th></tr>` +
-    o.authors.map(a=>`<tr>
-      <td>${esc(a.name)}<span class="bar" style="width:${(a.papers/maxP*56).toFixed(0)}px;margin-left:8px"></span></td>
-      <td class="n">${a.papers}</td><td class="n">${a.first_author}</td>
-      <td class="n">${a.cited}</td><td style="color:var(--mute)">${esc(a.span)}</td>
-      <td>${catTag(a.main_cat)}</td></tr>`).join('');
-
-  $('#mapbox').innerHTML = worldMap(o.countries||[]);
-  $('#ctable').innerHTML = (o.countries||[]).length
-    ? `<tr><th>国家/地区</th><th class="n">论文</th><th class="n">被引</th></tr>` +
-      o.countries.slice(0,14).map(c=>`<tr><td>${esc(c.country)}</td>
-        <td class="n">${c.papers}</td><td class="n">${c.cited}</td></tr>`).join('')
-    : `<tr><td style="color:var(--faint);font-size:12px;padding:14px 8px">待生成</td></tr>`;
-
-  $('#toppapers').innerHTML = `<tr><th class="n">被引</th><th>标题</th><th class="n">年份</th><th>方向</th></tr>` +
-    o.top_papers.map(p=>`<tr><td class="n"><b>${p.cited}</b></td>
-      <td>${p.doi?`<a href="https://doi.org/${esc(p.doi)}" target="_blank">${esc(p.title)}</a>`:esc(p.title)}
-        <div style="font-size:11px;color:var(--faint)">${esc(p.venue||'')}</div></td>
-      <td class="n" style="color:var(--mute)">${p.year||''}</td><td>${catTag(p.category)}</td></tr>`).join('');
-
-  $('#foot').innerHTML = `数据来源：本地文献库 ${t.papers} 篇全文 + OpenAlex 元数据。`
-    + (t.geo_coverage ? ` 地域覆盖 ${t.geo_coverage}/${t.papers} 篇。` : '');
-}).catch(e=>$('#lead').textContent='后端未就绪：'+e);
-
-fetch('/api/benchmarks').then(r=>r.json()).then(b=>{
-  if(!b.available){
-    $('#bench').innerHTML = `<div class="empty">${esc(b.note||'尚无性能数据')}</div>`; return;
-  }
-  const order = ['thrust_density','shear_stress','normal_pressure','thrust','holding_force','speed','efficiency'];
-  const keys = order.filter(k=>b.metrics[k]);
-  $('#bench').innerHTML = `<div class="card">` + keys.map(k=>{
-    const m=b.metrics[k], s=m.stats;
-    // 对数刻度：静电力的性能数据常跨两三个数量级，线性轴会把小值全挤在左边
-    const lo=Math.log10(s.min||1e-3), hi=Math.log10(s.max||1), span=(hi-lo)||1;
-    const pos = v => ((Math.log10(v)-lo)/span*100);
-    const pts = m.points.slice(0,60).map(p=>{
-      const cond=[p.voltage_kv?`${p.voltage_kv} kV`:null, p.gap_um?`${p.gap_um} µm`:null, p.medium].filter(Boolean).join(' · ');
-      const col = p.category==='electroadhesion' ? 'var(--ea)' : 'var(--fm)';
-      return `<div title="${esc(p.title)}（${p.year||''}）第${esc(p.page)}页&#10;${p.raw} ${esc(p.raw_unit||'')}${cond?'\n条件：'+esc(cond):''}"
-        style="position:absolute;left:${pos(p.value).toFixed(1)}%;top:50%;width:8px;height:8px;margin:-4px 0 0 -4px;
-        border-radius:50%;background:${col};opacity:.5"></div>`;
-    }).join('');
-    return `<div class="metric">
-      <h3>${esc(m.label)} <span style="font-weight:400;color:var(--faint)">${esc(m.unit)}</span></h3>
-      <div class="rng">${s.n} 个数据点 · 中位 ${s.median.toPrecision(3)} · 范围 ${s.min.toPrecision(3)} – ${s.max.toPrecision(3)}（对数轴）</div>
-      <div style="position:relative;height:26px;background:linear-gradient(var(--bg),var(--bg));border-radius:5px;border:1px solid var(--line)">${pts}</div>
-      <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--faint);margin-top:3px">
-        <span>${s.min.toPrecision(3)}</span><span>${s.max.toPrecision(3)}</span></div>
-    </div>`;
-  }).join('') + `<div style="font-size:11px;color:var(--faint);border-top:1px solid var(--line);padding-top:10px">
-      悬停查看出处与实验条件。<span style="color:var(--fm)">●</span> 薄膜电机
-      <span style="color:var(--ea);margin-left:6px">●</span> 电粘附
-      ${b.dropped_unknown_unit?`　· 剔除 ${b.dropped_unknown_unit} 条（单位无法识别或数值不合物理，不做猜测换算）`:''}${b.deduped?`　· 合并重复 ${b.deduped} 条`:''}
-    </div></div>`;
-}).catch(e=>$('#bench').innerHTML=`<div class="empty">${esc(e)}</div>`);
+  // chunks 不在 overview 里，从 stats 的分类统计补上
+  const chunkOf = k => (s.categories||[]).find(c=>c.key===k)?.chunks ?? '—';
+  fm.totals.chunks = chunkOf('film_motor');
+  ea.totals.chunks = chunkOf('electroadhesion');
+  $('#fm-facts').innerHTML = facts(fm);
+  $('#ea-facts').innerHTML = facts(ea);
+}).catch(e=>{ $('#sub').textContent='后端未就绪'; $('#err').textContent=e; });
 </script>
 </body>
 </html>

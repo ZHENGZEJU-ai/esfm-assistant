@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Optional
 
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import FileResponse, RedirectResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -132,33 +132,47 @@ def pdf(file: str):
 
 # ==================== v2：起始页与学习页 ====================
 
+DOMAINS = {"fm": config.FM, "ea": config.EA}
+
+
+def _domain(slug: Optional[str]) -> Optional[str]:
+    """把 URL 里的 fm/ea 转成 category；all 或空返回 None（全库）。"""
+    if not slug or slug == "all":
+        return None
+    d = DOMAINS.get(slug)
+    if d is None:
+        raise HTTPException(404, f"未知领域：{slug}")
+    return d
+
+
 @app.get("/api/overview")
-def api_overview():
-    """起始页数据：总量、年度曲线、人员/机构排行、国别分布、高被引。"""
+def api_overview(domain: Optional[str] = None):
+    """领域首页数据：总量、年度曲线、人员/机构排行、国别分布、高被引。"""
     from . import analytics
 
-    return analytics.overview()
+    return analytics.overview(category=_domain(domain))
 
 
 @app.get("/api/benchmarks")
-def api_benchmarks():
+def api_benchmarks(domain: Optional[str] = None):
     """静电力性能指标，已做单位归一，每个点带实验条件与出处。"""
     from . import analytics
 
-    return analytics.benchmarks()
+    return analytics.benchmarks(category=_domain(domain))
 
 
 @app.get("/api/tree")
-def api_tree():
+def api_tree(domain: Optional[str] = None):
     """学习路径知识树的纯结构（不含检索查询词）。"""
     from . import knowledge_tree as kt
 
-    return kt.skeleton()
+    return kt.skeleton(_domain(domain))
 
 
 class LearnReq(BaseModel):
     question: str
     per_node: int = 3
+    domain: Optional[str] = None      # fm / ea / None(全库)
 
 
 LOCATE_SYS = """你是静电驱动领域的学习路径规划器。用户提出一个问题，你要：
@@ -172,29 +186,65 @@ LOCATE_SYS = """你是静电驱动领域的学习路径规划器。用户提出�
 """
 
 
+# 检索不到任何内容时的通用入门主线，按领域各给一条
+DEFAULT_PATH = {
+    config.FM: ["fm_force", "fm_induction", "fm_robot"],
+    config.EA: ["ea_force", "ea_contact", "ea_climb"],
+    None: ["fm_force", "ea_force", "fm_robot"],
+}
+
+
 @app.post("/api/learn")
 def learn(r: LearnReq):
     """问答 → 定位到知识树分支 → 把相关论文挂到分支上。"""
     from . import knowledge_tree as kt
 
     idx = _idx()
+    dom = _domain(r.domain)
+
+    def papers_for(node: dict, extra: str = "") -> list:
+        """取该分支的代表论文。检索限定在节点所属领域，保证两条分支互不串。"""
+        cat = kt.domain_of(node["id"]) or dom
+        hits = idx.search(f"{node.get('q', '')} {extra}".strip(),
+                          k_final=r.per_node * 4, category=cat)
+        out, seen = [], set()
+        for h in hits:
+            if h.file in seen:
+                continue
+            seen.add(h.file)
+            out.append({"file": h.file, "title": h.title, "year": h.year,
+                        "authors": (h.authors or "").split(",")[0],
+                        "venue": h.venue, "doi": h.doi, "cited": h.cited,
+                        "page": h.page, "category": h.category, "preview": h.preview})
+            if len(out) >= r.per_node:
+                break
+        return out
 
     def sse():
         def ev(t, d):
             return f"event: {t}\ndata: {json.dumps(d, ensure_ascii=False)}\n\n"
 
+        def emit_nodes(ids, extra=""):
+            for nid in ids:
+                node = kt.find(nid, dom) or kt.find(nid)
+                if not node:
+                    continue
+                yield ev("node", {"id": nid, "label": node["label"], "en": node.get("en"),
+                                  "desc": node.get("desc"), "level": node.get("level"),
+                                  "papers": papers_for(node, extra)})
+
         try:
             focus, path_text = [], ""
             try:
-                raw = llm.chat([{"role": "system", "content": LOCATE_SYS + kt.outline()},
+                raw = llm.chat([{"role": "system", "content": LOCATE_SYS + kt.outline(dom)},
                                 {"role": "user", "content": r.question}],
                                temperature=0.1, max_tokens=500)
                 js = json.loads(raw[raw.find("{"): raw.rfind("}") + 1])
                 # 严格校验：模型编出来的节点 id 一律丢弃，宁可少也不能给假分支
-                focus = [n for n in js.get("nodes", []) if kt.find(n)]
+                focus = [n for n in js.get("nodes", []) if kt.find(n, dom)]
                 path_text = js.get("path", "")
             except Exception as e:  # noqa: BLE001
-                log.warning("学习路径定位失败，回退到关键词匹配：%s", e)
+                log.warning("学习路径定位失败，回退到文献重合度匹配：%s", e)
 
             if not focus:
                 # 兜底：节点与问题的「召回重合度」。
@@ -203,46 +253,26 @@ def learn(r: LearnReq):
                 # 都返回同一组节点。改成：问题单独检索一次，再看每个节点的检索
                 # 结果和它重合多少篇，重合度才是真有判别力的信号。
                 qset = {h.file: i for i, h in
-                        enumerate(idx.search(r.question, k_final=25))}
+                        enumerate(idx.search(r.question, k_final=25, category=dom))}
                 if not qset:
                     # 问题本身一条都检索不到（典型场景：中文提问 + 向量路熔断）。
-                    # 此时任何打分都是 0，排序结果只反映树的书写顺序，毫无意义。
+                    # 此时任何打分都是 0，排序只反映树的书写顺序，毫无意义。
                     # 与其给一个看着正常实则随机的路径，不如老实返回入门主线并说明。
-                    yield ev("focus", {
-                        "nodes": ["f_force", "m_induction", "a_robot"],
-                        "path": "没能把这个问题匹配到具体分支 —— 检索没有召回任何内容。"
-                                "若是中文提问，通常是向量检索不可用（API Key 或网络问题），"
-                                "此时中文关键词检索必然零召回。下面给出的是通用入门主线。",
-                    })
-                    focus = ["f_force", "m_induction", "a_robot"]
-                    for nid in focus:
-                        node = kt.find(nid)
-                        hits = idx.search(node.get("q", ""), k_final=r.per_node * 3,
-                                          category=node.get("cat"))
-                        seen, papers = set(), []
-                        for h in hits:
-                            if h.file in seen:
-                                continue
-                            seen.add(h.file)
-                            papers.append({"file": h.file, "title": h.title, "year": h.year,
-                                           "authors": (h.authors or "").split(",")[0],
-                                           "venue": h.venue, "doi": h.doi, "cited": h.cited,
-                                           "page": h.page, "category": h.category,
-                                           "preview": h.preview})
-                            if len(papers) >= r.per_node:
-                                break
-                        yield ev("node", {"id": nid, "label": node["label"], "en": node.get("en"),
-                                          "desc": node.get("desc"), "level": node.get("level"),
-                                          "papers": papers})
+                    focus = DEFAULT_PATH.get(dom, DEFAULT_PATH[None])
+                    yield ev("focus", {"nodes": focus,
+                                       "path": "没能把这个问题匹配到具体分支 —— 检索没有召回任何内容。"
+                                               "若是中文提问，通常是向量检索不可用（API Key 或网络问题），"
+                                               "此时中文关键词检索必然零召回。下面给出的是通用入门主线。"})
+                    yield from emit_nodes(focus)
                     yield ev("done", {})
                     return
                 beginner = any(w in r.question for w in
                                ("什么是", "入门", "没接触", "从哪", "新手", "初学", "零基础"))
                 prior = {1: 1.35 if beginner else 1.0, 2: 1.0, 3: 0.75 if beginner else 1.0}
                 scored = []
-                for n in kt.leaves():
-                    files = {h.file for h in idx.search(n.get("q", ""), k_final=25,
-                                                        category=n.get("cat"))}
+                for n in kt.leaves(dom):
+                    cat = kt.domain_of(n["id"]) or dom
+                    files = {h.file for h in idx.search(n.get("q", ""), k_final=25, category=cat)}
                     # 问题结果里排得越靠前的论文，重合时权重越高
                     s = sum(1.0 / (1 + qset[f]) for f in files if f in qset)
                     scored.append((s * prior.get(n.get("level", 2), 1.0),
@@ -253,28 +283,7 @@ def learn(r: LearnReq):
                 path_text = "（模型未参与规划，以下按问题与各分支的文献重合度自动排序）"
 
             yield ev("focus", {"nodes": focus, "path": path_text})
-
-            for nid in focus:
-                node = kt.find(nid)
-                if not node:
-                    continue
-                hits = idx.search(f"{node.get('q', '')} {r.question}",
-                                  k_final=r.per_node * 3, category=node.get("cat"))
-                papers, seen = [], set()
-                for h in hits:
-                    if h.file in seen:
-                        continue
-                    seen.add(h.file)
-                    papers.append({"file": h.file, "title": h.title, "year": h.year,
-                                   "authors": (h.authors or "").split(",")[0],
-                                   "venue": h.venue, "doi": h.doi, "cited": h.cited,
-                                   "page": h.page, "category": h.category,
-                                   "preview": h.preview})
-                    if len(papers) >= r.per_node:
-                        break
-                yield ev("node", {"id": nid, "label": node["label"], "en": node.get("en"),
-                                  "desc": node.get("desc"), "level": node.get("level"),
-                                  "papers": papers})
+            yield from emit_nodes(focus, r.question)
             yield ev("done", {})
         except Exception as e:  # noqa: BLE001
             log.exception("learn 失败")
@@ -285,14 +294,44 @@ def learn(r: LearnReq):
 
 
 # ---- 页面路由。必须在 StaticFiles 挂载之前注册才能生效 ----
-@app.get("/search")
+# 结构：/ 双入口 → /{fm|ea|all} 领域首页 → /{...}/search 知识库、/{...}/learn 学习
+# 三个 HTML 文件被三个领域复用，页面自己从 URL 里读 fm/ea/all 决定数据范围。
+#
+# 这里刻意用**显式路由**而不是 /{slug} 路径参数：路径参数会把 /healthz
+# 和 /worldmap.js 一并吃掉（路由按注册顺序匹配，它排在静态挂载之前），
+# 静态资源会直接 404。
+
+
+@app.get("/fm")
+@app.get("/ea")
+@app.get("/all")
+def page_domain():
+    return FileResponse(STATIC / "domain.html")
+
+
+@app.get("/fm/search")
+@app.get("/ea/search")
+@app.get("/all/search")
 def page_search():
     return FileResponse(STATIC / "search.html")
 
 
-@app.get("/learn")
+@app.get("/fm/learn")
+@app.get("/ea/learn")
+@app.get("/all/learn")
 def page_learn():
     return FileResponse(STATIC / "learn.html")
+
+
+# 旧地址重定向到全库视图，之前分享出去的链接不会失效
+@app.get("/search")
+def page_search_legacy():
+    return RedirectResponse("/all/search", status_code=308)
+
+
+@app.get("/learn")
+def page_learn_legacy():
+    return RedirectResponse("/all/learn", status_code=308)
 
 
 @app.get("/healthz")

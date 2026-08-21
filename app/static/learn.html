@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>入门与学习路径 · 静电驱动</title>
+<title>学习路径 · 静电科研知识库</title>
 <style>
   :root{--bg:#faf9f7;--card:#fff;--ink:#1c1b19;--mute:#6b6862;--faint:#9a958d;
         --line:#e5e2dc;--accent:#8a5a2b;--hl:#fdf0d5;
@@ -78,11 +78,12 @@
 <body>
 <div class="wrap">
   <div class="top">
-    <h1>入门与学习路径</h1>
-    <a class="back" href="/">← 返回首页</a>
-    <a class="back" href="/search">文献检索 →</a>
+    <h1 id="h1">学习路径</h1>
+    <a class="back" id="nav-home" href="#">← 领域首页</a>
+    <a class="back" id="nav-search" href="#">知识库 →</a>
+    <a class="back" href="/">切换方向</a>
   </div>
-  <div class="lead">提出问题，得到一条学习顺序，以及每个阶段该读的论文。知识树的结构是固定的，只有挂在分支上的论文随问题变化。</div>
+  <div class="lead" id="lead">提出问题，得到一条学习顺序，以及每个阶段该读的论文。知识树的结构是固定的，只有挂在分支上的论文随问题变化。</div>
 
   <div class="bar">
     <textarea id="q" placeholder="例如：什么是静电薄膜电机？我完全没接触过，该从哪读起？&#10;（Ctrl/⌘ + Enter 提交）"></textarea>
@@ -111,13 +112,38 @@ const CAT = {film_motor:['fm','薄膜电机'], electroadhesion:['ea','电粘附'
 const catTag = c => CAT[c] ? `<span class="tag ${CAT[c][0]}">${CAT[c][1]}</span>` : '';
 const LVN = {1:'入门',2:'进阶',3:'专题'};
 
-const EXAMPLES = [
-  '什么是静电薄膜电机？完全没接触过该从哪读起',
-  '静电吸附的力是怎么产生的？',
-  '我想做一个电粘附夹持器，需要先掌握什么',
-  '静电驱动为什么做不大？瓶颈在哪',
-  '想理解双激励驱动，前置知识是什么',
-];
+// 领域从 URL 第一段读出：/fm/learn /ea/learn /all/learn
+const SLUG = (location.pathname.split('/')[1] || 'all');
+const META = {
+  fm : {name:'静电薄膜电机',     color:'#2b5d8a'},
+  ea : {name:'静电吸附 / 电粘附', color:'#7a3d8a'},
+  all: {name:'全库',             color:'#8a5a2b'},
+}[SLUG] || {name:'全库', color:'#8a5a2b'};
+
+document.documentElement.style.setProperty('--accent', META.color);
+document.documentElement.style.setProperty('--on', META.color);
+document.title = `学习路径 · ${META.name}`;
+$('#h1').textContent = `${META.name} · 学习路径`;
+$('#nav-home').href   = `/${SLUG}`;
+$('#nav-search').href = `/${SLUG}/search`;
+
+// 例题按方向给 —— 在薄膜电机页面提示电粘附的问题只会让人困惑
+const EXAMPLES = {
+  fm: ['什么是静电薄膜电机？完全没接触过该从哪读起',
+       '推力密度受什么限制？为什么做不大',
+       '想理解双激励驱动，前置知识是什么',
+       '感应式和同步式该怎么选',
+       '滑块位置怎么在不加传感器的情况下测出来'],
+  ea: ['静电吸附的力是怎么产生的？',
+       '我想做一个电粘附夹持器，需要先掌握什么',
+       '为什么实测吸力和理论算出来差这么多',
+       '断电后放不开是怎么回事',
+       '静电离合器在可穿戴触觉里怎么用'],
+  all:['什么是静电薄膜电机？完全没接触过该从哪读起',
+       '静电吸附的力是怎么产生的？',
+       '静电驱动为什么做不大？瓶颈在哪',
+       '电机和吸附这两条路线有什么共同的物理基础'],
+}[SLUG] || [];
 $('#chips').innerHTML = EXAMPLES.map(e=>`<span class="chip">${esc(e)}</span>`).join('');
 $('#chips').onclick = e => {
   if(!e.target.classList.contains('chip')) return;
@@ -126,8 +152,13 @@ $('#chips').onclick = e => {
 
 let TREE = null, FOCUS = {}, ORDER = [];
 
-fetch('/api/tree').then(r=>r.json()).then(t=>{ TREE=t; render(); })
-  .catch(e=>$('#err').textContent='加载知识树失败：'+e);
+const QS = SLUG==='all' ? '' : `?domain=${SLUG}`;
+fetch('/api/tree'+QS).then(r=>r.json()).then(t=>{
+  TREE=t;
+  if(t.desc) $('#lead').textContent = t.desc
+    + '　提出问题，我会标出该先看哪几支，并把对应论文挂上去。';
+  render();
+}).catch(e=>$('#err').textContent='加载知识树失败：'+e);
 
 function paperHtml(p){
   const doi = p.doi ? `<a href="https://doi.org/${esc(p.doi)}" target="_blank">DOI</a>` : '';
@@ -173,7 +204,7 @@ async function run(){
   $('#go').disabled = true; $('#go').textContent = '生成中…';
   try{
     const r = await fetch('/api/learn',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({question, per_node:+$('#per').value})});
+      body:JSON.stringify({question, per_node:+$('#per').value, domain:SLUG})});
     const rd = r.body.getReader(), dec = new TextDecoder();
     let buf='';
     while(true){
