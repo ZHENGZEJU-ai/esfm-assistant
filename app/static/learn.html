@@ -81,7 +81,6 @@
     <h1 id="h1">学习路径</h1>
     <a class="back" id="nav-home" href="#">← 领域首页</a>
     <a class="back" id="nav-search" href="#">知识库 →</a>
-    <a class="back" href="/">切换方向</a>
   </div>
   <div class="lead" id="lead">提出问题，得到一条学习顺序，以及每个阶段该读的论文。知识树的结构是固定的，只有挂在分支上的论文随问题变化。</div>
 
@@ -108,17 +107,13 @@
 const $ = s => document.querySelector(s);
 const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const mark = s => esc(s).replace(/【(.+?)】/g,'<b>$1</b>');
-const CAT = {film_motor:['fm','薄膜电机'], electroadhesion:['ea','电粘附']};
+const CAT = {film_motor:['fm','薄膜电机']};
 const catTag = c => CAT[c] ? `<span class="tag ${CAT[c][0]}">${CAT[c][1]}</span>` : '';
 const LVN = {1:'入门',2:'进阶',3:'专题'};
 
-// 领域从 URL 第一段读出：/fm/learn /ea/learn /all/learn
-const SLUG = (location.pathname.split('/')[1] || 'all');
-const META = {
-  fm : {name:'静电薄膜电机',     color:'#2b5d8a'},
-  ea : {name:'静电吸附 / 电粘附', color:'#7a3d8a'},
-  all: {name:'全库',             color:'#8a5a2b'},
-}[SLUG] || {name:'全库', color:'#8a5a2b'};
+const SLUG = 'fm';
+const DOM = 'film_motor';
+const META = {name:'静电薄膜电机', en:'Electrostatic Film Motor', color:'#2b5d8a', bg:'#eef4fb', line:'#cfe0f2'};
 
 document.documentElement.style.setProperty('--accent', META.color);
 document.documentElement.style.setProperty('--on', META.color);
@@ -127,23 +122,9 @@ $('#h1').textContent = `${META.name} · 学习路径`;
 $('#nav-home').href   = `/${SLUG}`;
 $('#nav-search').href = `/${SLUG}/search`;
 
-// 例题按方向给 —— 在薄膜电机页面提示电粘附的问题只会让人困惑
-const EXAMPLES = {
-  fm: ['什么是静电薄膜电机？完全没接触过该从哪读起',
-       '推力密度受什么限制？为什么做不大',
-       '想理解双激励驱动，前置知识是什么',
-       '感应式和同步式该怎么选',
-       '滑块位置怎么在不加传感器的情况下测出来'],
-  ea: ['静电吸附的力是怎么产生的？',
-       '我想做一个电粘附夹持器，需要先掌握什么',
-       '为什么实测吸力和理论算出来差这么多',
-       '断电后放不开是怎么回事',
-       '静电离合器在可穿戴触觉里怎么用'],
-  all:['什么是静电薄膜电机？完全没接触过该从哪读起',
-       '静电吸附的力是怎么产生的？',
-       '静电驱动为什么做不大？瓶颈在哪',
-       '电机和吸附这两条路线有什么共同的物理基础'],
-}[SLUG] || [];
+const EXAMPLES = ['什么是静电薄膜电机？完全没接触过该从哪读起',
+  '推力密度受什么限制？为什么做不大', '想理解双激励驱动，前置知识是什么',
+  '感应式和同步式该怎么选', '滑块位置怎么在不加传感器的情况下测出来'];
 $('#chips').innerHTML = EXAMPLES.map(e=>`<span class="chip">${esc(e)}</span>`).join('');
 $('#chips').onclick = e => {
   if(!e.target.classList.contains('chip')) return;
@@ -152,7 +133,7 @@ $('#chips').onclick = e => {
 
 let TREE = null, FOCUS = {}, ORDER = [];
 
-const QS = SLUG==='all' ? '' : `?domain=${SLUG}`;
+const QS = '?domain=fm';
 fetch('/api/tree'+QS).then(r=>r.json()).then(t=>{
   TREE=t;
   if(t.desc) $('#lead').textContent = t.desc

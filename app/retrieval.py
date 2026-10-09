@@ -145,6 +145,8 @@ class Index:
         self._embed_fails = 0
         self._embed_down = False
         self.has_category = self._has_category_col()
+        if not self.has_category:
+            raise RuntimeError("索引缺少 category 字段，请先分类再部署")
         self._load_vectors(vec_path or config.VEC_PATH)
 
     # ---------- 加载 ----------
@@ -201,6 +203,9 @@ class Index:
     # ---------- 单路检索 ----------
     def keyword_search(self, query: str, k: int = config.K_KEYWORD, tier: Optional[str] = None,
                        category: Optional[str] = None) -> List[int]:
+        if category not in (None, config.FM):
+            return []
+        category = config.FM
         fq = build_fts_query(query)
         if not fq:
             return []
@@ -208,8 +213,8 @@ class Index:
                "WHERE chunks MATCH ?")
         args: list = [fq]
         if category and self.has_category:
-            # 交叉论文在筛选任一大类时都应出现 —— 它们实质属于两边
-            sql += " AND (p.category = ? OR p.cross_topic = 1)"
+            # 网站只开放主分类为 film_motor 的论文，交叉标记不扩大范围。
+            sql += " AND p.category = ?"
             args.append(category)
         like = _tier_like(tier)
         if like:
@@ -226,6 +231,9 @@ class Index:
 
     def vector_search(self, query: str, k: int = config.K_VECTOR, tier: Optional[str] = None,
                       category: Optional[str] = None) -> List[int]:
+        if category not in (None, config.FM):
+            return []
+        category = config.FM
         if not self.has_vectors or self._embed_down:
             return []
         from .embed import embed_query
@@ -315,7 +323,7 @@ class Index:
         sql = (f"SELECT ch.rowid AS rid, ch.file, ch.page, ch.text, "
                f"p.title, p.authors, p.year, p.venue, p.doi, p.tier, p.cited, {extra} "
                f"FROM chunks ch LEFT JOIN papers p ON p.file = ch.file "
-               f"WHERE ch.rowid IN ({ph})")
+               f"WHERE ch.rowid IN ({ph}) AND p.category = 'film_motor'")
         with self.conn() as c:
             rows = c.execute(sql, ids).fetchall()
         return [
@@ -335,11 +343,11 @@ class Index:
     def stats(self) -> dict:
         cats = []
         with self.conn() as c:
-            papers = c.execute("SELECT COUNT(*) FROM papers").fetchone()[0]
-            chunks = c.execute("SELECT COUNT(*) FROM chunks").fetchone()[0]
+            papers = c.execute("SELECT COUNT(*) FROM papers WHERE category='film_motor'").fetchone()[0]
+            chunks = c.execute("SELECT COUNT(*) FROM chunks ch JOIN papers p ON p.file=ch.file WHERE p.category='film_motor'").fetchone()[0]
             tiers = [dict(tier=r[0] or "未分级", n=r[1]) for r in c.execute(
-                "SELECT tier, COUNT(*) n FROM papers GROUP BY tier ORDER BY n DESC")]
-            ymin, ymax = c.execute("SELECT MIN(year), MAX(year) FROM papers WHERE year > 1900").fetchone()
+                "SELECT tier, COUNT(*) n FROM papers WHERE category='film_motor' GROUP BY tier ORDER BY n DESC")]
+            ymin, ymax = c.execute("SELECT MIN(year), MAX(year) FROM papers WHERE category='film_motor' AND year > 1900").fetchone()
             if self.has_category:
                 for key, cfg in config.CATEGORIES.items():
                     n, nc, seg = c.execute(
@@ -353,14 +361,14 @@ class Index:
             "papers": papers, "chunks": chunks, "tiers": tiers, "categories": cats,
             "has_category": self.has_category,
             "year_min": ymin, "year_max": ymax,
-            "vectors": int(len(self.vectors)) if self.has_vectors else 0,
+            "vectors": int(np.count_nonzero(self.vec_cats == config.FM)) if self.has_vectors else 0,
             "embed_model": self.vec_meta.get("model"),
             "mode": "hybrid" if self.has_vectors else "keyword-only",
         }
 
     def paper(self, file: str) -> Optional[dict]:
         with self.conn() as c:
-            p = c.execute("SELECT * FROM papers WHERE file = ?", (file,)).fetchone()
+            p = c.execute("SELECT * FROM papers WHERE file = ? AND category='film_motor'", (file,)).fetchone()
             if not p:
                 return None
             segs = c.execute(

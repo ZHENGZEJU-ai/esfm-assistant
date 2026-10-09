@@ -49,6 +49,7 @@ for q in nasty:
 
 print("\n[2] 关键词路（真实 FTS5 查询）")
 idx = Index()
+idx._embed_down = True  # 自检禁止调用外部 API；向量链路使用下方模拟测试
 for q in nasty:
     ids = idx.keyword_search(q, k=5)
     # 关键断言：无论输入多脏，都不能抛异常，最差返回空列表
@@ -114,22 +115,13 @@ h3 = idx3.search("electrostatic film motor")
 check("纯关键词模式仍能检索", len(h3) > 0, f"{len(h3)} 条")
 check("stats 标记为 keyword-only", idx3.stats()["mode"] == "keyword-only")
 
-print("\n[7] 两大类分类")
+print("\n[7] film_motor 范围隔离")
 s = idx.stats()
-if s.get("has_category"):
-    tot = sum(c["papers"] for c in s["categories"])
-    for c in s["categories"]:
-        print(f"    {c['key']:16} {c['label']:16} {c['papers']:>4} 篇 {c['chunks']:>5} 段  交叉 {c['cross']}")
-    check("两大类论文数之和 == 总数", tot == s["papers"], f"{tot} vs {s['papers']}")
-    fm = idx.search("electrostatic film motor thrust", k_final=15, category="film_motor")
-    ea = idx.search("electroadhesion gripper shear", k_final=15, category="electroadhesion")
-    # 交叉论文按设计会出现在任一大类里，所以只要求「非交叉的必须属于该类」
-    check("film_motor 筛选无越界", all(h.category == "film_motor" or h.cross_topic for h in fm), f"{len(fm)} 条")
-    check("electroadhesion 筛选无越界", all(h.category == "electroadhesion" or h.cross_topic for h in ea), f"{len(ea)} 条")
-    check("electroadhesion 可被检索到", len(ea) > 0, f"{len(ea)} 条 —— 补索引前这里恒为 0")
-else:
-    print("    （尚未跑 recategorize.py，分类筛选自动停用）")
-    check("旧库向后兼容：无 category 列不报错", True)
+check("统计只含 film_motor", len(s["categories"]) == 1 and s["categories"][0]["key"] == "film_motor")
+check("分类论文数等于总数", s["categories"][0]["papers"] == s["papers"])
+fm = idx.search("electrostatic film motor thrust", k_final=15)
+check("默认检索无越界", bool(fm) and all(h.category == "film_motor" for h in fm))
+check("其他领域不可检索", idx.search("electroadhesion", category="electroadhesion") == [])
 
 print("\n[8] 库统计")
 print(f"    papers={s['papers']} chunks={s['chunks']} mode={s['mode']} vectors={s['vectors']}")

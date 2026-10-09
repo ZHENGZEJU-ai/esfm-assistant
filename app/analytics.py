@@ -76,11 +76,8 @@ def _has(c, table: str) -> bool:
 
 
 def overview(db=None, top_n: int = 20, category: Optional[str] = None) -> dict:
-    """category 传 film_motor / electroadhesion 时，所有统计只算该领域。
-
-    交叉论文（cross_topic=1）在两个领域里都计入 —— 它们实质属于两边，
-    只归一边会让另一边少掉本该有的内容。
-    """
+    """所有统计仅包含主分类为 film_motor 的论文。"""
+    category = config.FM
     c = _conn(db)
     cols = {r[1] for r in c.execute("PRAGMA table_info(papers)")}
     has_cat = "category" in cols
@@ -90,19 +87,19 @@ def overview(db=None, top_n: int = 20, category: Optional[str] = None) -> dict:
     sql = f"SELECT file,title,authors,year,venue,doi,cited,tier,{cat_sel},{cross_sel} FROM papers"
     args: list = []
     if category and has_cat:
-        sql += " WHERE (category = ? OR COALESCE(cross_topic,0) = 1)"
+        sql += " WHERE category = ?"
         args.append(category)
     papers = c.execute(sql, args).fetchall()
     geo = {}
     if _has(c, "paper_geo"):
-        geo = {r["file"]: dict(r) for r in c.execute("SELECT * FROM paper_geo")}
+        geo = {r["file"]: dict(r) for r in c.execute("SELECT g.* FROM paper_geo g JOIN papers p ON p.file=g.file WHERE p.category=?", (config.FM,))}
 
     # ---------- 总览 ----------
     total_cited = sum(int(p["cited"] or 0) for p in papers)
     years = [p["year"] for p in papers if p["year"] and 1900 < p["year"] < 2100]
 
     # ---------- 年度发文（按大类）----------
-    by_year: dict[int, dict] = defaultdict(lambda: {"film_motor": 0, "electroadhesion": 0, "total": 0})
+    by_year: dict[int, dict] = defaultdict(lambda: {"film_motor": 0, "total": 0})
     for p in papers:
         y = p["year"]
         if not y or not (1900 < y < 2100):
@@ -165,7 +162,7 @@ def overview(db=None, top_n: int = 20, category: Optional[str] = None) -> dict:
                 label = "China"          # 归并进来的地区，显示为归并后的国名
             d = ctry.setdefault(k, {"iso3": k, "country": label,
                                     "papers": 0, "cited": 0,
-                                    "film_motor": 0, "electroadhesion": 0})
+                                    "film_motor": 0})
             d["papers"] += 1
             d["cited"] += int(p["cited"] or 0)
             if p["category"] in d:
@@ -212,10 +209,7 @@ _TO_KPA = {"kpa": 1.0, "pa": 1e-3, "mpa": 1e3, "n/cm2": 10.0,
 
 METRIC_LABEL = {
     "thrust_density": ("推力密度", "N/cm²"),
-    "shear_stress": ("剪切强度", "kPa"),
-    "normal_pressure": ("法向吸附压强", "kPa"),
     "thrust": ("推力", "N"),
-    "holding_force": ("保持力", "N"),
     "speed": ("最大速度", "mm/s"),
     "efficiency": ("效率", "%"),
 }
@@ -248,7 +242,8 @@ def _convert(metric: str, value: float, unit: Optional[str]) -> Optional[float]:
 
 
 def benchmarks(db=None, category: Optional[str] = None) -> dict:
-    """返回归一化后的性能数据点，每个点都带出处和实验条件。"""
+    """返回薄膜电机性能数据，每个点都带出处和实验条件。"""
+    category = config.FM
     c = _conn(db)
     if not _has(c, "benchmark"):
         c.close()
@@ -257,7 +252,7 @@ def benchmarks(db=None, category: Optional[str] = None) -> dict:
            "JOIN papers p ON p.file = b.file")
     args: list = []
     if category:
-        sql += " WHERE (p.category = ? OR COALESCE(p.cross_topic,0) = 1)"
+        sql += " WHERE p.category = ?"
         args.append(category)
     rows = c.execute(sql, args).fetchall()
     c.close()

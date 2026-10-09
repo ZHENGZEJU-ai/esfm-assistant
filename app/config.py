@@ -53,12 +53,7 @@ RRF_K = 60       # RRF 平滑常数，业界惯例值
 W_KEYWORD = 1.0  # 两路权重。术语精确匹配重要就调高关键词，概念检索重要就调高向量
 W_VECTOR = 1.0
 
-# ---------- 两大类 ----------
-# 一级分类，由 scripts/recategorize.py 写入 papers.category
-FM, EA = "film_motor", "electroadhesion"
-CATEGORIES = {
-    FM: {"label": "静电薄膜电机", "en": "Electrostatic Film Motor"},
-    EA: {"label": "静电吸附 / 电粘附", "en": "Electroadhesion"},
-}
-# 原 ①②③④ 分级降为二级筛选，仍有价值（①核心是人工校过的高质量子集）
+# ---------- 网站仅开放静电薄膜电机 ----------
+FM = "film_motor"
+CATEGORIES = {FM: {"label": "静电薄膜电机", "en": "Electrostatic Film Motor"}}
 TIER_MAP = {"1": "①", "2": "②", "3": "③", "4": "④"}

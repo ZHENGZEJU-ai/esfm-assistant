@@ -62,7 +62,6 @@
 <div class="wrap">
   <div class="top">
     <h1 id="title">加载中…</h1>
-    <a class="nav" href="/">← 选择方向</a>
   </div>
   <div class="lead" id="lead"></div>
 
@@ -116,13 +115,9 @@
 const $ = s => document.querySelector(s);
 const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-// 领域从 URL 第一段读出来：/fm /ea /all。三个领域复用这一个文件。
-const SLUG = (location.pathname.split('/')[1] || 'all');
-const META = {
-  fm : {name:'静电薄膜电机',      en:'Electrostatic Film Motor', color:'#2b5d8a', bg:'#eef4fb', line:'#cfe0f2'},
-  ea : {name:'静电吸附 / 电粘附',  en:'Electroadhesion',          color:'#7a3d8a', bg:'#f7eff9', line:'#e7d3ee'},
-  all: {name:'全库视图',          en:'All Topics',               color:'#8a5a2b', bg:'#fdf0d5', line:'#f0dcb4'},
-}[SLUG] || {name:'全库视图', en:'All', color:'#8a5a2b', bg:'#fdf0d5', line:'#f0dcb4'};
+const SLUG = 'fm';
+const DOM = 'film_motor';
+const META = {name:'静电薄膜电机', en:'Electrostatic Film Motor', color:'#2b5d8a', bg:'#eef4fb', line:'#cfe0f2'};
 
 document.documentElement.style.setProperty('--key', META.color);
 document.documentElement.style.setProperty('--keybg', META.bg);
@@ -132,7 +127,7 @@ $('#title').textContent = META.name;
 $('#g-search').href = `/${SLUG}/search`;
 $('#g-learn').href  = `/${SLUG}/learn`;
 
-const CAT = {film_motor:['fm','薄膜电机'], electroadhesion:['ea','电粘附']};
+const CAT = {film_motor:['fm','薄膜电机']};
 const catTag = c => CAT[c] ? `<span style="display:inline-block;font-size:10px;padding:1px 6px;border-radius:20px;
   background:${c==='film_motor'?'#eef4fb':'#f6eef8'};color:${c==='film_motor'?'#2b5d8a':'#7a3d8a'};
   border:1px solid ${c==='film_motor'?'#d3e2f2':'#e8d6ee'}">${CAT[c][1]}</span>` : '';
@@ -152,10 +147,7 @@ function worldMap(countries){
 
   const max = Math.max(...countries.map(c=>c.papers));
   const rOf = n => 22 + 88*Math.sqrt(n/max);   // 面积正比于论文数，不夸大差距
-  const hueOf = c => {
-    const s = c.electroadhesion/(c.papers||1);
-    return s>0.6 ? [122,61,138] : (s<0.35 ? [43,93,138] : [107,90,138]);
-  };
+  const hueOf = () => [43,93,138];
   const land = Object.values(W.paths).map(d =>
     `<path d="${d}" fill="#e4e1da" stroke="#f2f0ec" stroke-width="1.2"/>`).join('');
   // 圆心用地图数据自带的质心（从国界路径算出），必然落在对应陆地上
@@ -184,7 +176,7 @@ function worldMap(countries){
     </div>`;
 }
 
-const qs = SLUG==='all' ? '' : `?domain=${SLUG}`;
+const qs = '?domain=fm';
 
 fetch('/api/overview'+qs).then(r=>r.json()).then(o=>{
   const t=o.totals;
@@ -219,12 +211,12 @@ fetch('/api/overview'+qs).then(r=>r.json()).then(o=>{
 
   $('#foot').innerHTML = `数据范围：${esc(META.name)}，共 ${t.papers} 篇。`
     + (t.geo_coverage ? ` 地域覆盖 ${t.geo_coverage}/${t.papers} 篇。` : '')
-    + `　交叉主题的论文在两个方向下都会出现。`;
+    + `　仅统计 film-motor 文献。`;
 }).catch(e=>$('#lead').textContent='后端未就绪：'+e);
 
 fetch('/api/benchmarks'+qs).then(r=>r.json()).then(b=>{
   if(!b.available){ $('#bench').innerHTML = `<div class="empty">${esc(b.note||'本方向暂无性能数据')}</div>`; return; }
-  const order = ['thrust_density','shear_stress','normal_pressure','thrust','holding_force','speed','efficiency'];
+  const order = ['thrust_density','thrust','speed','efficiency'];
   const keys = order.filter(k=>b.metrics[k]);
   $('#bench').innerHTML = `<div class="card">` + keys.map(k=>{
     const m=b.metrics[k], s=m.stats;
@@ -233,7 +225,7 @@ fetch('/api/benchmarks'+qs).then(r=>r.json()).then(b=>{
     const pos = v => ((Math.log10(v)-lo)/span*100);
     const pts = m.points.slice(0,60).map(p=>{
       const cond=[p.voltage_kv?`${p.voltage_kv} kV`:null, p.gap_um?`${p.gap_um} µm`:null, p.medium].filter(Boolean).join(' · ');
-      const col = p.category==='electroadhesion' ? 'var(--ea)' : 'var(--fm)';
+      const col = 'var(--fm)';
       return `<div title="${esc(p.title)}（${p.year||''}）第${esc(p.page)}页&#10;${p.raw} ${esc(p.raw_unit||'')}${cond?'\n条件：'+esc(cond):''}"
         style="position:absolute;left:${pos(p.value).toFixed(1)}%;top:50%;width:8px;height:8px;margin:-4px 0 0 -4px;
         border-radius:50%;background:${col};opacity:.5"></div>`;

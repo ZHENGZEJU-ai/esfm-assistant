@@ -12,7 +12,7 @@ import logging
 import os
 from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import Optional
+from typing import Literal, Optional
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse, RedirectResponse, StreamingResponse
@@ -39,7 +39,7 @@ async def lifespan(_app: FastAPI):
     yield
 
 
-app = FastAPI(title="静电薄膜电机知识助手", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="静电薄膜电机知识助手", version="0.3.0", lifespan=lifespan)
 
 
 def _idx() -> Index:
@@ -51,7 +51,7 @@ def _idx() -> Index:
 class SearchReq(BaseModel):
     query: str
     k: int = config.K_FINAL
-    category: Optional[str] = None   # film_motor / electroadhesion，None=全部
+    category: Optional[Literal["film_motor"]] = config.FM
     tier: Optional[str] = None
     year_min: Optional[int] = None
     year_max: Optional[int] = None
@@ -119,26 +119,28 @@ def paper(file: str):
 @app.get("/api/pdf/{file}")
 def pdf(file: str):
     """只在本地设了 LOCAL_PDF_ROOT 时可用；线上没有 PDF，返回 404 由前端引导去 DOI。"""
+    if not _idx().paper(file):
+        raise HTTPException(404, "未找到该论文")
     if not config.LOCAL_PDF_ROOT:
         raise HTTPException(404, "线上未部署 PDF，请通过 DOI 获取原文")
     root = Path(config.LOCAL_PDF_ROOT).resolve()
     for sub in sorted(p for p in root.iterdir() if p.is_dir()) + [root]:
         cand = (sub / file).resolve()
         # 防目录穿越：拼出来的路径必须仍在 root 之内
-        if str(cand).startswith(str(root)) and cand.is_file():
+        if cand.is_relative_to(root) and cand.is_file():
             return FileResponse(cand, media_type="application/pdf")
     raise HTTPException(404, "本地未找到该 PDF")
 
 
 # ==================== v2：起始页与学习页 ====================
 
-DOMAINS = {"fm": config.FM, "ea": config.EA}
+DOMAINS = {"fm": config.FM, "all": config.FM}
 
 
 def _domain(slug: Optional[str]) -> Optional[str]:
-    """把 URL 里的 fm/ea 转成 category；all 或空返回 None（全库）。"""
-    if not slug or slug == "all":
-        return None
+    """旧的 all 参数兼容到 film_motor；其他领域不再提供。"""
+    if not slug:
+        return config.FM
     d = DOMAINS.get(slug)
     if d is None:
         raise HTTPException(404, f"未知领域：{slug}")
@@ -172,10 +174,10 @@ def api_tree(domain: Optional[str] = None):
 class LearnReq(BaseModel):
     question: str
     per_node: int = 3
-    domain: Optional[str] = None      # fm / ea / None(全库)
+    domain: Optional[Literal["fm", "all"]] = "fm"
 
 
-LOCATE_SYS = """你是静电驱动领域的学习路径规划器。用户提出一个问题，你要：
+LOCATE_SYS = """你是静电薄膜电机领域的学习路径规划器。用户提出一个问题，你要：
 1. 从下面的知识树里挑出 2-4 个最该先学的节点，按学习先后排序（先基础后应用）；
 2. 用 3-5 句话说明为什么按这个顺序学，每个节点解决什么问题。
 
@@ -187,11 +189,7 @@ LOCATE_SYS = """你是静电驱动领域的学习路径规划器。用户提出�
 
 
 # 检索不到任何内容时的通用入门主线，按领域各给一条
-DEFAULT_PATH = {
-    config.FM: ["fm_force", "fm_induction", "fm_robot"],
-    config.EA: ["ea_force", "ea_contact", "ea_climb"],
-    None: ["fm_force", "ea_force", "fm_robot"],
-}
+DEFAULT_PATH = {config.FM: ["fm_force", "fm_induction", "fm_robot"]}
 
 
 @app.post("/api/learn")
@@ -203,7 +201,7 @@ def learn(r: LearnReq):
     dom = _domain(r.domain)
 
     def papers_for(node: dict, extra: str = "") -> list:
-        """取该分支的代表论文。检索限定在节点所属领域，保证两条分支互不串。"""
+        """取该分支的代表论文，仅检索 film_motor。"""
         cat = kt.domain_of(node["id"]) or dom
         hits = idx.search(f"{node.get('q', '')} {extra}".strip(),
                           k_final=r.per_node * 4, category=cat)
@@ -258,7 +256,7 @@ def learn(r: LearnReq):
                     # 问题本身一条都检索不到（典型场景：中文提问 + 向量路熔断）。
                     # 此时任何打分都是 0，排序只反映树的书写顺序，毫无意义。
                     # 与其给一个看着正常实则随机的路径，不如老实返回入门主线并说明。
-                    focus = DEFAULT_PATH.get(dom, DEFAULT_PATH[None])
+                    focus = DEFAULT_PATH[config.FM]
                     yield ev("focus", {"nodes": focus,
                                        "path": "没能把这个问题匹配到具体分支 —— 检索没有召回任何内容。"
                                                "若是中文提问，通常是向量检索不可用（API Key 或网络问题），"
@@ -293,50 +291,44 @@ def learn(r: LearnReq):
                              headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
 
 
-# ---- 页面路由。必须在 StaticFiles 挂载之前注册才能生效 ----
-# 结构：/ 双入口 → /{fm|ea|all} 领域首页 → /{...}/search 知识库、/{...}/learn 学习
-# 三个 HTML 文件被三个领域复用，页面自己从 URL 里读 fm/ea/all 决定数据范围。
-#
-# 这里刻意用**显式路由**而不是 /{slug} 路径参数：路径参数会把 /healthz
-# 和 /worldmap.js 一并吃掉（路由按注册顺序匹配，它排在静态挂载之前），
-# 静态资源会直接 404。
-
-
+# 首页直接展示薄膜电机概览。旧的全库地址重定向到唯一领域。
+@app.get("/")
+@app.get("/index.html")
 @app.get("/fm")
-@app.get("/ea")
-@app.get("/all")
 def page_domain():
     return FileResponse(STATIC / "domain.html")
 
 
 @app.get("/fm/search")
-@app.get("/ea/search")
-@app.get("/all/search")
 def page_search():
     return FileResponse(STATIC / "search.html")
 
 
 @app.get("/fm/learn")
-@app.get("/ea/learn")
-@app.get("/all/learn")
 def page_learn():
     return FileResponse(STATIC / "learn.html")
 
 
-# 旧地址重定向到全库视图，之前分享出去的链接不会失效
+@app.get("/all")
+def page_all_legacy():
+    return RedirectResponse("/fm", status_code=308)
+
+
 @app.get("/search")
+@app.get("/all/search")
 def page_search_legacy():
-    return RedirectResponse("/all/search", status_code=308)
+    return RedirectResponse("/fm/search", status_code=308)
 
 
 @app.get("/learn")
+@app.get("/all/learn")
 def page_learn_legacy():
-    return RedirectResponse("/all/learn", status_code=308)
+    return RedirectResponse("/fm/learn", status_code=308)
 
 
 @app.get("/healthz")
 def healthz():
-    return {"ok": True, "vectors": _idx().has_vectors}
+    return {"ok": True, "vectors": _idx().has_vectors, "version": app.version, "domain": config.FM}
 
 
 if STATIC.exists():
