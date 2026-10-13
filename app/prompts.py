@@ -15,6 +15,7 @@ SYSTEM = """你是静电薄膜电机（electrostatic film motor / actuator）
 6. 用中文回答，但专业术语首次出现时附英文原词，例如 "推力密度（thrust force density）"。
 7. 回答末尾另起一段 "## 参考文献"，按编号列出：
    [n] 标题 (第一作者 et al., 年份, 期刊) · 第 X 页 · DOI
+8. 标注“仅来源摘要与目录信息”的片段不是已核实全文；引用时说明来源限制，不编造页码。
 
 回答结构建议：先给两三句直接结论，再展开论据，最后列参考文献。不要写与问题无关的铺垫。"""
 
@@ -26,8 +27,9 @@ def build_context(hits) -> str:
         parts.append(
             f"[{i}] 标题：{h.title}\n"
             f"    作者：{author} et al. | 年份：{h.year or '?'} | 期刊：{h.venue or '?'} "
-            f"| 分级：{h.tier or '?'} | DOI：{h.doi or '—'} | 页码：第 {h.page} 页\n"
-            f"    原文：{h.text.strip()}"
+            f"| 分级：{h.tier or '?'} | DOI：{h.doi or '—'} | 页码：{h.page or '未核实（来源摘要）'}\n"
+            f"    库编号：{h.paper_id} | 索引依据：{h.index_status}\n"
+            f"    片段：{h.text.strip()}"
         )
     return "\n\n".join(parts)
 

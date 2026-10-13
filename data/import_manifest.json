@@ -1,0 +1,1327 @@
+{
+  "date": "2026-10-13",
+  "local_records": 370,
+  "local_readable": 360,
+  "local_missing_pdf": 10,
+  "web_papers": 188,
+  "chunks": 5767,
+  "summary_only": 8,
+  "papers": [
+    {
+      "paper_id": "0001",
+      "title": "2-DOF Robot Arm with Variable Torque Limiters Realized by Electrostatic Film Motors",
+      "file": "0001_2-DOF Robot Arm with Variable Torque Limiters Realized by Electrostatic Film Motors_.pdf",
+      "chunks": 17,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0002",
+      "title": "2-DOF Synchronous Electrostatic Actuator with Transparent Electrodes Arranged in Checkerboard Patterns",
+      "file": "0002_2-DOF Synchronous Electrostatic Actuator with Transparent Electrodes Arranged in Checkerboard Patterns_.pdf",
+      "chunks": 19,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0004",
+      "title": "2A2-K12 Development of Micro Screw Pump with Electrostatic Drive",
+      "file": "0004_2A2-K12 Development of Micro Screw Pump with Electrostatic Drive_.pdf",
+      "chunks": 13,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0009",
+      "title": "A dq-Axis Framework for Electrostatic Synchronous Machines and Charge Oriented Control",
+      "file": "0009_A dq-Axis Framework for Electrostatic Synchronous Machines and Charge Oriented Control_.pdf",
+      "chunks": 30,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0013",
+      "title": "A Feasibility Study of a Vibrotactile System Based on Electrostatic Actuators for Touch Bar Interfaces: Experimental Evaluations",
+      "file": "0013_A Feasibility Study of a Vibrotactile System Based on Electrostatic Actuators for Touch Bar Interfaces- Experimental Evaluations_Applied Sciences.pdf",
+      "chunks": 34,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0015",
+      "title": "A High Performance Muscle-like Actuator using Multi-layer Electrostatic Film Motors",
+      "file": "0015_A High Performance Muscle-like Actuator using Multi-layer Electrostatic Film Motors_.pdf",
+      "chunks": 17,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0016",
+      "title": "A Medium-Voltage Current Source Inverter for Synchronous Electrostatic Drives",
+      "file": "0016_A Medium-Voltage Current Source Inverter for Synchronous Electrostatic Drives_IEEE Journal of Emerging and Selected Topics in Power Electronics.pdf",
+      "chunks": 19,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0020",
+      "title": "A Novel Electrostatic Comb Actuator Based on Self-Excited Oscillation for Insect-Scale Microrobots",
+      "file": "0020_A Novel Electrostatic Comb Actuator Based on Self-Excited Oscillation for Insect-Scale Microrobots_IEEE-ASME Transactions on Mechatronics.pdf",
+      "chunks": 57,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0021",
+      "title": "A paper-based electrostatic zipper actuator for printable robots",
+      "file": "0021_A paper-based electrostatic zipper actuator for printable robots_.pdf",
+      "chunks": 26,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0023",
+      "title": "A planar air levitated electrostatic actuator system",
+      "file": "0023_A planar air levitated electrostatic actuator system_.pdf",
+      "chunks": 5,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0029",
+      "title": "A scaling law approach to rate fabrication tolerances of double-sided electrostatic actuators",
+      "file": "0029_A scaling law approach to rate fabrication tolerances of double-sided electrostatic actuators_Nonlinear Dynamics.pdf",
+      "chunks": 20,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0032",
+      "title": "A Study On Driving Experiments For Leg Of Insect-Type Microrobot Using Rotary-Type Electrostatic Motor",
+      "file": "0032_A Study On Driving Experiments For Leg Of Insect-Type Microrobot Using Rotary-Type Electrostatic Motor_.pdf",
+      "chunks": 13,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0033",
+      "title": "A Study on Electrostatic Actuator for Physical Aids.",
+      "file": "0033_A Study on Electrostatic Actuator for Physical Aids_Journal of the Robotics Society of Japan.pdf",
+      "chunks": 26,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0034",
+      "title": "A Thin Electroadhesive Inchworm Climbing Robot Driven by an Electrostatic Film Actuator for Inspection in A Narrow Gap",
+      "file": "0034_A Thin Electroadhesive Inchworm Climbing Robot Driven by an Electrostatic Film Actuator for Inspection in A Narrow Gap_.pdf",
+      "chunks": 16,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0035",
+      "title": "A thin robot made of flexible electronics for in-situ machining and inspection of large structures",
+      "file": "0035_A thin robot made of flexible electronics for in-situ machining and inspection of large structures_Nature Communications.pdf",
+      "chunks": 61,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0036",
+      "title": "A two-layer electrostatic film actuator with high force density and integrated brake",
+      "file": "0036_A two-layer electrostatic film actuator with high force density and integrated brake_Extreme Mechanics Letters.pdf",
+      "chunks": 28,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0038",
+      "title": "AC Dual Excitation Multiphase Electrostatic Drive.",
+      "file": "0038_AC Dual Excitation Multiphase Electrostatic Drive_Journal of the Robotics Society of Japan.pdf",
+      "chunks": 13,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0043",
+      "title": "An Analysis on Performance Improvement of Electrostatic Motor by Skewing Electrodes.",
+      "file": "0043_An Analysis on Performance Improvement of Electrostatic Motor by Skewing Electrodes_IEEJ Transactions on Industry Applications.pdf",
+      "chunks": 15,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0044",
+      "title": "An Arch-Shaped Electrostatic Actuator for Multi-Legged Locomotion",
+      "file": "0044_An Arch-Shaped Electrostatic Actuator for Multi-Legged Locomotion_Robotics.pdf",
+      "chunks": 38,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0047",
+      "title": "An Electret-Augmented Low-Voltage MEMS Electrostatic Out-of-Plane Actuator for Acoustic Transducer Applications",
+      "file": "0047_An Electret-Augmented Low-Voltage MEMS Electrostatic Out-of-Plane Actuator for Acoustic Transducer Applications_Micromachines.pdf",
+      "chunks": 31,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0048",
+      "title": "An electrostatic micromotor based on electrets",
+      "file": "0048_An electrostatic micromotor based on electrets_IET Nanodielectrics.pdf",
+      "chunks": 16,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0049",
+      "title": "An Extended Model for Ripple Analysis of 2–4 Phase Resonant Electrostatic Induction Motors",
+      "file": "0049_An Extended Model for Ripple Analysis of 2–4 Phase Resonant Electrostatic Induction Motors_Actuators.pdf",
+      "chunks": 49,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0052",
+      "title": "An Interaction on a Flat Panel Display Using a Planar 1-DOF Electrostatic Actuator",
+      "file": "0052_An Interaction on a Flat Panel Display Using a Planar 1-DOF Electrostatic Actuator_.pdf",
+      "chunks": 9,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0055",
+      "title": "Analyses and Optimization of Electrostatic Film Actuators Considering Electrical Breakdown",
+      "file": "0055_Analyses and Optimization of Electrostatic Film Actuators Considering Electrical Breakdown_IEEE Robotics and Automation Letters.pdf",
+      "chunks": 25,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0056",
+      "title": "Analysis of the dynamic characteristics of a three phase panel type electrostatic actuator using PEM system identification method",
+      "file": "0056_Analysis of the dynamic characteristics of a three phase panel type electrostatic actuator using PEM system identification method_Sensors and Actuators A Physical.pdf",
+      "chunks": 14,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0058",
+      "title": "Analytical Determination of Capacitance and Conductance Coupling Matrices for Assisting the Design of Capacitively Coupled Planar Power Conversion Apparatuses",
+      "file": "0058_Analytical Determination of Capacitance and Conductance Coupling Matrices for Assisting the Design of Capacitively Coupled Planar Power Conversion Apparatu_IEEE Journal of Emerging and Selected Topics in Power Electronics.pdf",
+      "chunks": 46,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0059",
+      "title": "Application of an electrostatic machine in a low-voltage micro-grid",
+      "file": "0059_Application of an electrostatic machine in a low-voltage micro-grid_.pdf",
+      "chunks": 33,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0065",
+      "title": "Basic characteristics of a multilayer thin electrostatic actuator supported by lubricating oil for a fine-motion stage",
+      "file": "0065_Basic characteristics of a multilayer thin electrostatic actuator supported by lubricating oil for a fine-motion stage_Precision Engineering.pdf",
+      "chunks": 17,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0067",
+      "title": "Bidirectional, Thin-Film Repulsive-/Attractive-Force Electrostatic Actuators for a Crawling Milli-Robot",
+      "file": "0067_Bidirectional, Thin-Film Repulsive--Attractive-Force Electrostatic Actuators for a Crawling Milli-Robot_.pdf",
+      "chunks": 24,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0071",
+      "title": "Biologically inspired electrostatic artificial muscles for insect-sized robots",
+      "file": "0071_Biologically inspired electrostatic artificial muscles for insect-sized robots_The International Journal of Robotics Research.pdf",
+      "chunks": 101,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0074",
+      "title": "Built-in position sensing for electrostatic induction actuator utilizing burst operation",
+      "file": "0074_Built-in position sensing for electrostatic induction actuator utilizing burst operation_Kiso Junkatsu Sekkei Bumon Kouenkai kouen rombunshuu-Kiso Junkatsu Sekkei Bumon Koenk.pdf",
+      "chunks": 7,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0075",
+      "title": "Capacitive-Type Flexible Linear Encoder With Untethered Slider Using Electrostatic Induction",
+      "file": "0075_Capacitive-Type Flexible Linear Encoder With Untethered Slider Using Electrostatic Induction_IEEE Sensors Journal.pdf",
+      "chunks": 27,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0076",
+      "title": "Characteristic switching of a multilayer thin electrostatic actuator by a driving signal for an ultra-precision motion stage",
+      "file": "0076_Characteristic switching of a multilayer thin electrostatic actuator by a driving signal for an ultra-precision motion stage_Precision Engineering.pdf",
+      "chunks": 18,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0078",
+      "title": "CNN-Based Surrogate Models of the Electrostatic Field for a MEMS Motor: A Bi-Objective Optimal Shape Design",
+      "file": "0078_CNN-Based Surrogate Models of the Electrostatic Field for a MEMS Motor- A Bi-Objective Optimal Shape Design_Electronics.pdf",
+      "chunks": 26,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0082",
+      "title": "Comparative Analysis for Sensorless Displacement Estimation of Electrostatic Film Motors in Different Motor Configurations",
+      "file": "0082_Comparative Analysis for Sensorless Displacement Estimation of Electrostatic Film Motors in Different Motor Configurations_.pdf",
+      "chunks": 15,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0083",
+      "title": "Conductive polymer coated flexible electrode for highly efficient force generation of electrostatic actuator",
+      "file": "0083_Conductive polymer coated flexible electrode for highly efficient force generation of electrostatic actuator_.pdf",
+      "chunks": 12,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0089",
+      "title": "Deformable electrostatic linear motor",
+      "file": "0089_Deformable electrostatic linear motor_.pdf",
+      "chunks": 6,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0090",
+      "title": "Design and Characterization of High-Torque Silicon Based Electrostatic Micromotors",
+      "file": "0090_Design and Characterization of High-Torque Silicon Based Electrostatic Micromotors_Institutional Repositories DataBase (IRDB).pdf",
+      "chunks": 6,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0091",
+      "title": "Design and Control of a Fish-like Robot Using an Electrostatic Motor",
+      "file": "0091_Design and Control of a Fish-like Robot Using an Electrostatic Motor_.pdf",
+      "chunks": 16,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0094",
+      "title": "DESIGN CONSIDERATIONS FOR A PRACTICAL ELECTROSTATIC MICRO-MOTOR",
+      "file": "0094_DESIGN CONSIDERATIONS FOR A PRACTICAL ELECTROSTATIC MICRO-MOTOR_Sensors and Actuators.pdf",
+      "chunks": 26,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0095",
+      "title": "Design of a new type of capacitance variable electrostatic motor",
+      "file": "0095_Design of a new type of capacitance variable electrostatic motor_.pdf",
+      "chunks": 17,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0096",
+      "title": "Design of High Power Electrostatic Motor and Generator Using Electrets",
+      "file": "0096_Design of High Power Electrostatic Motor and Generator Using Electrets_IEEJ Transactions on Sensors and Micromachines.pdf",
+      "chunks": 12,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0097",
+      "title": "Design rules and test of electrostatic micromotors made by the LIGA process",
+      "file": "0097_Design rules and test of electrostatic micromotors made by the LIGA process_Journal of Micromechanics and Microengineering.pdf",
+      "chunks": 8,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0099",
+      "title": "Development of a 2-DOF electrostatic haptic joystick for MRI/fMRI applications",
+      "file": "0099_Development of a 2-DOF electrostatic haptic joystick for MRI-fMRI applications_.pdf",
+      "chunks": 10,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0100",
+      "title": "Development of a 2-DOF Robotic Arm Using Electrostatic Film Actuators",
+      "file": "0100_Development of a 2-DOF Robotic Arm Using Electrostatic Film Actuators_Seimitsu kougakkaishi rombunshuu-Seimitsu kougakkaishi-Seimitsu Kougakkaishi rombunsh.pdf",
+      "chunks": 1,
+      "index_status": "扫描件：仅来源摘要与目录信息，未取得全文文本"
+    },
+    {
+      "paper_id": "0101",
+      "title": "Development of a Controller for High-Power Electrostatic Motor",
+      "file": "0101_Development of a Controller for High-Power Electrostatic Motor_IEEJ Transactions on Industry Applications.pdf",
+      "chunks": 17,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0103",
+      "title": "Development of An Electrostatic Actuator Exceeding 10N Propulsive Force",
+      "file": "0103_Development of An Electrostatic Actuator Exceeding 10N Propulsive Force_.pdf",
+      "chunks": 1,
+      "index_status": "扫描件：仅来源摘要与目录信息，未取得全文文本"
+    },
+    {
+      "paper_id": "0104",
+      "title": "Development of electrostatic levitation motor for vacuum condition",
+      "file": "0104_Development of electrostatic levitation motor for vacuum condition_.pdf",
+      "chunks": 19,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0105",
+      "title": "Development of Electrostatic Levitation Motor for Vacuum Environment",
+      "file": "0105_Development of Electrostatic Levitation Motor for Vacuum Environment_Kiso Junkatsu Sekkei Bumon Kouenkai kouen rombunshuu-Kiso Junkatsu Sekkei Bumon Koenk.pdf",
+      "chunks": 14,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0106",
+      "title": "Development of Electrostatic linear Synchronous Motor for Vacuum Environment",
+      "file": "0106_Development of Electrostatic linear Synchronous Motor for Vacuum Environment_Journal of the Japan Society for Precision Engineering.pdf",
+      "chunks": 20,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0107",
+      "title": "Development of Electrostatic Microactuators: 5-Year Progress in Modeling, Design, and Applications",
+      "file": "0107_Development of Electrostatic Microactuators- 5-Year Progress in Modeling, Design, and Applications_Micromachines.pdf",
+      "chunks": 61,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0108",
+      "title": "Development of Mechanical and Control Systems for a Robotic Fish Using Electrostatic Film Motors",
+      "file": "0108_Development of Mechanical and Control Systems for a Robotic Fish Using Electrostatic Film Motors_.pdf",
+      "chunks": 16,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0109",
+      "title": "Development of neural networks chip generating driving waveform for electrostatic motor",
+      "file": "0109_Development of neural networks chip generating driving waveform for electrostatic motor_Artificial Life and Robotics.pdf",
+      "chunks": 14,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0111",
+      "title": "Dielectric Liquids for Enhanced Field Force in Macro Scale Direct Drive Electrostatic Actuators and Rotating Machinery",
+      "file": "0111_Dielectric Liquids for Enhanced Field Force in Macro Scale Direct Drive Electrostatic Actuators and Rotating Machinery_IEEE Transactions on Dielectrics and Electrical Insulation.pdf",
+      "chunks": 48,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0112",
+      "title": "Dielectric Nanofluids for Electrostatic Machines & Actuators",
+      "file": "0112_Dielectric Nanofluids for Electrostatic Machines & Actuators_.pdf",
+      "chunks": 37,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0113",
+      "title": "Distributed Electrostatic Microactuator",
+      "file": "0113_Distributed Electrostatic Microactuator_IEEJ Transactions on Fundamentals and Materials.pdf",
+      "chunks": 12,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0114",
+      "title": "DQ-axis Modeling and Force Modulation of Thin Film Electrostatic Actuators",
+      "file": "0114_DQ-axis Modeling and Force Modulation of Thin Film Electrostatic Actuators_.pdf",
+      "chunks": 31,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0117",
+      "title": "Dual Excitation Multiphase Electrostatic Drive",
+      "file": "0117_Dual Excitation Multiphase Electrostatic Drive_.pdf",
+      "chunks": 23,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0121",
+      "title": "Effect of elastic element on self-excited electrostatic actuator",
+      "file": "0121_Effect of elastic element on self-excited electrostatic actuator_Sensors and Actuators A Physical.pdf",
+      "chunks": 22,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0122",
+      "title": "Effect of insulating liquid on thrust force of a synchronous electrostatic film actuator",
+      "file": "0122_Effect of insulating liquid on thrust force of a synchronous electrostatic film actuator_.pdf",
+      "chunks": 17,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0123",
+      "title": "Effect of insulating liquid viscosity on output force of a high-power synchronous electrostatic motor",
+      "file": "0123_Effect of insulating liquid viscosity on output force of a high-power synchronous electrostatic motor_International Journal of Mechanical Sciences.pdf",
+      "chunks": 24,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0124",
+      "title": "Effect of Mechanical Loading and Increased Gap on the Dynamic Response of Multiple Degree of Freedom Electrostatic Actuator",
+      "file": "0124_Effect of Mechanical Loading and Increased Gap on the Dynamic Response of Multiple Degree of Freedom Electrostatic Actuator_.pdf",
+      "chunks": 14,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0125",
+      "title": "Effects of Electrode Configuration for Performances of Voltage-Induction-Type Electrostatic Motors",
+      "file": "0125_Effects of Electrode Configuration for Performances of Voltage-Induction-Type Electrostatic Motors_Journal of Advanced Mechanical Design Systems and Manufacturing.pdf",
+      "chunks": 37,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0131",
+      "title": "Electrostatic film actuator with a large vertical displacement",
+      "file": "0131_Electrostatic film actuator with a large vertical displacement_.pdf",
+      "chunks": 5,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0133",
+      "title": "Electrostatic Linear Actuator Developed as Biomimicking Skeletal Muscle. Measurement of Static Force Generated by Fundamental Actuator.",
+      "file": "0133_Electrostatic Linear Actuator Developed as Biomimicking Skeletal Muscle. Measurement of Static Force Generated by Fundamental Actuator_TRANSACTIONS OF THE JAPAN SOCIETY OF MECHANICAL ENGINEERS Series C.pdf",
+      "chunks": 1,
+      "index_status": "扫描件：仅来源摘要与目录信息，未取得全文文本"
+    },
+    {
+      "paper_id": "0134",
+      "title": "Electrostatic Linear Servo Motor with Built-in Position Sensor for Vacuum Environment",
+      "file": "0134_Electrostatic Linear Servo Motor with Built-in Position Sensor for Vacuum Environment_.pdf",
+      "chunks": 18,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0135",
+      "title": "Electrostatic repulsive out-of-plane actuator using conductive substrate",
+      "file": "0135_Electrostatic repulsive out-of-plane actuator using conductive substrate_Scientific Reports.pdf",
+      "chunks": 37,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0136",
+      "title": "Electrostatic-motor-driven electroadhesive robot",
+      "file": "0136_Electrostatic-motor-driven electroadhesive robot_.pdf",
+      "chunks": 16,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0138",
+      "title": "Electrostatically Actuated Robotic Fish: Design and Control for High-Mobility Open-Loop Swimming",
+      "file": "0138_Electrostatically Actuated Robotic Fish- Design and Control for High-Mobility Open-Loop Swimming_IEEE Transactions on Robotics.pdf",
+      "chunks": 31,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0141",
+      "title": "Evaluation of an Electrostatic Film Motor Driven by Two-Four-Phase AC Voltage and Electrostatic Induction",
+      "file": "0141_Evaluation of an Electrostatic Film Motor Driven by Two-Four-Phase AC Voltage and Electrostatic Induction_.pdf",
+      "chunks": 17,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0142",
+      "title": "Evaluation of Breaking Performance in Vibration-Assisted Electrostatic Surface Induction Actuator",
+      "file": "0142_Evaluation of Breaking Performance in Vibration-Assisted Electrostatic Surface Induction Actuator_.pdf",
+      "chunks": 4,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0143",
+      "title": "Evaluation of Drive Topologies for Macro Scale Synchronous Electrostatic Machines",
+      "file": "0143_Evaluation of Drive Topologies for Macro Scale Synchronous Electrostatic Machines_.pdf",
+      "chunks": 42,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0144",
+      "title": "Evaluation of MR-compatibility of Electrostatic Linear Motor",
+      "file": "0144_Evaluation of MR-compatibility of Electrostatic Linear Motor_.pdf",
+      "chunks": 17,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0146",
+      "title": "Experiment and analysis of electrostatic motor model based on needle plate discharge",
+      "file": "0146_Experiment and analysis of electrostatic motor model based on needle plate discharge_.pdf",
+      "chunks": 16,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0151",
+      "title": "Force Characterization and Optimization of the Bottom-Driven Type and Side-Driven Type Rotary Motion Electrostatic Actuator using FEM",
+      "file": "0151_Force Characterization and Optimization of the Bottom-Driven Type and Side-Driven Type Rotary Motion Electrostatic Actuator using FEM_International Journal of Innovative Technology and Exploring Engineering.pdf",
+      "chunks": 16,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0152",
+      "title": "Force Control Using Internal Spring in Electrostatic Linear Motors and Switching Between Position and Force Control",
+      "file": "0152_Force Control Using Internal Spring in Electrostatic Linear Motors and Switching Between Position and Force Control_IEEE-ASME Transactions on Mechatronics.pdf",
+      "chunks": 24,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0153",
+      "title": "FPGA implementation of a signal synthesizer for driving a high-power electrostatic motor",
+      "file": "0153_FPGA implementation of a signal synthesizer for driving a high-power electrostatic motor_.pdf",
+      "chunks": 18,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0156",
+      "title": "Harmonic Electrostatic Motors",
+      "file": "0156_Harmonic Electrostatic Motors_Sensors and Actuators.pdf",
+      "chunks": 26,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0161",
+      "title": "High Frequency Injection Based Rotor Position Self-Sensing for Synchronous Electrostatic Machines",
+      "file": "0161_High Frequency Injection Based Rotor Position Self-Sensing for Synchronous Electrostatic Machines_.pdf",
+      "chunks": 30,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0163",
+      "title": "High power electrostatic motor and generator using electrets",
+      "file": "0163_High power electrostatic motor and generator using electrets_.pdf",
+      "chunks": 11,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0164",
+      "title": "High Power Electrostatic Motor Using Skewed Electrodes",
+      "file": "0164_High Power Electrostatic Motor Using Skewed Electrodes_IEEJ Transactions on Industry Applications.pdf",
+      "chunks": 18,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0165",
+      "title": "High power electrostatic motor with micropatterned electret on shrouded turbine",
+      "file": "0165_High power electrostatic motor with micropatterned electret on shrouded turbine_.pdf",
+      "chunks": 12,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0166",
+      "title": "High precision electrostatic actuator with novel electrode design",
+      "file": "0166_High precision electrostatic actuator with novel electrode design_.pdf",
+      "chunks": 16,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0167",
+      "title": "High Precision Positioning Control using High-Power Electrostatic Linear Drive.",
+      "file": "0167_High Precision Positioning Control using High-Power Electrostatic Linear Drive_Journal of the Japan Society for Precision Engineering.pdf",
+      "chunks": 17,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0168",
+      "title": "High Torque Density Macro-scale Electrostatic Rotating Machines: Electrical Design, Generalized d-q Framework, and Demonstration",
+      "file": "0168_High Torque Density Macro-scale Electrostatic Rotating Machines- Electrical Design, Generalized d-q Framework, and Demonstration_IEEE Transactions on Industry Applications.pdf",
+      "chunks": 27,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0169",
+      "title": "High-Output Micro-Machined Electrostatic Actuators",
+      "file": "0169_High-Output Micro-Machined Electrostatic Actuators_Research Square.pdf",
+      "chunks": 25,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0171",
+      "title": "High-Performance Shuffle Motor Fabricated by Vertical Trench Isolation Technology",
+      "file": "0171_High-Performance Shuffle Motor Fabricated by Vertical Trench Isolation Technology_Micromachines.pdf",
+      "chunks": 37,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0172",
+      "title": "High-Power, Double-Sided Drive Type Electrostatic Motor with Stacked-Film Structure",
+      "file": "0172_High-Power, Double-Sided Drive Type Electrostatic Motor with Stacked-Film Structure_Seimitsu kougakkaishi rombunshuu-Seimitsu kougakkaishi-Seimitsu Kougakkaishi rombunsh.pdf",
+      "chunks": 1,
+      "index_status": "扫描件：仅来源摘要与目录信息，未取得全文文本"
+    },
+    {
+      "paper_id": "0177",
+      "title": "IC-processed electrostatic micro-motors",
+      "file": "0177_IC-processed electrostatic micro-motors_.pdf",
+      "chunks": 1,
+      "index_status": "扫描件：仅来源摘要与目录信息，未取得全文文本"
+    },
+    {
+      "paper_id": "0178",
+      "title": "IC-PROCESSED MICRO-MOTORS: DESIGN, TECHNOLOGY, and TESTING",
+      "file": "0178_IC-PROCESSED MICRO-MOTORS- DESIGN, TECHNOLOGY, and TESTING_.pdf",
+      "chunks": 18,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0179",
+      "title": "Identification of a Three Phase Panel Type Electrostatic Actuator",
+      "file": "0179_Identification of a Three Phase Panel Type Electrostatic Actuator_.pdf",
+      "chunks": 19,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0181",
+      "title": "Impact of Solid Materials in the Gap Space between Driving Electrodes in a MEMS Tri-Electrode Electrostatic Actuator",
+      "file": "0181_Impact of Solid Materials in the Gap Space between Driving Electrodes in a MEMS Tri-Electrode Electrostatic Actuator_Sensors.pdf",
+      "chunks": 35,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0182",
+      "title": "Implementation and Evaluation of a Prototype Capacitive-Type Rotary Encoder",
+      "file": "0182_Implementation and Evaluation of a Prototype Capacitive-Type Rotary Encoder_Journal of Control.pdf",
+      "chunks": 18,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0184",
+      "title": "Inchworm Motors and Beyond: A Review on Cooperative Electrostatic Actuator Systems",
+      "file": "0184_Inchworm Motors and Beyond- A Review on Cooperative Electrostatic Actuator Systems_Actuators.pdf",
+      "chunks": 156,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0186",
+      "title": "Innovative Actuators and Tools for Micro-Nano Mechatronics",
+      "file": "0186_Innovative Actuators and Tools for Micro-Nano Mechatronics_.pdf",
+      "chunks": 16,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0188",
+      "title": "Integration of Electroadhesion and Electrostatic Actuation and its Application for Climbing Robots",
+      "file": "0188_Integration of Electroadhesion and Electrostatic Actuation and its Application for Climbing Robots_Institutional Repositories DataBase (IRDB).pdf",
+      "chunks": 7,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0189",
+      "title": "Interaction with Real Objects and Visual Images on a Flat Panel Display using Three-DOF Transparent Electrostatic Induction Actuators",
+      "file": "0189_Interaction with Real Objects and Visual Images on a Flat Panel Display using Three-DOF Transparent Electrostatic Induction Actuators_.pdf",
+      "chunks": 23,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0190",
+      "title": "Interactive driving of electrostatic film actuator by proximity motion of human body",
+      "file": "0190_Interactive driving of electrostatic film actuator by proximity motion of human body_ROBOMECH Journal.pdf",
+      "chunks": 45,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0192",
+      "title": "Investigation of the Dynamics of a 2-DoF Actuation Unit Cell for a Cooperative Electrostatic Actuation System",
+      "file": "0192_Investigation of the Dynamics of a 2-DoF Actuation Unit Cell for a Cooperative Electrostatic Actuation System_Actuators.pdf",
+      "chunks": 60,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0195",
+      "title": "Large Stepwise Discrete Microsystem Displacements Based on Electrostatic Bending Plate Actuation",
+      "file": "0195_Large Stepwise Discrete Microsystem Displacements Based on Electrostatic Bending Plate Actuation_Actuators.pdf",
+      "chunks": 47,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0199",
+      "title": "Linear electrostatic actuators with Moiré-effect optical proprioceptive sensing and electroadhesive braking",
+      "file": "0199_Linear electrostatic actuators with Moiré-effect optical proprioceptive sensing and electroadhesive braking_The International Journal of Robotics Research.pdf",
+      "chunks": 71,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0200",
+      "title": "Linear electrostatic actuators: Gap maintenance via fluid bearings",
+      "file": "0200_Linear electrostatic actuators- Gap maintenance via fluid bearings_Robotics and Computer-Integrated Manufacturing.pdf",
+      "chunks": 24,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0203",
+      "title": "Machine learning based nonlinear adaptive optimal control of capacitive micro-actuator subjected to electrostatic field",
+      "file": "0203_Machine learning based nonlinear adaptive optimal control of capacitive micro-actuator subjected to electrostatic field_Journal of the Brazilian Society of Mechanical Sciences and Engineering.pdf",
+      "chunks": 39,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0204",
+      "title": "Macroscale Electrostatic Rotating Machines and Drives: A Review and Multiplicative Gain Performance Strategy",
+      "file": "0204_Macroscale Electrostatic Rotating Machines and Drives- A Review and Multiplicative Gain Performance Strategy_IEEE Journal of Emerging and Selected Topics in Power Electronics.pdf",
+      "chunks": 96,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0206",
+      "title": "Master-slave mechanism synchronized by three-phase electrostatic induction",
+      "file": "0206_Master-slave mechanism synchronized by three-phase electrostatic induction_.pdf",
+      "chunks": 19,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0208",
+      "title": "Maximum Power of Thin-Film Capacitive Electrostatic Micromotors Based on Nanogaps",
+      "file": "0208_Maximum Power of Thin-Film Capacitive Electrostatic Micromotors Based on Nanogaps_Micro.pdf",
+      "chunks": 20,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0211",
+      "title": "Micro-patterned electret for high power electrostatic motor",
+      "file": "0211_Micro-patterned electret for high power electrostatic motor_.pdf",
+      "chunks": 14,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0215",
+      "title": "Miniaturized surface-driven electrostatic actuators: design and performance evaluation",
+      "file": "0215_Miniaturized surface-driven electrostatic actuators- design and performance evaluation_IEEE-ASME Transactions on Mechatronics.pdf",
+      "chunks": 19,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0216",
+      "title": "Modeling and Analysis of a Linear Resonant Electrostatic Induction Motor Considering Capacitance Imbalance",
+      "file": "0216_Modeling and Analysis of a Linear Resonant Electrostatic Induction Motor Considering Capacitance Imbalance_IEEE Transactions on Industrial Electronics.pdf",
+      "chunks": 37,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0217",
+      "title": "Modeling and identification of an electrostatic motor",
+      "file": "0217_Modeling and identification of an electrostatic motor_Precision Engineering.pdf",
+      "chunks": 32,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0218",
+      "title": "Modeling and Optimization of Electrostatic Film Actuators Based on the Method of Moments",
+      "file": "0218_Modeling and Optimization of Electrostatic Film Actuators Based on the Method of Moments_Soft Robotics.pdf",
+      "chunks": 38,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0219",
+      "title": "Modeling and system identification of three-layer structure electrostatic film motors for a robotic fish",
+      "file": "0219_Modeling and system identification of three-layer structure electrostatic film motors for a robotic fish_.pdf",
+      "chunks": 21,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0220",
+      "title": "Modeling Linear Sliding Electrostatic Motors With Skewing",
+      "file": "0220_Modeling Linear Sliding Electrostatic Motors With Skewing_IEEE Transactions on Industrial Electronics.pdf",
+      "chunks": 25,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0223",
+      "title": "Motion Generation in MR Environment Using Electrostatic Film Motor for Motion-Triggered Cine-MRI",
+      "file": "0223_Motion Generation in MR Environment Using Electrostatic Film Motor for Motion-Triggered Cine-MRI_IEEE-ASME Transactions on Mechatronics.pdf",
+      "chunks": 23,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0224",
+      "title": "Motion Generation in MRI Using an Electrostatic Linear Motor for Visualizing Internal Deformation of Soft Objects by tagged cine-MRI",
+      "file": "0224_Motion Generation in MRI Using an Electrostatic Linear Motor for Visualizing Internal Deformation of Soft Objects by tagged cine-MRI_.pdf",
+      "chunks": 15,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0225",
+      "title": "Multi-layered electrostatic film actuator",
+      "file": "0225_Multi-layered electrostatic film actuator_.pdf",
+      "chunks": 6,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0234",
+      "title": "New Model of a Converter-Based Generator Using Electrostatic Synchronous Machine Concept",
+      "file": "0234_New Model of a Converter-Based Generator Using Electrostatic Synchronous Machine Concept_IEEE Transactions on Energy Conversion.pdf",
+      "chunks": 41,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0235",
+      "title": "Novel differential linear electrostatic motor with light weight rotor",
+      "file": "0235_Novel differential linear electrostatic motor with light weight rotor_.pdf",
+      "chunks": 14,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0236",
+      "title": "Novel multilayer differential linear electrostatic motor",
+      "file": "0236_Novel multilayer differential linear electrostatic motor_.pdf",
+      "chunks": 13,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0237",
+      "title": "Operation of a Dual Excitation Multiphase Electrostatic Drive by Amplitude-Modulated ac Voltage",
+      "file": "0237_Operation of a Dual Excitation Multiphase Electrostatic Drive by Amplitude-Modulated ac Voltage_Electrical Engineering in Japan.pdf",
+      "chunks": 12,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0242",
+      "title": "Otimização de um micromotor usando o método elipsoidal com a análise de sensibilidade via método adjunto",
+      "file": "0242_Otimização de um micromotor usando o método elipsoidal com a análise de sensibilidade via método adjunto_.pdf",
+      "chunks": 85,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0245",
+      "title": "PERFORMANCE COMPARISON OF ELECTROSTATIC FILM MOTORS WITH DIFFERENT SURFACE TREATMENTS TO REDUCE FRICTION",
+      "file": "0245_PERFORMANCE COMPARISON OF ELECTROSTATIC FILM MOTORS WITH DIFFERENT SURFACE TREATMENTS TO REDUCE FRICTION_.pdf",
+      "chunks": 13,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0246",
+      "title": "Performance improvement of electrostatic actuator by skewing electrodes",
+      "file": "0246_Performance improvement of electrostatic actuator by skewing electrodes_.pdf",
+      "chunks": 16,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0252",
+      "title": "Position estimation of synchronous electrostatic film motors under pulse-voltage operation by using driving currents",
+      "file": "0252_Position estimation of synchronous electrostatic film motors under pulse-voltage operation by using driving currents_Sensors and Actuators A Physical.pdf",
+      "chunks": 23,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0253",
+      "title": "Position Self-Sensing for Electrostatic Motors Under Amplitude-Modulated AC Operation",
+      "file": "0253_Position Self-Sensing for Electrostatic Motors Under Amplitude-Modulated AC Operation_IEEE Transactions on Industrial Electronics.pdf",
+      "chunks": 26,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0256",
+      "title": "Principle of Fringe Electric Filed Driven Electrostatic Actuator with Ferroelectric Mover and Comb-shaped Electrodes",
+      "file": "0256_Principle of Fringe Electric Filed Driven Electrostatic Actuator with Ferroelectric Mover and Comb-shaped Electrodes_Journal of the Japan Society for Precision Engineering.pdf",
+      "chunks": 1,
+      "index_status": "扫描件：仅来源摘要与目录信息，未取得全文文本"
+    },
+    {
+      "paper_id": "0257",
+      "title": "Printed Circuit Board Structural Properties and Spiral Groove Trace Conductors for Hydrodynamic Gap Maintenance in Axial Flux Rotating Machines",
+      "file": "0257_Printed Circuit Board Structural Properties and Spiral Groove Trace Conductors for Hydrodynamic Gap Maintenance in Axial Flux Rotating Machines_.pdf",
+      "chunks": 29,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0258",
+      "title": "Process Technology for Micromachines. A trial fabrication of micro structures by ultra precision cutting. Formation of micro spiral electrode.",
+      "file": "0258_Process Technology for Micromachines. A trial fabrication of micro structures by ultra precision cutting. Formation of micro spiral electrode_IEEJ Transactions on Sensors and Micromachines.pdf",
+      "chunks": 14,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0260",
+      "title": "Pulse voltage operation of two-to-four-phase voltage-induction-type electrostatic motor",
+      "file": "0260_Pulse voltage operation of two-to-four-phase voltage-induction-type electrostatic motor_International Journal of Applied Electromagnetics and Mechanics.pdf",
+      "chunks": 39,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0261",
+      "title": "Pulse-driven Induction-type Electrostatic Film Actuator.",
+      "file": "0261_Pulse-driven Induction-type Electrostatic Film Actuator_Journal of the Robotics Society of Japan.pdf",
+      "chunks": 23,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0265",
+      "title": "Recent Developments in Electrostatic Micromotors.",
+      "file": "0265_Recent Developments in Electrostatic Micromotors_Journal of Advanced Science.pdf",
+      "chunks": 7,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0267",
+      "title": "Reducing Force Ripple of Electrostatic Film Actuators via Electrode Offset Layout",
+      "file": "0267_Reducing Force Ripple of Electrostatic Film Actuators via Electrode Offset Layout_IEEE-ASME Transactions on Mechatronics.pdf",
+      "chunks": 30,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0268",
+      "title": "Reduction of Electrostatic Control Voltage with a Tri-Electrode Actuator",
+      "file": "0268_Reduction of Electrostatic Control Voltage with a Tri-Electrode Actuator_.pdf",
+      "chunks": 8,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0272",
+      "title": "Robotic arm using flexible electrostatic film actuators",
+      "file": "0272_Robotic arm using flexible electrostatic film actuators_.pdf",
+      "chunks": 16,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0273",
+      "title": "S1140103 Effect of layer gap in 2-DOF charge-induction type electrostatic actuator made by layered screen-printing",
+      "file": "0273_S1140103 Effect of layer gap in 2-DOF charge-induction type electrostatic actuator made by layered screen-printing_.pdf",
+      "chunks": 8,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0277",
+      "title": "Self-Sensing Control of Electrostatic Suspension Using Variable Capacitor",
+      "file": "0277_Self-Sensing Control of Electrostatic Suspension Using Variable Capacitor_Journal of System Design and Dynamics.pdf",
+      "chunks": 18,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0278",
+      "title": "Sensorless Control of Separately Excited Synchronous Electrostatic Machines",
+      "file": "0278_Sensorless Control of Separately Excited Synchronous Electrostatic Machines_IEEE Transactions on Industry Applications.pdf",
+      "chunks": 44,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0279",
+      "title": "Sensorless displacement estimation for an electrostatic film motor using driving currents",
+      "file": "0279_Sensorless displacement estimation for an electrostatic film motor using driving currents_International Journal of Applied Electromagnetics and Mechanics.pdf",
+      "chunks": 43,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0283",
+      "title": "Silicon Carbide JFET Super-Cascodes for Normally-On Current Source Inverter Switches in Medium Voltage Variable Speed Electrostatic Drives",
+      "file": "0283_Silicon Carbide JFET Super-Cascodes for Normally-On Current Source Inverter Switches in Medium Voltage Variable Speed Electrostatic Drives_.pdf",
+      "chunks": 26,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0284",
+      "title": "Single mask, large force, and large displacement electrostatic linear inchworm motors",
+      "file": "0284_Single mask, large force, and large displacement electrostatic linear inchworm motors_Journal of Microelectromechanical Systems.pdf",
+      "chunks": 24,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0286",
+      "title": "Slider Sheet Detection in Charge-Induction Electrostatic Film Actuators",
+      "file": "0286_Slider Sheet Detection in Charge-Induction Electrostatic Film Actuators_Sensors.pdf",
+      "chunks": 50,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0297",
+      "title": "Spatio-temporal measurement of one-dimensional surface potential distributions using a surface voltmeter and a slit plate",
+      "file": "0297_Spatio-temporal measurement of one-dimensional surface potential distributions using a surface voltmeter and a slit plate_Measurement Science and Technology.pdf",
+      "chunks": 23,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0298",
+      "title": "Squeeze-Film Air Damping of a Five-Axis Electrostatic Bearing for Rotary Micromotors",
+      "file": "0298_Squeeze-Film Air Damping of a Five-Axis Electrostatic Bearing for Rotary Micromotors_Sensors.pdf",
+      "chunks": 34,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0301",
+      "title": "Study on Electrostatic Inchworm Motor Device for a Heterogeneous Integrated Microrobot System",
+      "file": "0301_Study on Electrostatic Inchworm Motor Device for a Heterogeneous Integrated Microrobot System_Transactions of The Japan Institute of Electronics Packaging.pdf",
+      "chunks": 13,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0302",
+      "title": "Study on fabrication of high aspect ratio electrostatic microactuators using LIGA process",
+      "file": "0302_Study on fabrication of high aspect ratio electrostatic microactuators using LIGA process_.pdf",
+      "chunks": 13,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0303",
+      "title": "Sunlight-powered sustained flight of an ultralight micro aerial vehicle",
+      "file": "0303_Sunlight-powered sustained flight of an ultralight micro aerial vehicle_Nature.pdf",
+      "chunks": 61,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0305",
+      "title": "Synchronous Electrostatic Machine Torque Modulation via Complex Vector Voltage Control With a Current Source Inverter",
+      "file": "0305_Synchronous Electrostatic Machine Torque Modulation via Complex Vector Voltage Control With a Current Source Inverter_IEEE Journal of Emerging and Selected Topics in Power Electronics.pdf",
+      "chunks": 14,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0306",
+      "title": "Synchronous Electrostatic Machines for Direct Drive Industrial Applications",
+      "file": "0306_Synchronous Electrostatic Machines for Direct Drive Industrial Applications_.pdf",
+      "chunks": 26,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0307",
+      "title": "Tactile Display using Thin Type Electrostatic Linear Actuator",
+      "file": "0307_Tactile Display using Thin Type Electrostatic Linear Actuator_IEEJ Transactions on Sensors and Micromachines.pdf",
+      "chunks": 1,
+      "index_status": "扫描件：仅来源摘要与目录信息，未取得全文文本"
+    },
+    {
+      "paper_id": "0308",
+      "title": "Tangible Interactions on a Flat Panel Display Using Actuated Paper Sheets",
+      "file": "0308_Tangible Interactions on a Flat Panel Display Using Actuated Paper Sheets_.pdf",
+      "chunks": 8,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0311",
+      "title": "The Modeling, Design and Demonstration of Electrostatic Synchronous Machines",
+      "file": "0311_The Modeling, Design and Demonstration of Electrostatic Synchronous Machines_.pdf",
+      "chunks": 320,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0313",
+      "title": "Thin-film repulsive-force electrostatic actuators",
+      "file": "0313_Thin-film repulsive-force electrostatic actuators_Sensors and Actuators A- Physical.pdf",
+      "chunks": 18,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0315",
+      "title": "Three-DOF Electrostatic Induction Actuator Providing Translational and Rotational Surface-Drive Motion",
+      "file": "0315_Three-DOF Electrostatic Induction Actuator Providing Translational and Rotational Surface-Drive Motion_International Journal of Automation Technology.pdf",
+      "chunks": 30,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0316",
+      "title": "Three-Phase Bidirectional-Flyback Differential-Inverter for Synchronous Electrostatic Machines",
+      "file": "0316_Three-Phase Bidirectional-Flyback Differential-Inverter for Synchronous Electrostatic Machines_.pdf",
+      "chunks": 31,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0317",
+      "title": "Three-Phase Electrostatic Rotary Stepper Micromotor With a Flexural Pivot Bearing",
+      "file": "0317_Three-Phase Electrostatic Rotary Stepper Micromotor With a Flexural Pivot Bearing_Journal of Microelectromechanical Systems.pdf",
+      "chunks": 51,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0318",
+      "title": "Torque Modulation and Self-Sensing for Separately Excited Synchronous Electrostatic Machines",
+      "file": "0318_Torque Modulation and Self-Sensing for Separately Excited Synchronous Electrostatic Machines_.pdf",
+      "chunks": 209,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0319",
+      "title": "Toward Electrostatic Levitation of Macroscale Machines",
+      "file": "0319_Toward Electrostatic Levitation of Macroscale Machines_IEEE Transactions on Industry Applications.pdf",
+      "chunks": 39,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0320",
+      "title": "Toward Self-sensing of an Electrostatic Film Motor Using Driving Currents",
+      "file": "0320_Toward Self-sensing of an Electrostatic Film Motor Using Driving Currents_.pdf",
+      "chunks": 17,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0321",
+      "title": "Towards Electrostatic Levitation of Rotating Machines",
+      "file": "0321_Towards Electrostatic Levitation of Rotating Machines_.pdf",
+      "chunks": 31,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0324",
+      "title": "Transparent Synchronous Electrostatic Actuator for Long-Stroke Planar Motion",
+      "file": "0324_Transparent Synchronous Electrostatic Actuator for Long-Stroke Planar Motion_IEEE-ASME Transactions on Mechatronics.pdf",
+      "chunks": 32,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0327",
+      "title": "Tunable, Flexible, and Resilient Robots Driven by an Electrostatic Actuator",
+      "file": "0327_Tunable, Flexible, and Resilient Robots Driven by an Electrostatic Actuator_Advanced Intelligent Systems.pdf",
+      "chunks": 24,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0333",
+      "title": "Voltage-induction type electrostatic film motor driven by two- to four-phase ac voltage and electrostatic induction",
+      "file": "0333_Voltage-induction type electrostatic film motor driven by two- to four-phase ac voltage and electrostatic induction_Sensors and Actuators A Physical.pdf",
+      "chunks": 29,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0335",
+      "title": "Wireless Driving of Electrostatic Film Actuator by Pre-charging Electrodes with DC High Voltages",
+      "file": "0335_Wireless Driving of Electrostatic Film Actuator by Pre-charging Electrodes with DC High Voltages_Key Engineering Materials.pdf",
+      "chunks": 21,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0337",
+      "title": "X-Y positioner driven by electrostatic motor",
+      "file": "0337_X-Y positioner driven by electrostatic motor_.pdf",
+      "chunks": 16,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0338",
+      "title": "双激励直线型静电电机的本体设计与研究",
+      "file": "0338_双激励直线型静电电机的本体设计与研究_.pdf",
+      "chunks": 84,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0339",
+      "title": "基于柔性材料的静电电机的抖动抑制设计及其控制研究",
+      "file": "0339_基于柔性材料的静电电机的抖动抑制设计及其控制研究_.pdf",
+      "chunks": 79,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0340",
+      "title": "基于气体介质的单相电容可变式静电电动机研究",
+      "file": "0340_基于气体介质的单相电容可变式静电电动机研究_.pdf",
+      "chunks": 68,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0341",
+      "title": "基于薄膜驻极体的静电电动机研究",
+      "file": "0341_基于薄膜驻极体的静电电动机研究_.pdf",
+      "chunks": 70,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0342",
+      "title": "基于静电驱动的超薄柔性机器人的集成化和多功能化研究",
+      "file": "0342_基于静电驱动的超薄柔性机器人的集成化和多功能化研究_.pdf",
+      "chunks": 72,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0343",
+      "title": "平行板式静电微执行器动态Pull-in现象分析",
+      "file": "0343_平行板式静电微执行器动态Pull-in现象分析_半导体技术.pdf",
+      "chunks": 1,
+      "index_status": "扫描件：仅来源摘要与目录信息，未取得全文文本"
+    },
+    {
+      "paper_id": "0344",
+      "title": "往复运动型超薄柔性静电电机研究",
+      "file": "0344_往复运动型超薄柔性静电电机研究_.pdf",
+      "chunks": 80,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0345",
+      "title": "微电机和微动力MEMS",
+      "file": "0345_微电机和微动力MEMS_电子科技导报.pdf",
+      "chunks": 5,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0346",
+      "title": "柔性静电薄膜电机及其在可展式显示设备的应用研究",
+      "file": "0346_柔性静电薄膜电机及其在可展式显示设备的应用研究_.pdf",
+      "chunks": 73,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0347",
+      "title": "硅微静电电机的悬浮系统研究",
+      "file": "0347_硅微静电电机的悬浮系统研究_.pdf",
+      "chunks": 122,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0348",
+      "title": "静电电机理论研究与性能仿真分析",
+      "file": "0348_静电电机理论研究与性能仿真分析_电工技术学报.pdf",
+      "chunks": 13,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0349",
+      "title": "静電モータを用いたサーボシステムに関する研究",
+      "file": "0349_静電モータを用いたサーボシステムに関する研究_.pdf",
+      "chunks": 132,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0350",
+      "title": "静電気力の活用による運動と映像情報提示の一体化",
+      "file": "0350_静電気力の活用による運動と映像情報提示の一体化_日本AEM学会誌.pdf",
+      "chunks": 11,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0351",
+      "title": "A Crawler Climbing Robot Integrating Electroadhesion and Electrostatic Actuation",
+      "file": "0351_A Crawler Climbing Robot Integrating Electroadhesion and Electrostatic Actuation_International Journal of Advanced Robotic Systems.pdf",
+      "chunks": 42,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0352",
+      "title": "A multifunctional robotic system toward moveable sensing and energy harvesting",
+      "file": "0352_A multifunctional robotic system toward moveable sensing and energy harvesting_Nano Energy.pdf",
+      "chunks": 58,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0353",
+      "title": "An electrostatic induction motor utilizing electrical resonance for torque enhancement",
+      "file": "0353_An electrostatic induction motor utilizing electrical resonance for torque enhancement_Sensors and Actuators A- Physical.pdf",
+      "chunks": 47,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0354",
+      "title": "An electrostatic master–slave mechanism with force enhancement by external inductors for cancellation of self- and parasitic capacitances",
+      "file": "0354_An electrostatic master–slave mechanism with force enhancement by external inductors for cancellation of self- and parasitic capacitances_Sensors and Actuators A- Physical.pdf",
+      "chunks": 44,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0355",
+      "title": "Analyses and Solutions for the Buckling of Thin and Flexible Electrostatic Inchworm Climbing Robots",
+      "file": "0355_Analyses and Solutions for the Buckling of Thin and Flexible Electrostatic Inchworm Climbing Robots_IEEE Transactions on Robotics.pdf",
+      "chunks": 53,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0358",
+      "title": "Electrostatic artificial muscle: compact, high-power linear actuators with multiple-layer structures",
+      "file": "0358_Electrostatic artificial muscle- compact, high-power linear actuators with multiple-layer structures_.pdf",
+      "chunks": 22,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0359",
+      "title": "Experimental evaluation of open-loop swimming control for a robotic fish using electrostatic film motors",
+      "file": "0359_Experimental evaluation of open-loop swimming control for a robotic fish using electrostatic film motors_Robotica.pdf",
+      "chunks": 36,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0360",
+      "title": "High-power and high-efficiency electrostatic actuator",
+      "file": "0360_High-power and high-efficiency electrostatic actuator_.pdf",
+      "chunks": 19,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0361",
+      "title": "Linear resonant electrostatic induction motor using electrical resonance with piezoelectric transducers",
+      "file": "0361_Linear resonant electrostatic induction motor using electrical resonance with piezoelectric transducers_Mechatronics.pdf",
+      "chunks": 39,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0367",
+      "title": "The Effect of Parameters on the Output Forces of the Integration of Electroadhesion and Electrostatic Actuation Considering Breakdown Voltage",
+      "file": "0367_The Effect of Parameters on the Output Forces of the Integration of Electroadhesion and Electrostatic Actuation Considering Breakdown Voltage_.pdf",
+      "chunks": 12,
+      "index_status": "全文索引"
+    },
+    {
+      "paper_id": "0369",
+      "title": "Using squeeze-film effect to reduce surface friction in electrostatic actuators",
+      "file": "0369_Using squeeze-film effect to reduce surface friction in electrostatic actuators_.pdf",
+      "chunks": 9,
+      "index_status": "全文索引"
+    }
+  ]
+}

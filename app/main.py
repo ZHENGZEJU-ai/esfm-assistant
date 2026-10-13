@@ -39,7 +39,7 @@ async def lifespan(_app: FastAPI):
     yield
 
 
-app = FastAPI(title="静电薄膜电机知识助手", version="0.3.0", lifespan=lifespan)
+app = FastAPI(title="静电薄膜电机知识助手", version="0.4.0", lifespan=lifespan)
 
 
 def _idx() -> Index:

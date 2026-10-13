@@ -87,6 +87,12 @@ class Hit:
     preview: str
     score: float
     routes: Dict[str, int] = field(default_factory=dict)  # 路名 -> 该路名次，便于调参时看两路各自贡献
+    paper_id: str = ""
+    index_status: str = ""
+    corresponding_author: str = ""
+    abstract_data: str = ""
+    innovation: str = ""
+    abstract_source: str = ""
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -321,7 +327,8 @@ class Index:
         ph = ",".join("?" * len(ids))
         extra = "p.category, p.cross_topic" if self.has_category else "'' AS category, 0 AS cross_topic"
         sql = (f"SELECT ch.rowid AS rid, ch.file, ch.page, ch.text, "
-               f"p.title, p.authors, p.year, p.venue, p.doi, p.tier, p.cited, {extra} "
+               f"p.title, p.authors, p.year, p.venue, p.doi, p.tier, p.cited, {extra}, "
+               f"p.paper_id, p.index_status, p.corresponding_author, p.abstract_data, p.innovation, p.abstract_source "
                f"FROM chunks ch LEFT JOIN papers p ON p.file = ch.file "
                f"WHERE ch.rowid IN ({ph}) AND p.category = 'film_motor'")
         with self.conn() as c:
@@ -335,6 +342,10 @@ class Index:
                 cross_topic=int(r["cross_topic"] or 0),
                 cited=r["cited"], text=r["text"] or "",
                 preview=_preview(r["text"] or "", toks), score=0.0,
+                paper_id=r["paper_id"] or "", index_status=r["index_status"] or "",
+                corresponding_author=r["corresponding_author"] or "",
+                abstract_data=r["abstract_data"] or "", innovation=r["innovation"] or "",
+                abstract_source=r["abstract_source"] or "",
             )
             for r in rows
         ]

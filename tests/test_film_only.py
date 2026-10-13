@@ -1,16 +1,30 @@
-"""Regression checks against the mixed historical corpus; no external API calls."""
+"""Regression checks with an isolated mixed-category fixture; no external API calls."""
 import json
+import shutil
+import sqlite3
+import tempfile
+from pathlib import Path
 import unittest
 from unittest.mock import patch
 
 import numpy as np
 from fastapi.testclient import TestClient
-from app import main, knowledge_tree, embed
+from app import main, knowledge_tree, embed, config
 
 
 class FilmOnlyTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        cls.temp = tempfile.TemporaryDirectory()
+        db = Path(cls.temp.name) / 'library.db'
+        shutil.copy2(config.DB_PATH, db)
+        with sqlite3.connect(db) as c:
+            c.execute("INSERT INTO papers(file,title,category,cross_topic) VALUES(?,?,?,1)",
+                      ('test_adhesion.pdf', 'electrostatic film motor out-of-domain fixture', 'electroadhesion'))
+            c.execute("INSERT INTO chunks(file,page,text,title) VALUES(?,?,?,?)",
+                      ('test_adhesion.pdf', '1', 'electrostatic film motor excluded fixture', 'excluded'))
+        cls.db_patch = patch.object(config, 'DB_PATH', db)
+        cls.db_patch.start()
         cls.client = TestClient(main.app)
         cls.client.__enter__()
         cls.idx = main.INDEX
@@ -26,6 +40,8 @@ class FilmOnlyTests(unittest.TestCase):
     def tearDownClass(cls):
         cls.mock.stop()
         cls.client.__exit__(None, None, None)
+        cls.db_patch.stop()
+        cls.temp.cleanup()
 
     def test_pages_and_legacy_routes(self):
         for url in ['/', '/fm', '/index.html', '/domain.html', '/fm/search', '/fm/learn']:
@@ -90,6 +106,20 @@ class FilmOnlyTests(unittest.TestCase):
             self.assertTrue(all(n.startswith('fm_') for e in events for n in e.get('nodes',[])))
             self.assertTrue(all(p['category']=='film_motor' for e in events for p in e.get('papers',[])))
         self.assertEqual(self.client.post('/api/learn',json={'question':'x','domain':'ea'}).status_code,422)
+
+    def test_imported_catalog_identity_and_scan_limit(self):
+        with self.idx.conn() as c:
+            rows = c.execute("SELECT file,paper_id,index_status FROM papers WHERE category='film_motor'").fetchall()
+        self.assertEqual(len({r['paper_id'] for r in rows}), len(rows))
+        for r in rows:
+            self.assertTrue(r['file'].startswith(r['paper_id'] + '_'))
+        new = next(r for r in rows if r['paper_id'] == '0353')
+        detail = self.client.get('/api/paper/' + new['file']).json()
+        self.assertIn('electrical resonance', detail['title'])
+        self.assertTrue(detail['abstract_data'])
+        scan = next(r for r in rows if r['index_status'].startswith('扫描件'))
+        detail = self.idx.paper(scan['file'])
+        self.assertTrue(all('非全文提取' in s['text'] for s in detail['segments']))
 
 if __name__=='__main__':
     unittest.main()

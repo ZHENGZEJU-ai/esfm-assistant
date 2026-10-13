@@ -105,8 +105,8 @@ fetch('/api/stats').then(r=>r.json()).then(s=>{
   const m = s.mode === 'hybrid' ? `混合检索 · ${s.embed_model||''}` : '⚠ 纯关键词（尚未生成向量，跑 scripts/build_vectors.py）';
   const mine = (s.categories||[]).find(c=>c.key===DOM);
   $('#sub').textContent = mine
-    ? `${mine.papers} 篇论文 · ${mine.chunks} 段全文 · ${m}`
-    : `${s.papers} 篇论文 · ${s.chunks} 段全文 · ${s.year_min}–${s.year_max} · ${m}`;
+    ? `${mine.papers} 篇论文 · ${mine.chunks} 段检索文本 · ${m}`
+    : `${s.papers} 篇论文 · ${s.chunks} 段检索文本 · ${s.year_min}–${s.year_max} · ${m}`;
   window.__localPdf = s.local_pdf;
 
   $('#cat').style.display = 'none';
@@ -117,7 +117,7 @@ fetch('/api/stats').then(r=>r.json()).then(s=>{
 }).catch(e=>$('#sub').textContent='后端未就绪：'+e);
 
 function card(h, i){
-  const au = (h.authors||'').split(',')[0];
+  const au = (h.authors||'').split(/[,；;]/)[0];
   const routes = Object.entries(h.routes||{}).map(([k,v])=>`${k==='keyword'?'词':'向'}#${v}`).join(' ');
   const pdf = window.__localPdf ? ` · <a href="/api/pdf/${encodeURIComponent(h.file)}" target="_blank">本地 PDF</a>` : '';
   const doi = h.doi ? ` · <a href="https://doi.org/${h.doi}" target="_blank">DOI 原文</a>` : '';
@@ -126,8 +126,9 @@ function card(h, i){
   const xb = '';
   return `<div class="card" id="c${i}">
     <div class="ct"><span class="n">[${i}]</span>${esc(h.title)}</div>
-    <div class="cm">${cb}${xb}${h.tier?`<span class="badge">${esc(h.tier)}</span>`:''}${esc(au)} et al. · ${h.year||'?'} · ${esc(h.venue||'')} · 第 ${esc(h.page)} 页<span class="rt">${routes}</span>${doi}${pdf}</div>
+    <div class="cm">${cb}${xb}${h.tier?`<span class="badge">${esc(h.tier)}</span>`:''}${au?esc(au)+' et al.':'作者待核实'} · ${h.year||'?'} · ${esc(h.venue||'')} · ${h.page?'第 '+esc(h.page)+' 页':'来源摘要，页码未核实'} · 库编号 ${esc(h.paper_id||'')}<span class="rt">${routes}</span>${doi}${pdf}</div>
     <div class="cp">${mark(h.preview)}</div>
+    <details class="cm"><summary>论文整理信息</summary><p>${esc(h.index_status||'')}</p><p>通讯作者：${esc(h.corresponding_author||'未明确标注')}</p><p>摘要依据：${esc(h.abstract_source||'待核实')}</p><p style="white-space:pre-wrap">${esc(h.abstract_data||'未报告')}</p><p style="white-space:pre-wrap">${esc(h.innovation||'待核实')}</p></details>
   </div>`;
 }
 
