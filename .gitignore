@@ -5,8 +5,9 @@
 # ---- 绝不能提交：API Key ----
 .env
 
-# ---- 665 MB 原文，线上通过 DOI 跳出版商 ----
-PDFs/
+# ---- 仅同步 PDFs/film_motor/，其余子目录与压缩包继续忽略 ----
+PDFs/*
+!PDFs/film_motor/
 
 # ---- 各脚本产生的备份与临时件 ----
 *.bak
