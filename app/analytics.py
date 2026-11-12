@@ -112,7 +112,7 @@ def overview(db=None, top_n: int = 20, category: Optional[str] = None) -> dict:
     # ---------- 作者 ----------
     au: dict[str, dict] = {}
     for p in papers:
-        names = [x for x in re.split(r"[,;]| and ", p["authors"] or "") if x.strip()]
+        names = [x for x in re.split(r"[,;；、]|\band\b", p["authors"] or "") if x.strip()]
         for i, raw in enumerate(names):
             n = norm_author(raw)
             if not n:
