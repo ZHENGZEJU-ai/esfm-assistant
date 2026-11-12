@@ -23,6 +23,14 @@
   .spacer{flex:1}
   .answer{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-top:20px;white-space:pre-wrap;word-break:break-word}
   .answer sup{color:var(--accent);cursor:pointer;font-weight:600}
+  .eval-sec{background:#fdf8ec;border:1px solid #f0dcb4;border-radius:12px;padding:15px 18px;margin-top:14px}
+  .eval-sec h3{font-size:14px;margin:0 0 8px;color:#7a4e21;display:flex;align-items:center;gap:8px}
+  .eval-sec .esub{font-size:11.5px;font-weight:400;color:var(--mute)}
+  .eval-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px}
+  .eval-item{font-size:13px;line-height:1.55;background:var(--card);border:1px solid #f2e5c9;border-radius:8px;padding:8px 11px}
+  .eval-item .etag{display:inline-block;font-size:11px;font-weight:600;padding:1px 7px;border-radius:5px;background:#eef4fb;color:#2b5d8a;margin-right:6px}
+  .eval-item .ev-txt{color:#7a4e21;font-weight:600}
+  .eval-item .ev-none{color:var(--mute)}
   .cards{margin-top:20px;display:flex;flex-direction:column;gap:10px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 15px}
   .card.flash{animation:fl 1.1s ease}
@@ -31,6 +39,8 @@
   .cm{font-size:12px;color:var(--mute);margin-bottom:7px}
   .cp{font-size:13px;color:#3a3833;background:var(--bg);padding:8px 10px;border-radius:7px;border-left:2px solid var(--line)}
   .cp b{background:var(--hl);font-weight:600;padding:0 1px}
+  .ceval{font-size:12.5px;margin-top:7px;padding:6px 10px;border-radius:7px;background:#fdf8ec;border:1px solid #f0dcb4;color:#5c3d1e}
+  .ceval b{color:#7a4e21}
   .badge{display:inline-block;font-size:11px;padding:1px 7px;border-radius:20px;background:var(--hl);color:var(--accent);margin-right:6px}
   .cat{display:flex;gap:0;margin-bottom:14px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--card)}
   .cat button{flex:1;background:transparent;color:var(--mute);border:0;border-right:1px solid var(--line);padding:11px 8px;text-align:center;line-height:1.35}
@@ -77,6 +87,7 @@
 
   <div id="err" class="err"></div>
   <div id="ans" class="answer" style="display:none"></div>
+  <div id="eval-box" class="eval-sec" style="display:none"></div>
   <div id="cards" class="cards"></div>
   <div id="stat" class="stat"></div>
 </div>
@@ -129,8 +140,42 @@ function card(h, i){
     <div class="cm">${cb}${xb}${h.tier?`<span class="badge">${esc(h.tier)}</span>`:''}${au?esc(au)+' et al.':'作者待核实'} · ${h.year||'?'} · ${esc(h.venue||'')} · ${h.page?'第 '+esc(h.page)+' 页':'来源摘要，页码未核实'} · 库编号 ${esc(h.paper_id||'')}<span class="rt">${routes}</span>${doi}${pdf}</div>
     ${h.index_status && h.index_status.includes('归档版本')?'<div class="cm">引用页码对应同篇归档版本，请展开整理信息查看来源。</div>':''}
     <div class="cp">${mark(h.preview)}</div>
-    <details class="cm"><summary>论文整理信息</summary><p>${esc(h.index_status||'')}</p><p>通讯作者：${esc(h.corresponding_author||'未明确标注')}</p><p>摘要依据：${esc(h.abstract_source||'待核实')}</p><p style="white-space:pre-wrap">${esc(h.abstract_data||'未报告')}</p><p style="white-space:pre-wrap">${esc(h.innovation||'待核实')}</p></details>
+    <div class="ceval"><b>论文评价（论文库_第三列评价W）：</b>${h.evaluation ? esc(h.evaluation) : '<span style="color:var(--mute)">暂无评价</span>'}</div>
+    <details class="cm" style="margin-top:7px"><summary>论文整理信息</summary><p>论文评价：${esc(h.evaluation||'暂无评价')}</p><p>${esc(h.index_status||'')}</p><p>通讯作者：${esc(h.corresponding_author||'未明确标注')}</p><p>摘要依据：${esc(h.abstract_source||'待核实')}</p><p style="white-space:pre-wrap">${esc(h.abstract_data||'未报告')}</p><p style="white-space:pre-wrap">${esc(h.innovation||'待核实')}</p></details>
   </div>`;
+}
+
+function renderEvalSummary(hits, answerText){
+  const box = $('#eval-box');
+  if(!hits || !hits.length){ box.style.display='none'; box.innerHTML=''; return; }
+  const citedNums = new Set();
+  if(answerText){
+    const m = answerText.matchAll(/\[(\d{1,2})\]/g);
+    for(const x of m) citedNums.add(parseInt(x[1], 10));
+  }
+  const seenPaper = new Set();
+  const items = [];
+  hits.forEach((h, idx) => {
+    const num = idx + 1;
+    if(citedNums.size > 0 && !citedNums.has(num)) return;
+    const key = h.paper_id || h.file || num;
+    if(seenPaper.has(key)) return;
+    seenPaper.add(key);
+    items.push({num, h});
+  });
+  const finalItems = items.length ? items : hits.reduce((acc, h, idx) => {
+    const key = h.paper_id || h.file || (idx+1);
+    if(!seenPaper.has(key)){ seenPaper.add(key); acc.push({num: idx+1, h}); }
+    return acc;
+  }, []);
+  box.innerHTML = `<h3>引用论文评价 <span class="esub">来源：论文库_第三列评价W.xlsx（第三列“评价”）</span></h3>
+    <ul class="eval-list">${finalItems.map(({num, h}) => `<li class="eval-item">
+      <span class="n" style="cursor:pointer" onclick="jump(${num})">[${num}]</span>
+      <span class="etag">编号 ${esc(h.paper_id||'—')}</span>
+      <b>${esc(h.title)}</b>（${h.year||'?'}）
+      <div style="margin-top:3px">论文评价：${h.evaluation ? `<span class="ev-txt">${esc(h.evaluation)}</span>` : `<span class="ev-none">暂无评价</span>`}</div>
+    </li>`).join('')}</ul>`;
+  box.style.display = 'block';
 }
 
 function renderCards(hits){
@@ -149,6 +194,7 @@ window.jump = n => {
 async function run(){
   const query = $('#q').value.trim(); if(!query) return;
   $('#err').textContent=''; $('#cards').innerHTML=''; $('#ans').style.display='none'; $('#ans').innerHTML='';
+  $('#eval-box').style.display='none'; $('#eval-box').innerHTML='';
   const body = {
     // tier（①②③④ 分级）暂时从界面移除，后端仍然支持 ——
     // 以后要加别的分类维度时，在这里补一个字段即可，retrieval 那层不用动
@@ -161,6 +207,7 @@ async function run(){
     try{
       const r = await fetch('/api/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
       const d = await r.json();
+      renderEvalSummary(d.hits, '');
       renderCards(d.hits);
       if(!d.hits.length) $('#err').textContent = '无命中。试试英文术语，或放宽分级/年份筛选。';
     }catch(e){ $('#err').textContent = e; }
@@ -169,7 +216,7 @@ async function run(){
 
   $('#ans').style.display='block'; $('#ans').textContent='检索中…';
   $('#stop').style.display=''; ctrl = new AbortController();
-  let raw = '', started = false;
+  let raw = '', started = false, currentHits = [];
   try{
     const r = await fetch('/api/ask',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify(body), signal:ctrl.signal});
@@ -184,8 +231,9 @@ async function run(){
         const dm = (b.match(/^data: ([\s\S]+)$/m)||[])[1];
         if(!ev || !dm) continue;
         const d = JSON.parse(dm);
-        if(ev==='sources'){ renderCards(d.hits); $('#ans').textContent='生成中…'; }
-        else if(ev==='token'){ if(!started){ started=true; $('#ans').innerHTML=''; } raw += d.t; $('#ans').innerHTML = linkify(raw); }
+        if(ev==='sources'){ currentHits = d.hits || []; renderEvalSummary(currentHits, ''); renderCards(currentHits); $('#ans').textContent='生成中…'; }
+        else if(ev==='token'){ if(!started){ started=true; $('#ans').innerHTML=''; } raw += d.t; $('#ans').innerHTML = linkify(raw); renderEvalSummary(currentHits, raw); }
+        else if(ev==='done'){ renderEvalSummary(currentHits, raw); }
         else if(ev==='error'){ $('#err').textContent = d.msg; }
       }
     }

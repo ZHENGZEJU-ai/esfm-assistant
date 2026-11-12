@@ -109,14 +109,17 @@ class FilmOnlyTests(unittest.TestCase):
 
     def test_imported_catalog_identity_and_scan_limit(self):
         with self.idx.conn() as c:
-            rows = c.execute("SELECT file,paper_id,index_status FROM papers WHERE category='film_motor'").fetchall()
+            rows = c.execute("SELECT file,paper_id,index_status,evaluation FROM papers WHERE category='film_motor'").fetchall()
+        self.assertEqual(len(rows), 82)
         self.assertEqual(len({r['paper_id'] for r in rows}), len(rows))
         for r in rows:
             self.assertTrue(r['file'].startswith(r['paper_id'] + '_'))
-        new = next(r for r in rows if r['paper_id'] == '0353')
+        new = next(r for r in rows if r['paper_id'] == '0080')
         detail = self.client.get('/api/paper/' + new['file']).json()
         self.assertIn('electrical resonance', detail['title'])
         self.assertTrue(detail['abstract_data'])
+        eval_paper = next(r for r in rows if r['paper_id'] == '0001')
+        self.assertIn('静电电机', eval_paper['evaluation'])
         scan = next(r for r in rows if r['index_status'].startswith('扫描件'))
         detail = self.idx.paper(scan['file'])
         self.assertTrue(all('非全文提取' in s['text'] for s in detail['segments']))

@@ -93,6 +93,7 @@ class Hit:
     abstract_data: str = ""
     innovation: str = ""
     abstract_source: str = ""
+    evaluation: str = ""
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -137,7 +138,7 @@ def rrf_fuse(
 
 
 class Index:
-    """启动时加载一次，全进程复用。向量 6344×1024 float32 ≈ 26 MB，常驻内存无压力。"""
+    """启动时加载一次，全进程复用。向量 2071×1024 float32 ≈ 8.5 MB，常驻内存无压力。"""
 
     EMBED_FAIL_LIMIT = 3   # 连续这么多次向量化失败就熔断向量路
 
@@ -328,7 +329,8 @@ class Index:
         extra = "p.category, p.cross_topic" if self.has_category else "'' AS category, 0 AS cross_topic"
         sql = (f"SELECT ch.rowid AS rid, ch.file, ch.page, ch.text, "
                f"p.title, p.authors, p.year, p.venue, p.doi, p.tier, p.cited, {extra}, "
-               f"p.paper_id, p.index_status, p.corresponding_author, p.abstract_data, p.innovation, p.abstract_source "
+               f"p.paper_id, p.index_status, p.corresponding_author, p.abstract_data, p.innovation, p.abstract_source, "
+               f"COALESCE(p.evaluation, '') AS evaluation "
                f"FROM chunks ch LEFT JOIN papers p ON p.file = ch.file "
                f"WHERE ch.rowid IN ({ph}) AND p.category = 'film_motor'")
         with self.conn() as c:
@@ -346,6 +348,7 @@ class Index:
                 corresponding_author=r["corresponding_author"] or "",
                 abstract_data=r["abstract_data"] or "", innovation=r["innovation"] or "",
                 abstract_source=r["abstract_source"] or "",
+                evaluation=r["evaluation"] or "",
             )
             for r in rows
         ]

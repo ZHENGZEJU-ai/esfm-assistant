@@ -32,7 +32,7 @@ INDEX: Optional[Index] = None
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
-    """向量在启动时一次性载入内存（14 MB），之后所有请求复用。"""
+    """向量在启动时一次性载入内存（8.5 MB），之后所有请求复用。"""
     global INDEX
     INDEX = Index()
     log.info("索引就绪：%s", INDEX.stats())
@@ -210,10 +210,11 @@ def learn(r: LearnReq):
             if h.file in seen:
                 continue
             seen.add(h.file)
-            out.append({"file": h.file, "title": h.title, "year": h.year,
+            out.append({"file": h.file, "paper_id": h.paper_id, "title": h.title, "year": h.year,
                         "authors": (h.authors or "").split(",")[0],
                         "venue": h.venue, "doi": h.doi, "cited": h.cited,
-                        "page": h.page, "category": h.category, "preview": h.preview})
+                        "page": h.page, "category": h.category, "preview": h.preview,
+                        "evaluation": h.evaluation})
             if len(out) >= r.per_node:
                 break
         return out

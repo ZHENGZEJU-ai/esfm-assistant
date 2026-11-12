@@ -67,6 +67,7 @@
   .p .pv{color:var(--mute);font-size:11.5px;margin-top:4px;background:var(--bg);
          padding:5px 8px;border-radius:6px;line-height:1.55}
   .p .pv b{background:var(--hl);font-weight:600;padding:0 1px}
+  .p .peval{font-size:11.5px;margin-top:4px;padding:4px 8px;border-radius:5px;background:#fdf8ec;border:1px solid #f0dcb4;color:#5c3d1e}
   a{color:var(--accent)}
   .tag{display:inline-block;font-size:10px;padding:1px 6px;border-radius:20px;border:1px solid var(--line);margin-right:5px}
   .tag.fm{background:var(--fmbg);color:var(--fm);border-color:#d3e2f2}
@@ -145,9 +146,10 @@ function paperHtml(p){
   const doi = p.doi ? `<a href="https://doi.org/${esc(p.doi)}" target="_blank">DOI</a>` : '';
   return `<div class="p">
     <div class="t">${esc(p.title)}</div>
-    <div class="m">${catTag(p.category)}${esc(p.authors||'')} et al. · ${p.year||'?'} · ${esc(p.venue||'')}
+    <div class="m">${catTag(p.category)}${p.paper_id?`编号 ${esc(p.paper_id)} · `:''}${esc(p.authors||'')} et al. · ${p.year||'?'} · ${esc(p.venue||'')}
       ${p.cited?` · 被引 ${p.cited}`:''} · 第 ${esc(p.page)} 页 ${doi}</div>
     ${p.preview?`<div class="pv">${mark(p.preview)}</div>`:''}
+    ${p.evaluation?`<div class="peval"><b>论文评价：</b>${esc(p.evaluation)}</div>`:''}
   </div>`;
 }
 
